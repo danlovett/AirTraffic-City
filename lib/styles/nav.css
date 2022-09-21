@@ -10,6 +10,7 @@
 body {
     background-color: #24675E;
     margin: 0px 95px;
+    min-width: 650px;
 }
 
 /* NAVBAR */

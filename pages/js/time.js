@@ -5,9 +5,8 @@ function refreshTime() {
 
     timeDisplay.textContent = timeString;
 
-    const dateDisplay = document.getElementById("date");
-    const dateString = new Date().toLocaleString('en-GB', { weekday: 'long' })
+    const name = document.getElementById("first-name");
 
-    dateDisplay.textContent = dateString
+    name.textContent = 'Daniel'
 
 } setInterval(refreshTime, 1000)== time;

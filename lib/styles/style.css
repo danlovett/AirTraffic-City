@@ -1,4 +1,9 @@
 /* TAGS */
+
+html {
+    min-width: 650px;
+}
+
 * {
     margin: auto;
     padding: auto;
@@ -14,20 +19,24 @@ body {
 
 /* main section */
 
-span {
-    font-size: 30px;
-    margin-left: 20px;
-}
-
 .quick-access {
     display: flex;
     justify-content: space-evenly;
 }
 
+.bg-image {
+    background-image: url(/images/pic\ blur.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+}
+
 .quick-play {
     display: grid;
     background-color: rgb(48, 92, 92);
-    margin: 10px;
+    margin: auto;
+    height: 250px;
+    overflow: auto;
 }
 
 .quick-play img {
@@ -38,45 +47,20 @@ span {
 }
 
 .detail {
-    padding: 20px 50px;
-}
-
-h2 {
-    font-size: 30px;
-}
-
-.detail p {
-    font-size: 20px;
+    overflow: auto;
 }
 
 .levels {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     background-color: #2b4b47;
-    margin: 10px;
-}
-
-.levels img {
-    width: 120px;
-}
-
-.levels a {
-    width: 100%;
+    overflow-x: auto;
 }
 
 .child {
-    display: grid;
-    width: 80%;
-    margin: 10px;
+    margin: 10px 5px;
+    width: 200px;
+    height: 100px;
     padding: 20px 10px;
     background-color: rgb(53, 119, 119);
-}
-
-h3 {
-    font-size: 25px;
-}
-
-p {
-    text-align: center;
-    font-size: 1vw;
 }

@@ -1,0 +1,76 @@
+/* FrameWork */
+
+.text-center {
+    text-align: center;
+}
+
+.fs10 {
+    font-size: 10px;
+}
+
+.fs20 {
+    font-size: 20px;
+}
+
+.fs30 {
+    font-size: 30px;
+}
+
+.pv5 {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.pv20 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.ph50 {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.ph10 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.mv20 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.mh5 {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.mh10 {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.m-auto {
+    margin: auto;
+}
+
+.m10 {
+    margin: 10px;
+}
+
+.m20 {
+    margin: 20px;
+}
+
+.w100 {
+    width: 100%;
+}
+
+.h100 {
+    height: 100%;
+}
+
+.color-black {
+    color: black;
+}
