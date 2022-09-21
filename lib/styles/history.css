@@ -1,0 +1,61 @@
+* {
+    padding: auto;
+    margin: auto;
+}
+
+img {
+    height: 30px;
+    width: auto;
+    border-radius: 90px;
+}
+
+li {
+    font-size: 15px;
+}
+
+#user li {
+    padding-left: 10px;
+    padding-right: 0px;
+}
+
+#user #username {
+    padding-right: 30px;
+}
+
+/* BOARD */
+
+.board h1 {
+    color: black;
+    font-size: 20px;
+}
+
+.board {
+    padding: 20px 85px;
+    background-color: aliceblue;
+    border-radius: 35px;
+}
+
+.seperator {
+    width: 90%;
+    margin: 5px 0px;
+    float: left;
+    background-color: black;
+    padding: 2px 10px;
+    border-radius: 5px;
+}
+
+span {
+    font-size: 18px;
+    color: black;
+    margin: 20px;
+}
+
+.entries {
+    width: 100%;
+}
+
+.entry {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
