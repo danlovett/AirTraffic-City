@@ -28,56 +28,31 @@
         <span class="fs30">Hello <span id="first-name" style="font-size: inherit;"></span></span>
         <div class="quick-access text-center">
             <a href="#">
-                <div class="quick-play bg-image"> 
+                <div id="best-played" class="quick-play"> 
                     <div class="detail ph50 pv20">
-                        <h2 class="fs30">Best Played</h2>
-                        <p id="best-play-desc" class="fs20">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse, voluptatem eveniet amet aspernatur officia sint! In ullam libero temporibus ratione?</p>
+                        <h2 class="fs30">Played Best</h2>
+                        <p id="best-played-desc" class="fs20"></p>
                     </div>
                 </div>
             </a>
             <a href='#'>
-                <div class="quick-play bg-image">
+                <div id="last-played" class="quick-play">
                     <div class="detail ph50 pv20">
-                        <h2 class="fs30">Last Played</h2>
-                        <p id="last-play-desc" class="fs20">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse, voluptatem eveniet amet aspernatur officia sint! In ullam libero temporibus ratione?</p>
+                        <h2 class="fs30">Played Last</h2>
+                        <p id="last-played-desc" class="fs20"></p>
                     </div>
                 </div>
             </a>
         </div>
         <span class="fs30">Library</span>
-        <div class="levels m10">
-            <a href="">
-                <div class="child bg-image text-center">
-                    <h3 class="fs20">Title</h3>
-                </div>
-            </a>    
-            <a href="">
-                <div class="child bg-image text-center">
-                    <h3 class="fs20">Title</h3>
-                </div>
-            </a>
-            <a href="">
-                <div class="child bg-image text-center">
-                    <h3 class="fs20">Title</h3>
-                </div>
-            </a>
-            <a href="">
-                <div class="child bg-image text-center">
-                    <h3 class="fs20">Title</h3>
-                </div>
-            </a>
-            <a href="">
-                <div class="child bg-image text-center">
-                    <h3 class="fs20">Title</h3>
-                </div>
-            </a>
+        <div id="levels" class="levels m10">
         </div>
     </section>
     <a href="/game/game.html" class="btn">[play]</a>
 
 
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <script src="/pages/js/time.js"></script>
-    <script src="/pages/js/libaryCSV.js"></script>
+    <script src="/pkg/time.js"></script>
+    <script src="/pkg/processLibrary.js"></script>
 </body>
 </html>

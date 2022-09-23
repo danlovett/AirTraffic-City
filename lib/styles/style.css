@@ -36,13 +36,20 @@ body {
     background-color: rgb(48, 92, 92);
     margin: auto;
     height: 250px;
+    min-width: 320px;
     overflow: auto;
+    transition-duration: 0.2s;
+}
+
+.quick-play:hover h2 {
+    font-size: 35px;
+    transition: ease-in-out;
+    transition-duration: 0.2s;
 }
 
 .quick-play img {
-    height: 200px;
+    height: 100px;
     justify-content: center;
-    width: 50%;
     height: auto;
 }
 
@@ -59,8 +66,21 @@ body {
 
 .child {
     margin: 10px 5px;
-    width: 200px;
+    width: 400px;
     height: 100px;
     padding: 20px 10px;
     background-color: rgb(53, 119, 119);
+}
+
+.child h2 {
+    font-size: 20px;
+    width: 200px;
+    transition-duration: 0.2s;
+}
+
+.child:hover h2 {
+    font-size: 30px;
+    transition: ease-in-out;
+    transition-duration: 0.2s;
+
 }

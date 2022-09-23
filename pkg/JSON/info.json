@@ -1,0 +1,21 @@
+{   
+    "about": {
+        "version": "Version 0.0.3",
+        "author": "By Daniel Lovett"
+    },
+
+    "library": {
+        "best_played": {
+            "image": "url(../images/best-played.jpeg)",
+            "desc": "placeholder"
+        },
+        "last_played": {
+            "image": "url(../images/last-played.jpeg)",
+            "desc": "placeholder"
+        },
+        "levels": {
+           "titles": ["Manchester", "Stansted", "Gatwick"],
+           "images": ["url(../images/levels/0.jpeg)", "url(../images/levels/1.jpeg)", "url(../images/levels/2.jpeg)"]
+        }
+    }
+}

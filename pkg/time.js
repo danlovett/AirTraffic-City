@@ -5,8 +5,4 @@ function refreshTime() {
 
     timeDisplay.textContent = timeString;
 
-    const name = document.getElementById("first-name");
-
-    name.textContent = 'Daniel'
-
 } setInterval(refreshTime, 1000)== time;
