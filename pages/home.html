@@ -20,7 +20,7 @@
         <ul id="links">
             <li><a href="#" type="button" id="nav-leaderboard">Leaderboard</a></li>
             <li><a href="#" id="nav-history">History</a></li>
-            <li><a href="#" id="auth">Signup</a></li>
+            <li><a href="#" id="signup">Signup</a></li>
         </ul>
         <ul id="user" style="display: none;">
             <img src="/images/pfp_demo.png" alt="">
@@ -28,6 +28,7 @@
             <li><a href="#"><img src="/images/close_btn.png" id="close" alt=""></a></li>
         </ul>
     </section>
+
     <section id="library">
         <div class="container">
             <span class="fs30">Quick Play</span>
@@ -108,11 +109,20 @@
             </div>
         </div>
     </section>
+    <section id="signup-login" style="display: none;" class="auth-board pv20 ph50 color-black">
+        <h2 class="color-black text-center">Signup or Login</h2>
+        <div id="signup-detail">
+            <form action="">
+                <input type="text" name="name" id="full-name" placeholder="What's your name?" class="color-black fs20 m10">
+                <input type="email" name="email" id="email" placeholder="What's your email" class="color-black fs20 m10">
+                <input type="password" name="password" id="password" placeholder="What's your password" class="color-black fs20 m10">
+            </form>
+        </div>
+    </section>
 
 
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script src="/pkg/time.js"></script>
     <script src="/pkg/processLibrary.js"></script>
-    <script src="/node_modules/node-vibrant/dist/vibrant.js"></script>
 </body>
 </html>

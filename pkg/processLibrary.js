@@ -56,3 +56,10 @@ document.getElementById('close').addEventListener('click', () => {
     document.getElementById('library').style.filter = 'blur(0px)'
     document.getElementById('history').style.display = 'none'
 })
+
+document.getElementById('signup').addEventListener('click', () => {
+    document.getElementById('signup-login').style.display = 'grid'
+    document.getElementById('library').style.filter = 'blur(8px)'
+    document.getElementById('library').style.pointerEvents = 'none'
+    document.getElementById('links').style.display = 'none'
+})
