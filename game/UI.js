@@ -1,9 +1,0 @@
-class UI {
-    constructor() {
-
-    }
-
-    show() {
-        
-    }
-}

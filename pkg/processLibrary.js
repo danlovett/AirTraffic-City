@@ -1,65 +1,91 @@
+function checkAuth() {
+    $('#links').css('display', 'flex')
+    $.get('../pkg/JSON/info.json', function(data) {
+
+        if(data.temp.auth == true) {
+            $('#auth').css('display', 'flex')
+        } else {
+            $('#auth').css('display', 'none')
+            $('#no-auth').css('display', 'flex')
+        }
+    })
+}
+
+function changeLogin() {
+    $('#signup-form').css('display', 'none')
+    $('#login-form').css('display', 'grid')
+}
+
+function changeSignup() {
+    $('#signup-form').css('display', 'grid')
+    $('#login-form').css('display', 'none')
+}
+
+function openThis(place, displayType, userNavDetail) {
+    $('#library').css('filter', 'blur(8px)')
+    $('#library').css('pointerEvents', 'none')
+    $(`#${place}`).css('display', `${displayType}`)
+    userNavDetail == true ? $('#links').css('display', 'none') : $('#user').css('display', 'flex')
+}
+
+function openLevelDetail(number) {
+    $.get('../pkg/JSON/info.json', function(data) {
+        $('#level-name').text(data.library.levels.titles[number])
+    })
+}
+
+function closeThis(place) {
+    $(`#${place}`).css('display', 'none')
+    $('#library').css('filter', 'blur(0px')
+    $('#library').css('pointerEvents', 'all')
+    checkAuth()
+}
+
+function loadLevelPane(level) {
+        $('#library').css('filter', 'blur(8px')
+        $('#library').css('pointerEvents', 'none')
+        $('#level-detail').css('display', 'block')
+        $('#level-name').text(level)
+
+        $('#level-detail').css('background-image', `url(../images/levels/${level}.jpg)`)
+        $('#level-detail').css('background-size', 'cover')
+}
+
 $.get('../pkg/JSON/info.json', function(data) {
-    let index = JSON.parse(data)
+    let lib = JSON.parse(data)
 
-    document.getElementById('best-played').style.backgroundImage = index.library.best_played.image
-    document.getElementById('best-played-desc').textContent = index.library.best_played.desc
+    checkAuth()
 
-    document.getElementById('last-played').style.backgroundImage = index.library.last_played.image
-    document.getElementById('last-played-desc').textContent = index.library.last_played.desc
+    $('#best-played').css('background-image', `url(${lib.library.best_played.image}`)
+    $('#best-played-title').text(`${lib.library.best_played.title}`)
 
-    for(let i = 0; i< index.library.levels.titles.length; i++) {
+    $('#last-played').css('background-image', `url(${lib.library.last_played.image}`)
+    $('#last-played-title').text(`${lib.library.last_played.title}`)
+
+    for(let i = 0; i< lib.library.levels.titles.length; i++) {
         $('<a>',{
-            id: `child${i}`,
+            id: `${lib.library.levels.titles[i]}`,
             class: 'child',
             href: '#',
         }).appendTo('#levels');
         $('<h2>',{
-            text: index.library.levels.titles[i],
+            text: lib.library.levels.titles[i],
             class: "background-filter",
-        }).appendTo(`#child${i}`)
+        }).appendTo(`#${lib.library.levels.titles[i]}`)
 
-        document.getElementById(`child${i}`).style.backgroundImage = index.library.levels.images[i]
-        
+        $(`#${lib.library.levels.titles[i]}`).css('background-image', `url(${lib.library.levels.images[i]}`)
+
+
+        $(`#${lib.library.levels.titles[i]}`).bind('click', () => { 
+            loadLevelPane(lib.library.levels.titles[i])
+        })
     }
+
+    $('#best-played').bind('click', () => {
+        loadLevelPane($('#best-played-title').text())
+    })
+    $('#last-played').bind('click', () => {
+        loadLevelPane($('#last-played-title').text())
+    })
+
 }, 'text');
-
-document.getElementById('nav-leaderboard').addEventListener('click', () => {
-    document.getElementById('leaderboard').style.display = 'block'
-    document.getElementById('library').style.filter = 'blur(8px)'
-    document.getElementById('library').style.pointerEvents = 'none'
-    document.getElementById('links').style.display = 'none'
-    document.getElementById('user').style.display = 'flex'
-
-})
-
-document.getElementById('close').addEventListener('click', () => {
-    document.getElementById('user').style.display = 'none'
-    document.getElementById('links').style.display = 'flex'
-    document.getElementById('library').style.pointerEvents = 'all'
-    document.getElementById('library').style.filter = 'blur(0px)'
-    document.getElementById('leaderboard').style.display = 'none'
-})
-
-document.getElementById('nav-history').addEventListener('click', () => {
-    document.getElementById('history').style.display = 'block'
-    document.getElementById('library').style.filter = 'blur(8px)'
-    document.getElementById('library').style.pointerEvents = 'none'
-    document.getElementById('links').style.display = 'none'
-    document.getElementById('user').style.display = 'flex'
-
-})
-
-document.getElementById('close').addEventListener('click', () => {
-    document.getElementById('user').style.display = 'none'
-    document.getElementById('links').style.display = 'flex'
-    document.getElementById('library').style.pointerEvents = 'all'
-    document.getElementById('library').style.filter = 'blur(0px)'
-    document.getElementById('history').style.display = 'none'
-})
-
-document.getElementById('signup').addEventListener('click', () => {
-    document.getElementById('signup-login').style.display = 'grid'
-    document.getElementById('library').style.filter = 'blur(8px)'
-    document.getElementById('library').style.pointerEvents = 'none'
-    document.getElementById('links').style.display = 'none'
-})

@@ -1,21 +1,25 @@
 {   
     "about": {
-        "version": "Version 0.0.4,1",
+        "version": "Version 0.0.5",
         "author": "By Daniel Lovett"
     },
 
     "library": {
         "best_played": {
-            "image": "url(../images/temp/played_best.jpg)",
-            "desc": "placeholder"
+            "title": "Manchester",
+            "image": "../images/levels/manchester.jpg"
         },
         "last_played": {
-            "image": "url(../images/temp/played_last.jpg)",
-            "desc": "placeholder"
+            "title": "Luton",
+            "image": "../images/levels/luton.jpg"
         },
         "levels": {
            "titles": ["Manchester", "Stansted", "Gatwick", "Heathrow", "Luton"],
-           "images": ["url(../images/levels/manchester.jpg)", "url(../images/levels/stansted.jpg)", "url(../images/levels/gatwick.jpg)", "url(../images/levels/heathrow.jpg)", "url(../images/levels/luton.jpg)"]
+           "images": ["../images/levels/manchester.jpg", "../images/levels/stansted.jpg", "../images/levels/gatwick.jpg", "../images/levels/heathrow.jpg", "../images/levels/luton.jpg"]
         }
+    },
+
+    "temp": {
+        "auth": true
     }
 }

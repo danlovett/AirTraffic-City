@@ -1,12 +1,11 @@
 /* TAGS */
 
 html {
-    min-width: 650px;
+    min-width: 970px;
 }
 
 * {
     margin: auto;
-    padding: auto;
     font-size: 46px;
     font-family: 'Arial', Courier, monospace;
     color: white;
@@ -15,6 +14,7 @@ html {
 body {
     background-color: #24675E;
     margin: 0px 95px;
+    height: 100%;
 }
 
 /* NAVBAR */
@@ -23,14 +23,16 @@ body {
     display: flex;
     justify-content: space-around;
     padding: 10px 0px;
+    width: inherit;
+    margin: 0px;
 }
 
 .static-left {
     display: flex;
     background-color: #1118;
     border-radius: 100px;
-    padding-right: 50px;
-    margin-left: 15px;
+    padding-right: 20px;
+    margin-left: 1px;
 }
 
 .static-left img {
@@ -41,7 +43,7 @@ body {
 #time {
     color: white;
     font-size: 20px;
-    margin-left: 20px;
+    /* margin-left: 20px; */
     background-color: rgb(73, 73, 73);
     padding: 0px 20px;
     border-radius: 35px;
@@ -89,7 +91,7 @@ a {
 img {
     height: 25px;
     width: auto;
-    border-radius: 90px;
+    border-radius: 100px;
 }
 
 #user li {
@@ -105,9 +107,8 @@ img {
 /* main section */
 
 #library {
-    position: fixed;
+    position: absolute;
     width: 80vw;
-    margin-left: 20px;
 }
 
 /* Quick Access */
@@ -154,7 +155,7 @@ img {
 /* Levels */
 
 .container {
-    background-color: rgba(73, 73, 73, 0.228);
+    background-color: rgba(73, 73, 73, 0.5);
     padding: 5px 20px;
     margin-bottom: 40px;
 }
@@ -174,7 +175,7 @@ img {
 }
 
 .child h2 {
-    width: 300px;
+    width: 250px;
     text-align: center;
     font-size: 20px;
     padding: 10px 20px;
@@ -191,11 +192,25 @@ img {
 
 /* Leaderboard & History */
 
+.header {
+    display: flex;
+    float: left;
+}
+
+.header a {
+    margin-right: 10px;
+}
+
 
 .board {
     background-color: aliceblue;
     border-radius: 35px;
     position: relative;
+    margin-top: 30px;
+}
+
+.entries {
+    margin-top: 30px;
 }
 
 .entry {
@@ -206,20 +221,48 @@ img {
 
 /* Signup */
 
-#signup-login {
+#signup {
     background-color: aliceblue;
     border-radius: 35px;
     position: relative;
 }
 
-#signup-detail {
-    display: block;
+.input {
+    display: flex;
+}
+
+button {
+    align-items: center;
+}
+
+
+.auth-link {
+    display: flex;
 }
 
 .auth-board {
     width: 50%;
 }
 
-form {
-    display: grid;
+
+.level-detail {
+    position: relative;
+    margin: 0px;
+    height: 100%;
+}
+
+.splitter {
+    display: flex;
+    width: 100%;
+    background-color: rgba(39, 39, 39, 0.8);
+}
+
+.level-play {
+    position: absolute;
+    padding: 20px;
+    border-radius: 20px 20px 0 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(39, 39, 39, 0.8);
 }

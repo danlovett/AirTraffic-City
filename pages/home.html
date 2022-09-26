@@ -4,32 +4,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library</title>
+    <title>Library | AT City</title>
     <link rel="stylesheet" href="/lib/styles/style.css">
     <link rel="stylesheet" href="/lib/styles/dynamicBackground.css">
     <link rel="stylesheet" href="/lib/styles/universal.css">
-    <link rel="shortcut icon" href="/images/logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
 </head>
 <body>
-    <section class="navbar">
+    <section class="navbar vw80">
         <div class="static-left">
             <a href="/pages/index.html"><img src="/images/logo.png" alt=""></a>
-            <a href="/pages/index.html"><h1>AirTraffic City</h1></a>
             <span id="time" class="fs30"><div class="time-loading"></div></span>
         </div> 
         <ul id="links">
-            <li><a href="#" type="button" id="nav-leaderboard">Leaderboard</a></li>
-            <li><a href="#" id="nav-history">History</a></li>
-            <li><a href="#" id="signup">Signup</a></li>
-        </ul>
-        <ul id="user" style="display: none;">
-            <img src="/images/pfp_demo.png" alt="">
-            <li id="username"><h1>Daniel Lovett</h1></li>
-            <li><a href="#"><img src="/images/close_btn.png" id="close" alt=""></a></li>
+            <div id="auth">
+                <li><a href="#" onclick="openThis('leaderboard', 'block', true)">Leaderboard</a></li>
+                <li><a href="#" onclick="openThis('history', 'block', true)">History</a></li>
+                <li><a href="#" onclick="openThis('profile', 'block', true)"><img src="../images/pfp_demo.png" style="margin-right: 5px;" alt=""> Profile</a></li>
+            </div>
+            <li id="no-auth" style="display: none;" onclick="openThis('signup', 'grid', false)"><a href="#">Signup</a></li>
         </ul>
     </section>
 
-    <section id="library">
+    <section id="library" class="vw80">
         <div class="container">
             <span class="fs30">Quick Play</span>
             <div class="quick-access text-center">
@@ -37,7 +34,7 @@
                     <div id="best-played" class="quick-play"> 
                         <div class="detail background-filter ph50 pv20">
                             <h2 class="fs30">Played Best</h2>
-                            <p id="best-played-desc" class="fs20"></p>
+                            <p id="best-played-title" class="fs20"></p>
                         </div>
                     </div>
                 </a>
@@ -45,7 +42,7 @@
                     <div id="last-played" class="quick-play">
                         <div class="detail background-filter ph50 pv20">
                             <h2 class="fs30">Played Last</h2>
-                            <p id="last-played-desc" class="fs20"></p>
+                            <p id="last-played-title" class="fs20"></p>
                         </div>
                     </div>
                 </a>
@@ -56,8 +53,23 @@
             <div id="levels" class="levels m10"></div>
         </div>
     </section>
-    <section id="leaderboard" class="board pv20 ph50 color-black" style="display: none;">
-        <h1 class="fs20 color-black">Leaderboard</h1>
+    <section id="level-detail" class="level-detail vw80" style="display: none;">
+        <div class="header container p10">
+            <a href="#"><img src="../images/close_btn.png" onclick="closeThis('level-detail')" alt=""></a>
+            <h2 id="level-name"></h2>
+        </div>
+        <div class="splitter">
+            <p id="level-desc" class="fs20 w50 m0 text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae, commodi.</p>
+            <p id="level-instr" class="fs20 w50 m0 text-center">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ad laborum labore, quisquam enim magnam deleniti repellendus rerum explicabo pariatur facilis.</p>
+        </div>
+
+        <a href="../game/game.html" class="level-play">Play</a>
+    </section>
+    <section id="leaderboard" class="board p20 vw75 m0 color-black" style="display: none;">
+        <div class="header">
+            <a href="#"><img src="../images/close_btn.png" onclick="closeThis('leaderboard')" alt=""></a>
+            <h1 class="fs20 color-black">Leaderboard</h1>
+        </div>
         <div class="entries-levels">
             <div class="entries w100">
                 <div class="entry">
@@ -77,9 +89,11 @@
             </div>
         </div>
     </section>
-
-    <section id="history" class="board pv20 ph50 color-black" style="display: none;">
-        <h1 class="color-black">History</h1>
+    <section id="history" class="board p20 vw75 m0 color-black" style="display: none;">
+        <div class="header">
+            <a href="#"><img src="../images/close_btn.png" onclick="closeThis('history')" alt=""></a>
+            <h1 class="color-black">History</h1>
+        </div>
         <div class="entries-levels">
             <div class="entries w100">
                 <div class="entry">
@@ -109,16 +123,64 @@
             </div>
         </div>
     </section>
-    <section id="signup-login" style="display: none;" class="auth-board pv20 ph50 color-black">
-        <h2 class="color-black text-center">Signup or Login</h2>
-        <div id="signup-detail">
-            <form action="">
-                <input type="text" name="name" id="full-name" placeholder="What's your name?" class="color-black fs20 m10">
-                <input type="email" name="email" id="email" placeholder="What's your email" class="color-black fs20 m10">
-                <input type="password" name="password" id="password" placeholder="What's your password" class="color-black fs20 m10">
-            </form>
+    <section id="signup" class="auth-board p20 vw75 m0 color-black" style="display: none;">
+        <div class="header">
+            <a href="#"><img src="../images/close_btn.png" onclick="closeThis('signup')" alt=""></a>
+            <h2 class="color-black text-center fs30">Signup/Login</h2>
         </div>
+            <form action="" id="signup-form">
+                <div class="input">
+                    <p class="fs20 color-black">Name: </p>
+                    <input type="text" name="name" id="full-name" placeholder="What's your name?" class="color-black fs20 m10 item"> <br>
+                </div>
+                <div class="input">
+                    <p class="fs20 color-black">Email: </p>
+                    <input type="email" name="email" id="email" placeholder="What's your email" class="color-black fs20 m10 item"> <br>
+                </div>
+                <div class="input">
+                    <p class="fs20 color-black">Password: </p>
+                    <input type="password" name="password" id="password" placeholder="What's your password" class="color-black fs20 m10 item">
+
+                </div>
+                <button class="fs20 color-black text-center w100 m10">Sign Up</button>
+                
+                <div class="auth-link">
+                    <p class="fs20 color-black">Already have an account?</p>
+                    <a href="#" onclick="changeLogin()" style="color: blue;">Login.</a>
+                </div>
+            </form>
+            <form action="" style="display: none;" id="login-form">
+                <div class="input">
+                    <p class="fs20 color-black">username: </p>
+                    <input type="name" name="name" id="username" placeholder="What's your username" class="color-black fs20 m10 item"> <br>
+                </div>
+                <div class="input">
+                    <p class="fs20 color-black">Password: </p>
+                    <input type="password" name="password" id="password" placeholder="What's your password" class="color-black fs20 m10 item">
+
+                </div>
+                <button class="fs20 color-black text-center w100 m10">Login</button>
+
+                <div class="auth-link">
+                    <p class="fs20 color-black">Want an account?</p>
+                    <a href="#" onclick="changeSignup()" style="color: blue;">Signup.</a>
+                </div>
+            </form>
     </section>
+    <section id="profile" class="board p20 vw75 m0 color-black" style="display: none; height: 100%;">
+        <div class="header">
+            <a href="#"><img src="../images/close_btn.png" onclick="closeThis('profile')" alt=""></a>
+            <h1 class="color-black">Profile</h1>
+        </div>
+        <div class="content">
+            <div class="profile-info" style="display: flex;padding-top: 30px;">
+                <img src="../images/pfp_demo.png" alt="">
+                <h2 class="color-black fs20">Daniel Lovett</h2>
+            </div>
+        </div>
+
+    </section>
+
 
 
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
