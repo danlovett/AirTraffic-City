@@ -43,7 +43,6 @@ body {
 #time {
     color: white;
     font-size: 20px;
-    /* margin-left: 20px; */
     background-color: rgb(73, 73, 73);
     padding: 0px 20px;
     border-radius: 35px;
@@ -114,16 +113,18 @@ img {
 /* Quick Access */
 
 .quick-access {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     justify-content: space-evenly;
     padding-bottom: 30px;
 }
 
 .quick-play {
-    display: grid;
+    margin-top: 5px;
+    display: flex;
     background-color: rgb(48, 92, 92);
     background-size: cover;
-    margin: auto;
+    /* margin: auto; */
     height: 50vh;
     width: 30vw;
     overflow: auto;
@@ -215,7 +216,6 @@ img {
 
 .entry {
     display: flex;
-    /* grid-template-columns: max-content; */
     justify-content: space-around;
 }
 
@@ -265,4 +265,22 @@ button {
     left: 0;
     right: 0;
     background-color: rgba(39, 39, 39, 0.8);
+}
+
+.content {
+    margin-top: 30px;
+    display: flex;
+}
+
+.content img {
+    height: 100px;
+    border-radius: 0px;
+    border: 5px solid grey;
+    margin: 0px 5px 0px 35px;
+}
+
+.profile-detail {
+    display: block;
+    margin-left: 10px;
+    margin-top: 0px;
 }

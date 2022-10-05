@@ -1,6 +1,6 @@
 {   
     "about": {
-        "version": "Version 0.0.5",
+        "version": "Version 0.0.6",
         "author": "By Daniel Lovett"
     },
 
@@ -15,7 +15,8 @@
         },
         "levels": {
            "titles": ["Manchester", "Stansted", "Gatwick", "Heathrow", "Luton"],
-           "images": ["../images/levels/manchester.jpg", "../images/levels/stansted.jpg", "../images/levels/gatwick.jpg", "../images/levels/heathrow.jpg", "../images/levels/luton.jpg"]
+           "images": ["../images/levels/manchester.jpg", "../images/levels/stansted.jpg", "../images/levels/gatwick.jpg", "../images/levels/heathrow.jpg", "../images/levels/luton.jpg"],
+           "load": ["../pkg/JSON/manchester.json", "../pkg/JSON/stansted.json", "../pkg/JSON/gatwick.json", "../pkg/JSON/heathrow.json", "../pkg/JSON/luton.json"]
         }
     },
 

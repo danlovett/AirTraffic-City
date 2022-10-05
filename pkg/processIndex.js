@@ -1,5 +1,5 @@
 
-$.get('../pkg/JSON/info.json', function(data) {
+$.get('../pkg/JSON/library.json', function(data) {
     let index = JSON.parse(data)
 
     document.getElementById('version').textContent = index.about.version

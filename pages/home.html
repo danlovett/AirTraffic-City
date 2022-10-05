@@ -33,16 +33,16 @@
                 <a href="#">
                     <div id="best-played" class="quick-play"> 
                         <div class="detail background-filter ph50 pv20">
-                            <h2 class="fs30">Played Best</h2>
+                            <h2 class="fs30"></h2>
                             <p id="best-played-title" class="fs20"></p>
                         </div>
                     </div>
                 </a>
-                <a href='#'>
+                <a href='#'> 
                     <div id="last-played" class="quick-play">
                         <div class="detail background-filter ph50 pv20">
-                            <h2 class="fs30">Played Last</h2>
-                            <p id="last-played-title" class="fs20"></p>
+                            <h2 class="fs30"></h2>
+                            <p id="last-played-title" class="fs20"></p> 
                         </div>
                     </div>
                 </a>
@@ -126,23 +126,24 @@
     <section id="signup" class="auth-board p20 vw75 m0 color-black" style="display: none;">
         <div class="header">
             <a href="#"><img src="../images/close_btn.png" onclick="closeThis('signup')" alt=""></a>
-            <h2 class="color-black text-center fs30">Signup/Login</h2>
+            <h2 id="signup-title" class="color-black text-center fs30">Signup</h2>
+            <h2 id="login-title" class="color-black text-cetner fs30" style="display: none;">Login</h2>
         </div>
             <form action="" id="signup-form">
                 <div class="input">
                     <p class="fs20 color-black">Name: </p>
-                    <input type="text" name="name" id="full-name" placeholder="What's your name?" class="color-black fs20 m10 item"> <br>
+                    <input type="text" name="name" id="signup-full-name" placeholder="What's your name?" class="color-black fs20 m10 item"> <br>
                 </div>
                 <div class="input">
                     <p class="fs20 color-black">Email: </p>
-                    <input type="email" name="email" id="email" placeholder="What's your email" class="color-black fs20 m10 item"> <br>
+                    <input type="email" name="email" id="signup-email" placeholder="What's your email" class="color-black fs20 m10 item"> <br>
                 </div>
                 <div class="input">
                     <p class="fs20 color-black">Password: </p>
-                    <input type="password" name="password" id="password" placeholder="What's your password" class="color-black fs20 m10 item">
+                    <input type="password" name="password" id="signup-password" placeholder="What's your password" class="color-black fs20 m10 item">
 
                 </div>
-                <button class="fs20 color-black text-center w100 m10">Sign Up</button>
+                <button class="fs20 color-black text-center w100 m10" type="submit">Sign Up</button>
                 
                 <div class="auth-link">
                     <p class="fs20 color-black">Already have an account?</p>
@@ -173,17 +174,17 @@
             <h1 class="color-black">Profile</h1>
         </div>
         <div class="content">
-            <div class="profile-info" style="display: flex;padding-top: 30px;">
-                <img src="../images/pfp_demo.png" alt="">
-                <h2 class="color-black fs20">Daniel Lovett</h2>
+            <img src="../images/pfp_demo.png" alt="">
+            <div class="profile-detail">
+                <h1 class="fs20 color-black">Daniel Lovett</h1>
+                <p class="color-black fs20">Edit profile</p>
             </div>
         </div>
 
     </section>
-
-
-
+    
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script type="module" src="/pkg/processSignup.js"></script>
     <script src="/pkg/time.js"></script>
     <script src="/pkg/processLibrary.js"></script>
 </body>

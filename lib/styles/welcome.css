@@ -38,7 +38,7 @@ a {
 }
 
 .user-content h1 {
-    background-color: rgb(47, 47, 47);
+    background-color: rgba(47, 47, 47, 0.5);
     margin: 200px 0px;
     padding: 10px 20px;
     border-radius: 35px;
