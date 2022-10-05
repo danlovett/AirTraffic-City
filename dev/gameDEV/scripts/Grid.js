@@ -3,8 +3,23 @@ class Grid {
         this.cols = cols;
         this.rows = rows;
         this.grid_size = size_of_cell;
-        this.moveable_areas = [[0,1], [2,1], [4,1], [6,1], [8,1], [10,1], [0,3], [2,3], [4,3], [6,3], [8,3], [10,3], [6,1],[0,2], [0,2], [0,2], [1,2], [2,2], [3,2], [4,2], [5,2], [6,2], [7,2], [8,2], [9,2], [10,2], [10, 3], [10,4], [10,5], [10,6]]
-        this.spawn_areas = [[0,0], [2,0], [4,0], [6,0], [8,0], [10,0], [0,4], [2,4], [4,4], [6,4], [8,4]]
+        this.total_grid_size = 10
+        this.grid = [
+            ["1", "1", "1", "1", "1", "1", "1", "1", "1", "1"],
+            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
+            ["2", "0", "0", "2", "0", "0", "2", "0", "0", "2"],
+            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
+            ["2", "1", "1", "1", "1", "1", "1", "1", "0", "2"],
+            ["2", "0", "0", "0", "0", "0", "0", "0", "0", "2"],
+            ["2", "0", "0", "0", "0", "0", "0", "0", "0", "2"],
+            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
+            ["3", "0", "0", "3", "0", "0", "3", "0", "0", "3"],
+            ["4", "4", "4", "4", "4", "4", "4", "4", "4", "4"],
+        ]
+        this.moveable_areas = [];
+        this.spawn_areas = [];
+        this.holding_points = [];
+        this.runway = [];
         this.callsign_prefixses = ['EZY', 'BAW', 'RYR', 'JBE', 'EZE', 'EJU', 'PJS', 'PRIV']
         this.ac_types = ['A320', 'B738', 'B777', 'E145s']
     }
@@ -28,18 +43,15 @@ class Grid {
     }
 
     show_areas() {
-        for(let i = 0; i < planes.length; i++) {
-            if([planes[i].current_x, planes[i].current_y] != planes[i].spawn_point) {
-                this.spawn_areas.push(planes[i].spawn_point)
+        for(let col = 0; col < this.total_grid_size; col++) {
+            for(let row = 0; row < this.total_grid_size; row++) {
+                if(this.grid[row][col] == "1") fill('blue')
+                if(this.grid[row][col] == "2") fill('grey')
+                if(this.grid[row][col] == "3") fill('red')
+                if(this.grid[row][col] == "4") fill('black')
+                if(this.grid[row][col] == "0") fill('green')
+                rect(row * this.grid_size, col * this.grid_size, this.grid_size, this.grid_size)
             }
-        }
-        fill('grey')
-        for(let vector = 0; vector < this.moveable_areas.length; vector++) {
-            rect(this.moveable_areas[vector][0] * this.grid_size, this.moveable_areas[vector][1] * this.grid_size, this.grid_size, this.grid_size)
-        }
-        fill('blue')
-        for(let vector = 0; vector < this.spawn_areas.length; vector++) {
-            rect(this.spawn_areas[vector][0] * this.grid_size, this.spawn_areas[vector][1] * this.grid_size, this.grid_size, this.grid_size)
         }
     }
 
@@ -48,6 +60,35 @@ class Grid {
         if(last_vector[0] + 1 == x || last_vector[1] + 1 == y || last_vector[0] - 1 == x || last_vector[1] - 1 == y) {
             return true
         } else {
+            return false
+        }
+    }
+
+    point_is_valid(x, y) {
+        let not_found = true
+        // check taxiway
+        for(let i = 0; i < this.moveable_areas.length; i++) {
+            if(this.moveable_areas[i][0] == x && this.moveable_areas[i][1] == y) {
+                not_found = false
+                return true
+            } 
+        }
+        // check stands
+        for(let j = 0; j < this.spawn_areas.length; j++) {
+            if(this.spawn_areas[j][0] == x && this.spawn_areas[j][1] == y) {
+                not_found = false
+                return true
+            } 
+        }
+        // check hold
+        for(let j = 0; j < this.holding_points.length; j++) {
+            if(this.holding_points[j][0] == x && this.holding_points[j][1] == y) {
+                not_found = false
+                return true
+            } 
+        }
+
+        if(not_found) {
             return false
         }
     }
