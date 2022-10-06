@@ -14,20 +14,20 @@ function setup() {
     createCanvas(windowWidth, windowHeight)
 
     grid = new Grid(10, 10, grid_size)
-    for(let i = 0; i <= 4; i++) {
-        for(let row = 0; row < grid.total_grid_size; row++) {
-            for(let col = 0; col < grid.total_grid_size; col++) {
-                if(grid.grid[row][col] == "1") grid.spawn_areas.push([row, col])
-                if(grid.grid[row][col] == "2") grid.moveable_areas.push([row, col])
-                if(grid.grid[row][col] == "3") grid.holding_points.push([row, col])
-                if(grid.grid[row][col] == "4") grid.runway.push([row, col])
-            }
+    for(let row = 0; row < grid.total_grid_size; row++) {
+        for(let col = 0; col < grid.total_grid_size; col++) {
+            if(grid.grid[row][col] == "1") grid.spawn_areas.push([row, col])
+            if(grid.grid[row][col] == "2") grid.moveable_areas.push([row, col])
+            if(grid.grid[row][col] == "3") grid.holding_points.push([row, col])
+            if(grid.grid[row][col] == "4") grid.runway.push([row, col])
         }
+    }
+    for(let i = 0; i <= 4; i++) {
         let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]
+        grid.spawn_areas.splice(grid.spawn_areas.indexOf(spawn_point), 1)
         
         planes.push(new Plane(spawn_point, 'A320'))
         planes[i].makeCallsign()
-        grid.spawn_areas.splice(grid.spawn_areas.indexOf(spawn_point), 1)
     }
 
 
@@ -36,7 +36,7 @@ function setup() {
     	element.addEventListener("contextmenu", (e) => e.preventDefault());
   	}
 
-    frameRate(30)
+    frameRate(60)
 }
 
 function draw() {
@@ -49,6 +49,8 @@ function draw() {
 
     grid.render()
     grid.show_areas()
+    grid.show_time()
+    grid.update_time()
     
     //PLANES
     for(let i = 0; i < planes.length; i++) {

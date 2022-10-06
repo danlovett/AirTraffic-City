@@ -4,6 +4,8 @@ class Grid {
         this.rows = rows;
         this.grid_size = size_of_cell;
         this.total_grid_size = 10
+
+        //declare grid
         this.grid = [
             ["1", "1", "1", "1", "1", "1", "1", "1", "1", "1"],
             ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
@@ -16,12 +18,18 @@ class Grid {
             ["3", "0", "0", "3", "0", "0", "3", "0", "0", "3"],
             ["4", "4", "4", "4", "4", "4", "4", "4", "4", "4"],
         ]
+        // declare areas
         this.moveable_areas = [];
         this.spawn_areas = [];
         this.holding_points = [];
         this.runway = [];
+        // declare specifics
         this.callsign_prefixses = ['EZY', 'BAW', 'RYR', 'JBE', 'EZE', 'EJU', 'PJS', 'PRIV']
         this.ac_types = ['A320', 'B738', 'B777', 'E145s']
+        // game start time
+        this.time = [21, 0, 0]
+        // standard x1, real time
+        this.gameplay_speed = 30
     }
 
     render() {
@@ -51,6 +59,33 @@ class Grid {
                 if(this.grid[row][col] == "4") fill('black')
                 if(this.grid[row][col] == "0") fill('green')
                 rect(row * this.grid_size, col * this.grid_size, this.grid_size, this.grid_size)
+            }
+        }
+    }
+
+    show_time() {
+        textSize(20)
+        let time = `${this.time[0] < 10 ? '0' : ''}${this.time[0]}:${this.time[1] < 10 ? '0' : ''}${this.time[1]}:${this.time[2] < 10 ? '0' : ''}${this.time[2]}`
+        text(time, 1 * this.grid_size, 11 * this.grid_size)
+    }
+
+    update_time() {
+        if(frameCount % this.gameplay_speed == 0) {
+            if(this.time[0] == 24) {
+                this.time[0] = 0
+            }
+            if(this.time[1] >= 60) {
+                this.time[0] = this.time[0] + 1
+                this.time[1] = 0
+            } else {
+                this.time[1]
+            }
+    
+            if(this.time[2] >= 60) {
+                this.time[1] = this.time[1] + 1
+                this.time[2] = 0
+            } else {
+                this.time[2] = this.time[2] + 1
             }
         }
     }

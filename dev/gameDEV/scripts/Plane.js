@@ -9,6 +9,7 @@ class Plane {
         this.enable_moving = false
         this.path_to_destination = [];
         this.current_status = 'at-stand';
+        this.time_off_stand = []
 
         this.speed = (type) => {
                 switch (type) {
@@ -60,6 +61,11 @@ class Plane {
                 this.path_to_destination.splice(this.path_to_destination[0], 1)
             } else {
                 this.enable_moving = false
+            }
+            // getting time off stand, detecting when it left spawn area
+            if([this.current_x, this.current_y] != this.spawn_point) {
+                this.time_off_stand = grid.time
+                grid.spawn_areas.push(this.spawn_point)
             }
             return true
         } else {
