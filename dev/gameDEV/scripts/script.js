@@ -5,6 +5,7 @@ let continue_travel_points = false
 let spawn = true
 let planes = []
 
+let continue_gameplay = true;
 let permit_path = false
 let pathing_plane = undefined
 
@@ -22,7 +23,6 @@ function setup() {
                 if(grid.grid[row][col] == "4") grid.runway.push([row, col])
             }
         }
-
         let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]
         
         planes.push(new Plane(spawn_point, 'A320'))
@@ -53,19 +53,26 @@ function draw() {
     //PLANES
     for(let i = 0; i < planes.length; i++) {
         planes[i].spawn()
-        planes[i].update_position()
-
-
-        grid.render_selector_tool(grid_x, grid_y)
         planes[i].showCallsign()
-        if(planes[i].path_to_destination.length != 0 && permit_path == true) {
-            let path = planes[pathing_plane].path_to_destination[planes[i].path_to_destination.length - 1]
-            if([grid_x, grid_y] != path && grid.is_a_neighbour(grid_x, grid_y, pathing_plane) && grid.point_is_valid(grid_x, grid_y)) {
-                planes[pathing_plane].update_travel_points([grid_x, grid_y])
-            } 
+        if(continue_gameplay == true) { // all gameplay actions
+            planes[i].update_position()
+            grid.render_selector_tool(grid_x, grid_y)
+            if(planes[i].path_to_destination.length != 0 && permit_path == true) {
+                let path = planes[pathing_plane].path_to_destination[planes[i].path_to_destination.length - 1]
+                if([grid_x, grid_y] != path && grid.is_a_neighbour(grid_x, grid_y, pathing_plane) && grid.point_is_valid(grid_x, grid_y)) {
+                    planes[pathing_plane].update_travel_points([grid_x, grid_y])
+                } 
+    
+                if(!grid.point_is_valid(grid_x,grid_y)) {
+                    permit_path = false
+                }
+            }
+        }
 
-            if(!grid.point_is_valid(grid_x,grid_y)) {
-                permit_path = false
+        for(let j = 0; j < planes.length; j++) {
+            if(planes[i].intersects(planes[j]) && j!=i) {
+                continue_gameplay = false
+                grid.end_of_game(planes[i], planes[j])
             }
         }
     }

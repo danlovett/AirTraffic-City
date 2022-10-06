@@ -92,4 +92,8 @@ class Grid {
             return false
         }
     }
+
+    end_of_game(plane_one, plane_two) {
+        console.log(`${plane_one.callsign} and ${plane_two.callsign} collided.`)
+    }
 }

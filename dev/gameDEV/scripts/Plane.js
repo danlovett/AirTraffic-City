@@ -53,6 +53,8 @@ class Plane {
     update_position() {
         if(frameCount % this.speed(this.type) == 0) {
             if(this.path_to_destination.length != 0 && this.enable_moving == true) {
+                textSize(20)
+                text(this.callsign, this.path_to_destination[this.path_to_destination.length - 1][0] * this.grid_size, this.path_to_destination[this.path_to_destination.length - 1][1] * this.grid_size)
                 this.current_x = this.path_to_destination[0][0]
                 this.current_y = this.path_to_destination[0][1]
                 this.path_to_destination.splice(this.path_to_destination[0], 1)
@@ -73,4 +75,12 @@ class Plane {
             return false
         }
     }
+
+    intersects(other) {
+		if(this.current_x == other.current_x && this.current_y == other.current_y) {
+			return true
+		} else {
+			return false
+		}
+	}
 }
