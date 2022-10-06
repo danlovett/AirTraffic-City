@@ -56,7 +56,7 @@ class Grid {
     }
 
     is_a_neighbour(x , y, current_p) {
-        let last_vector = planes[current_p].path_to_destination[planes[current_p].path_to_destination.length - 1]
+        let last_vector = planes[current_p].path_to_destination[planes[current_p].path_to_destination.length - 1] || undefined
         if(last_vector[0] + 1 == x || last_vector[1] + 1 == y || last_vector[0] - 1 == x || last_vector[1] - 1 == y) {
             return true
         } else {

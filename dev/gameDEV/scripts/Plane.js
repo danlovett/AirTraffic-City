@@ -10,6 +10,21 @@ class Plane {
         this.path_to_destination = [];
         this.current_status = 'at-stand';
 
+        this.speed = (type) => {
+                switch (type) {
+                    case 'A320':
+                        return 30
+                    case 'B738':
+                        return 30
+                    case 'B777':
+                        return 45
+                    case 'E145s':
+                        return 50
+                    default:
+                        return 35
+                }
+        }
+
         this.color = 'yellow'
     }
 
@@ -24,8 +39,9 @@ class Plane {
     showCallsign() {
         fill('black')
         textSize(15)
-        text(this.callsign, this.current_x * grid_size + (grid_size/5), this.current_y * grid_size + (grid_size/2))
-        text(this.type, this.current_x * grid_size + (grid_size/4), this.current_y * grid_size + (grid_size/1.4))
+        text(this.callsign, this.current_x * grid_size + (grid_size/6), this.current_y * grid_size + (grid_size/2))
+        textSize(10)
+        text(this.type, this.current_x * grid_size + (grid_size/3.5), this.current_y * grid_size + (grid_size/1.4))
         fill('white')
     }
 
@@ -35,15 +51,18 @@ class Plane {
     }
 
     update_position() {
-        if(this.path_to_destination.length != 0 && this.enable_moving == true) {
-            this.current_x = this.path_to_destination[0][0]
-            this.current_y = this.path_to_destination[0][1]
-            this.path_to_destination.splice(this.path_to_destination[0], 1)
+        if(frameCount % this.speed(this.type) == 0) {
+            if(this.path_to_destination.length != 0 && this.enable_moving == true) {
+                this.current_x = this.path_to_destination[0][0]
+                this.current_y = this.path_to_destination[0][1]
+                this.path_to_destination.splice(this.path_to_destination[0], 1)
+            } else {
+                this.enable_moving = false
+            }
+            return true
         } else {
-            this.enable_moving = false
+            return false
         }
-        //sucessful operation
-        return true
     }
 
     update_travel_points(point) {
