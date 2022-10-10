@@ -3,59 +3,82 @@ class Plane {
         this.spawn_point = spawn_point
 
         this.callsign = undefined;
-        this.type = undefined
+        this.type = undefined;
+        this.wake_cat = undefined;
+        this.destination = undefined;
+
         this.current_x = this.spawn_point[0];
         this.current_y = this.spawn_point[1];
-        this.enable_moving = false
+        this.enable_moving = false;
         this.path_to_destination = [];
-        this.current_status = 'at-stand';
-        this.time_off_stand = []
+        this.current_status;
+        this.time_off_stand = [];
 
         this.speed = (type) => {
                 switch (type) {
                     case 'A320':
-                        return 30
+                        return 60
                     case 'B738':
-                        return 30
+                        return 60
                     case 'B777':
-                        return 45
+                        return 80
                     case 'E145s':
-                        return 50
+                        return 30
                     default:
-                        return 35
+                        return 40
                 }
         }
 
-        this.color = 'yellow'
+        this.color = color(random(100, 255), random(50, 255), random(50, 255))
     }
 
-    makeCallsign() {
+    add_plane_info() {
         let prefix = grid.callsign_prefixses[floor(random(grid.callsign_prefixses.length))]
         let numbers = `${floor(random(9))}${floor(random(9))}`
+        let index = floor(random(grid.ac_types.length))
         this.callsign = `${prefix}${numbers}`
-        this.type = grid.ac_types[floor(random(grid.ac_types.length))]
-
+        this.type = grid.ac_types[index][0]
+        this.wake_cat = grid.ac_types[index][1]
+        this.destination = grid.destinations[floor(random(grid.destinations.length))]
     }
 
-    showCallsign() {
+    show_plane_info() {
         fill('black')
         textSize(15)
-        text(this.callsign, this.current_x * grid_size + (grid_size/6), this.current_y * grid_size + (grid_size/2))
+        text(this.callsign, this.current_x * grid_size + (grid_size-50), this.current_y * grid_size + (grid_size-45))
         textSize(10)
-        text(this.type, this.current_x * grid_size + (grid_size/3.5), this.current_y * grid_size + (grid_size/1.4))
+        text(`${this.type} ${this.wake_cat}`, this.current_x * grid_size + (grid_size-50), this.current_y * grid_size + (grid_size - 30))
+        text(this.destination, this.current_x * grid_size + (grid_size/3.5), this.current_y * grid_size + (grid_size - 5))
         fill('white')
     }
 
     spawn() {
         fill(this.color)
+        stroke('black')
         rect(this.current_x * grid_size, this.current_y * grid_size, grid_size, grid_size)
+        noStroke()
+    }
+
+    update_status() {
+        if(this.current_x == this.spawn_point[0] && this.current_y == this.spawn_point[1]) this.current_status = 'at-stand'
+
+        if(this.path_to_destination.length > 0) this.current_status = 'taxying'
+
+        for(let i = 0; i < grid.holding_points.length; i++) {
+            if(this.current_x == grid.holding_points[i][0] && this.current_y == grid.holding_points[i][1]) this.current_status = 'hold'
+            // console.log('check-status')
+        }
+
+        for(let i = 0; i < grid.runway.length; i ++) {
+            if(this.current_x == grid.runway[i][0] && this.current_y == grid.runway[i][1]) this.current_status = 'taking-off'
+        }
     }
 
     update_position() {
         if(frameCount % this.speed(this.type) == 0) {
             if(this.path_to_destination.length != 0 && this.enable_moving == true) {
                 textSize(20)
-                text(this.callsign, this.path_to_destination[this.path_to_destination.length - 1][0] * this.grid_size, this.path_to_destination[this.path_to_destination.length - 1][1] * this.grid_size)
+                this.show_plane_info()
                 this.current_x = this.path_to_destination[0][0]
                 this.current_y = this.path_to_destination[0][1]
                 this.path_to_destination.splice(this.path_to_destination[0], 1)
@@ -71,6 +94,12 @@ class Plane {
         } else {
             return false
         }
+    }
+
+    show_callsign_path_destination() {
+        noFill()
+        // rect(this.path_to_destination[this.path_to_destination.length - 1][0] * grid.grid_size, this.path_to_destination[this.path_to_destination.length - 1][1] * grid.grid_size, grid.grid_size, grid.grid_size)
+        rect(this.path_to_destination[this.path_to_destination.length - 1][0] * grid.grid_size, this.path_to_destination[this.path_to_destination.length - 1][1] * grid.grid_size, grid.grid_size, grid.grid_size)
     }
 
     update_travel_points(point) {

@@ -7,29 +7,32 @@ class Grid {
 
         //declare grid
         this.grid = [
-            ["1", "1", "1", "1", "1", "1", "1", "1", "1", "1"],
-            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
-            ["2", "0", "0", "2", "0", "0", "2", "0", "0", "2"],
-            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
-            ["2", "1", "1", "1", "1", "1", "1", "1", "0", "2"],
-            ["2", "0", "0", "0", "0", "0", "0", "0", "0", "2"],
-            ["2", "0", "0", "0", "0", "0", "0", "0", "0", "2"],
-            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
+            ["5", "4", "4", "4", "4", "4", "4", "4", "4", "5"],
             ["3", "0", "0", "3", "0", "0", "3", "0", "0", "3"],
-            ["4", "4", "4", "4", "4", "4", "4", "4", "4", "4"],
+            ["3", "1", "1", "3", "1", "1", "3", "1", "1", "3"],
+            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
+            ["2", "1", "1", "1", "1", "1", "1", "1", "1", "2"],
+            ["2", "1", "1", "1", "1", "1", "1", "1", "1", "2"],
+            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
+            ["3", "1", "1", "3", "1", "1", "3", "1", "1", "3"],
+            ["3", "0", "0", "3", "0", "0", "3", "0", "0", "3"],
+            ["5", "4", "4", "4", "4", "4", "4", "4", "4", "5"],
         ]
         // declare areas
         this.moveable_areas = [];
         this.spawn_areas = [];
         this.holding_points = [];
         this.runway = [];
+        this.runway_entry = [];
+        this.runway_numbers = ['18 R', '36 L', '18 L', '36 R']
         // declare specifics
         this.callsign_prefixses = ['EZY', 'BAW', 'RYR', 'JBE', 'EZE', 'EJU', 'PJS', 'PRIV']
-        this.ac_types = ['A320', 'B738', 'B777', 'E145s']
+        this.ac_types = [['A320', 'LM'], ['B738', 'LM'], ['B777', 'H'], ['E145s', 'S']]
+        this.destinations = ['LXGB', 'EDDF', 'EDDM', 'LFPG', 'LFRS', 'EGSL', 'EGPH', 'EGGW', 'EGPE', 'EGPF', 'EGGD', 'EGGP']
         // game start time
-        this.time = [21, 0, 0]
-        // standard x1, real time
-        this.gameplay_speed = 30
+        this.time = [12, 0, 0]
+        this.gameplay_speed = 15 // lower val = faster, higher val = slower default = 30
+        this.log = true
     }
 
     render() {
@@ -43,7 +46,7 @@ class Grid {
     }
 
     render_selector_tool(grid_x, grid_y) {
-        stroke('white')
+        stroke('blue')
         strokeWeight(3)
         noFill()
         rect(grid_x * this.grid_size, grid_y * this.grid_size, this.grid_size, this.grid_size)
@@ -55,11 +58,18 @@ class Grid {
             for(let row = 0; row < this.total_grid_size; row++) {
                 if(this.grid[row][col] == "1") fill('blue')
                 if(this.grid[row][col] == "2") fill('grey')
-                if(this.grid[row][col] == "3") fill('red')
+                if(this.grid[row][col] == "3") fill('grey')
                 if(this.grid[row][col] == "4") fill('black')
                 if(this.grid[row][col] == "0") fill('green')
+                if(this.grid[row][col] == "5") fill('black')
                 rect(row * this.grid_size, col * this.grid_size, this.grid_size, this.grid_size)
+                fill('white')
+
             }
+        }
+        textSize(20)
+        for(let i = 0; i < this.runway_entry.length; i++) {
+            text(this.runway_numbers[i], this.runway_entry[i][0] * this.grid_size + (this.grid_size/7), this.runway_entry[i][1] * this.grid_size + (this.grid_size/2))
         }
     }
 
@@ -71,18 +81,15 @@ class Grid {
 
     update_time() {
         if(frameCount % this.gameplay_speed == 0) {
-            if(this.time[0] == 24) {
+            if(this.time[0] >= 23 && this.time[1] >= 59 && this.time[2] >= 59) {
                 this.time[0] = 0
             }
-            if(this.time[1] >= 60) {
-                this.time[0] = this.time[0] + 1
+            if(this.time[2] >= 59) {
+                if(this.time[0] != 0) this.time[0] = this.time[0] + 1
                 this.time[1] = 0
-            } else {
-                this.time[1]
             }
     
-            if(this.time[2] >= 60) {
-                this.time[1] = this.time[1] + 1
+            if(this.time[2] >= 59) {
                 this.time[2] = 0
             } else {
                 this.time[2] = this.time[2] + 1
@@ -92,10 +99,12 @@ class Grid {
 
     is_a_neighbour(x , y, current_p) {
         let last_vector = planes[current_p].path_to_destination[planes[current_p].path_to_destination.length - 1] || undefined
-        if(last_vector[0] + 1 == x || last_vector[1] + 1 == y || last_vector[0] - 1 == x || last_vector[1] - 1 == y) {
-            return true
-        } else {
-            return false
+        if(last_vector != undefined) {
+            if(last_vector[0] + 1 == x || last_vector[1] + 1 == y || last_vector[0] - 1 == x || last_vector[1] - 1 == y) {
+                return true
+            } else {
+                return false
+            }
         }
     }
 
@@ -129,6 +138,6 @@ class Grid {
     }
 
     end_of_game(plane_one, plane_two) {
-        console.log(`${plane_one.callsign} and ${plane_two.callsign} collided.`)
+        text(`${plane_one.callsign} and ${plane_two.callsign} collided.`, 3 * this.grid_size, 12 * this.grid_size)
     }
 }

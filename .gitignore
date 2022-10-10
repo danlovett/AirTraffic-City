@@ -8,3 +8,4 @@ dev/movement/
 dev/Render&Detection/
 dev/spawning/
 game/
+pkg/JSON/users.json
