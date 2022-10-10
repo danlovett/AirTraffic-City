@@ -1,13 +1,9 @@
 // declaring to make globally avail
 let grid_x, grid_y
 let grid_size = 60
-let continue_travel_points = false
-let spawn = true
 let planes = []
 
 let continue_gameplay = true;
-let permit_path = false
-let pathing_plane = undefined
 
 
 function setup() {
@@ -24,7 +20,7 @@ function setup() {
             if(grid.grid[row][col] == "5") grid.runway_entry.push([row, col])
         }
     }
-    for(let i = 0; i <= 27; i++) {
+    for(let i = 0; i <= 10; i++) {
         let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]
         grid.spawn_areas.splice(grid.spawn_areas.indexOf(spawn_point), 1)
         
@@ -41,7 +37,7 @@ function setup() {
 
 function draw() {
     // clear()
-    background('green')
+    background(grid.color_grass)
 
     // GRID
     grid_x = constrain(floor((mouseX/grid.grid_size)), 0, grid.total_grid_size - 1)
@@ -55,51 +51,74 @@ function draw() {
         grid.update_time()
     }
     
-    //PLANES
+    //PLANES MOVEMENT
     for(let i = 0; i < planes.length; i++) {
         planes[i].spawn()
         planes[i].show_plane_info()
         if(continue_gameplay == true) { // all gameplay actions
             for(let j = 0; j < planes.length; j++) {
-                if(planes[i].intersects(planes[j]) && j!=i) {
-                    continue_gameplay = false
-                    grid.end_of_game(planes[i], planes[j])
-                }
+                if(planes[i].intersects(planes[j]) && j!=i) continue_gameplay = false
             }
             
             planes[i].update_position()
             planes[i].update_status()
             
-            if(planes[i].path_to_destination.length != 0 && permit_path == true) {
-                let path = planes[pathing_plane].path_to_destination[planes[i].path_to_destination.length - 1]
-                if([grid_x, grid_y] != path && grid.is_a_neighbour(grid_x, grid_y, pathing_plane) && grid.point_is_valid(grid_x, grid_y)) planes[pathing_plane].update_travel_points([grid_x, grid_y])
-                if(!grid.point_is_valid(grid_x,grid_y)) permit_path = false
-                planes[i].show_callsign_path_destination()
+            if(planes[i].path_to_destination.length != 0 && planes[i].permit_path == true) {
+                let path = planes[i].path_to_destination[planes[i].path_to_destination.length - 1]
+                if([grid_x, grid_y] != path && grid.is_a_neighbour(grid_x, grid_y, i) && grid.point_is_valid(grid_x, grid_y)) planes[i].update_travel_points([grid_x, grid_y])
+                if(!grid.point_is_valid(grid_x,grid_y)) planes[i].permit_path = false
+            }
+            
+            if(planes[i].path_to_destination.length != 0 && planes[i].permit_path == false && planes[i].handover == false) {
+                fill(planes[i].color)
+                rect(planes[i].path_to_destination[planes[i].path_to_destination.length - 1][0] * grid.grid_size, planes[i].path_to_destination[planes[i].path_to_destination.length - 1][1] * grid.grid_size, grid.grid_size, grid.grid_size)
+                fill('black')
+                text(planes[i].callsign, planes[i].path_to_destination[planes[i].path_to_destination.length - 1][0] * grid.grid_size + (grid.grid_size/6), planes[i].path_to_destination[planes[i].path_to_destination.length - 1][1] * grid.grid_size + (grid.grid_size/2))
+            }
+            for(let j = 0; j < grid.holding_points.length; j++) {
+                if(planes[i].current_x == grid.holding_points[j][0] && planes[i].current_y == grid.holding_points[j][1]){
+                    planes[i].permit_path = false
+                }
+
             }
         }
+        
     }
 
     grid.render_selector_tool(grid_x, grid_y)
 }
 
+function keyPressed() {
+    for(let i = 0; i < planes.length; i++) {
+        planes[i].permit_path = false
+        for(let j = 0; j < grid.holding_points.length; j++) {
+            if(planes[i].handover == false) {
+                if(planes[i].current_x == grid.holding_points[j][0] && planes[i].current_y == grid.holding_points[j][1] && grid_x == grid.holding_points[j][0] && grid_y == grid.holding_points[j][1] && key == 'h') {
+                    const button_handover = createButton('handover')
+                    button_handover.position(mouseX, mouseY)
+                    button_handover.mousePressed(() => {
+                        console.log(planes[i].callsign,'handover clicked')
+                        planes[i].handover_plane()
+                        button_handover.hide()
+                    })
+                } 
+            }
+        }
+    }
+}
+
 function mousePressed() {
     for(let i = 0; i < planes.length; i++) {
         if(mouseButton == LEFT) {
-            if(grid_x == planes[i].current_x && grid_y == planes[i].current_y && !permit_path) {
-                console.log(i)
-                if([planes[i].current_x, planes[i].current_y] == planes[i].spawn_point) {
-                    // pushback options
-                } else {
-                    planes[i].update_travel_points([grid_x, grid_y])
-                    permit_path = true;
-                    pathing_plane = i;
-                }
+            if (grid_x == planes[i].current_x && grid_y == planes[i].current_y) {
+                planes[i].update_travel_points([grid_x, grid_y])
+                planes[i].permit_path = true
             }
         }
         
-        if (mouseButton == RIGHT) {
+        if (mouseButton == RIGHT ) {
             planes[i].enable_moving = true
-            permit_path = false
+            planes[i].permit_path = false
         }
     }
 }

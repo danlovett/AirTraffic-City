@@ -14,6 +14,9 @@ class Plane {
         this.current_status;
         this.time_off_stand = [];
 
+        this.handover = false
+        this.permit_path = true
+
         this.speed = (type) => {
                 switch (type) {
                     case 'A320':
@@ -53,7 +56,7 @@ class Plane {
     }
 
     spawn() {
-        fill(this.color)
+        fill(color(this.color))
         stroke('black')
         rect(this.current_x * grid_size, this.current_y * grid_size, grid_size, grid_size)
         noStroke()
@@ -97,6 +100,7 @@ class Plane {
     }
 
     show_callsign_path_destination() {
+        console.log(this.path_to_destination[this.path_to_destination.length - 1])
         noFill()
         // rect(this.path_to_destination[this.path_to_destination.length - 1][0] * grid.grid_size, this.path_to_destination[this.path_to_destination.length - 1][1] * grid.grid_size, grid.grid_size, grid.grid_size)
         rect(this.path_to_destination[this.path_to_destination.length - 1][0] * grid.grid_size, this.path_to_destination[this.path_to_destination.length - 1][1] * grid.grid_size, grid.grid_size, grid.grid_size)
@@ -118,4 +122,9 @@ class Plane {
 			return false
 		}
 	}
+    
+    handover_plane() {
+        this.handover = true
+        this.color = color(70, 70, 70)
+    }
 }

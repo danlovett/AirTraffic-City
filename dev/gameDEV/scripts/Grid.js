@@ -9,12 +9,12 @@ class Grid {
         this.grid = [
             ["5", "4", "4", "4", "4", "4", "4", "4", "4", "5"],
             ["3", "0", "0", "3", "0", "0", "3", "0", "0", "3"],
-            ["3", "1", "1", "3", "1", "1", "3", "1", "1", "3"],
+            ["2", "1", "1", "2", "1", "1", "2", "1", "1", "2"],
             ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
             ["2", "1", "1", "1", "1", "1", "1", "1", "1", "2"],
             ["2", "1", "1", "1", "1", "1", "1", "1", "1", "2"],
             ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
-            ["3", "1", "1", "3", "1", "1", "3", "1", "1", "3"],
+            ["2", "1", "1", "2", "1", "1", "2", "1", "1", "2"],
             ["3", "0", "0", "3", "0", "0", "3", "0", "0", "3"],
             ["5", "4", "4", "4", "4", "4", "4", "4", "4", "5"],
         ]
@@ -26,13 +26,19 @@ class Grid {
         this.runway_entry = [];
         this.runway_numbers = ['18 R', '36 L', '18 L', '36 R']
         // declare specifics
-        this.callsign_prefixses = ['EZY', 'BAW', 'RYR', 'JBE', 'EZE', 'EJU', 'PJS', 'PRIV']
-        this.ac_types = [['A320', 'LM'], ['B738', 'LM'], ['B777', 'H'], ['E145s', 'S']]
+        this.callsign_prefixses = ['LXG', 'BLE', 'EZY', 'BAW', 'RYR', 'VLG', 'PR', 'G-E', 'B-RT', 'LIN', 'FBE', 'CGG']
+        this.ac_types = [['A320', 'LM'], ['B738', 'LM'], ['B777', 'H'], ['E145s', 'S'], ['B752', 'UM'], ['A220', 'LM'], ['P28A', 'L']]
         this.destinations = ['LXGB', 'EDDF', 'EDDM', 'LFPG', 'LFRS', 'EGSL', 'EGPH', 'EGGW', 'EGPE', 'EGPF', 'EGGD', 'EGGP']
         // game start time
-        this.time = [12, 0, 0]
-        this.gameplay_speed = 15 // lower val = faster, higher val = slower default = 30
-        this.log = true
+        this.time = [23, 59, 0]
+        this.gameplay_speed = 2 // lower val = faster, higher val = slower default = 30
+
+        this.color_grass = color(100, 250, 70)
+        this.color_stand = color(70, 200, 50) 
+        this.color_taxiway = color(100, 100, 100)
+        this.color_holding_point = color(50, 50, 50)
+        this.color_runway = color(0, 0, 0)
+
     }
 
     render() {
@@ -54,26 +60,29 @@ class Grid {
     }
 
     show_areas() {
+        // showing all areas with colours
         for(let col = 0; col < this.total_grid_size; col++) {
             for(let row = 0; row < this.total_grid_size; row++) {
-                if(this.grid[row][col] == "1") fill('blue')
-                if(this.grid[row][col] == "2") fill('grey')
-                if(this.grid[row][col] == "3") fill('grey')
-                if(this.grid[row][col] == "4") fill('black')
-                if(this.grid[row][col] == "0") fill('green')
-                if(this.grid[row][col] == "5") fill('black')
+                if(this.grid[row][col] == "1") fill(this.color_stand) // stands
+                if(this.grid[row][col] == "2") fill(this.color_taxiway) // taxiway
+                if(this.grid[row][col] == "3") fill(this.color_holding_point) // holding points
+                if(this.grid[row][col] == "4" || this.grid[row][col] == "5") fill(this.color_runway) // runway || runway entry point
+                if(this.grid[row][col] == "0") fill(this.color_grass) // grass
                 rect(row * this.grid_size, col * this.grid_size, this.grid_size, this.grid_size)
                 fill('white')
 
             }
         }
+        // text setup for numbers runway
         textSize(20)
+        // runway numbers
         for(let i = 0; i < this.runway_entry.length; i++) {
             text(this.runway_numbers[i], this.runway_entry[i][0] * this.grid_size + (this.grid_size/7), this.runway_entry[i][1] * this.grid_size + (this.grid_size/2))
         }
     }
 
     show_time() {
+        fill('black')
         textSize(20)
         let time = `${this.time[0] < 10 ? '0' : ''}${this.time[0]}:${this.time[1] < 10 ? '0' : ''}${this.time[1]}:${this.time[2] < 10 ? '0' : ''}${this.time[2]}`
         text(time, 1 * this.grid_size, 11 * this.grid_size)
@@ -81,14 +90,21 @@ class Grid {
 
     update_time() {
         if(frameCount % this.gameplay_speed == 0) {
+            // hours
             if(this.time[0] >= 23 && this.time[1] >= 59 && this.time[2] >= 59) {
                 this.time[0] = 0
+            } else if (this.time[1] >= 59 && this.time[2] >= 59) {
+                this.time[0] = this.time[0] + 1
             }
-            if(this.time[2] >= 59) {
-                if(this.time[0] != 0) this.time[0] = this.time[0] + 1
+
+            // minutes
+            if(this.time[1] >= 59 && this.time[2] >= 59) {
                 this.time[1] = 0
+            } else if (this.time[2] == 59) {
+                this.time[1] = this.time[1] + 1
             }
-    
+            
+            // seconds
             if(this.time[2] >= 59) {
                 this.time[2] = 0
             } else {
@@ -119,7 +135,7 @@ class Grid {
         }
         // check stands
         for(let j = 0; j < this.spawn_areas.length; j++) {
-            if(this.spawn_areas[j][0] == x && this.spawn_areas[j][1] == y) {
+            if(this.spawn_areas[j][0] != x && this.spawn_areas[j][1] != y) {
                 not_found = false
                 return true
             } 
@@ -135,9 +151,5 @@ class Grid {
         if(not_found) {
             return false
         }
-    }
-
-    end_of_game(plane_one, plane_two) {
-        text(`${plane_one.callsign} and ${plane_two.callsign} collided.`, 3 * this.grid_size, 12 * this.grid_size)
     }
 }
