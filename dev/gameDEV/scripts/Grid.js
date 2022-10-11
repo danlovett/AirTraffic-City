@@ -24,12 +24,15 @@ class Grid {
         this.holding_points = [];
         this.runway = [];
         this.runway_entry = [];
-        this.runway_numbers = ['18 R', '36 L', '18 L', '36 R']
         // declare specifics
+        this.runway_numbers = ['18 R', '36 L', '18 L', '36 R']
         this.callsign_prefixses = ['LXG', 'BLE', 'EZY', 'BAW', 'RYR', 'VLG', 'PR', 'G-E', 'B-RT', 'LIN', 'FBE', 'CGG']
         this.ac_types = [['A320', 'LM'], ['B738', 'LM'], ['B777', 'H'], ['E145s', 'S'], ['B752', 'UM'], ['A220', 'LM'], ['P28A', 'L']]
         this.destinations = ['LXGB', 'EDDF', 'EDDM', 'LFPG', 'LFRS', 'EGSL', 'EGPH', 'EGGW', 'EGPE', 'EGPF', 'EGGD', 'EGGP']
         // game start time
+
+        this.gameplay_play = true
+        
         this.time = [23, 59, 0]
         this.gameplay_speed = 2 // lower val = faster, higher val = slower default = 30
 
@@ -38,6 +41,10 @@ class Grid {
         this.color_taxiway = color(100, 100, 100)
         this.color_holding_point = color(50, 50, 50)
         this.color_runway = color(0, 0, 0)
+
+        this.gameplay_status_button = 'pause'
+
+        this.play_pause_button = createButton(`play/pause`)
 
     }
 
@@ -81,35 +88,35 @@ class Grid {
         }
     }
 
-    show_time() {
+    time_now() {
         fill('black')
         textSize(20)
         let time = `${this.time[0] < 10 ? '0' : ''}${this.time[0]}:${this.time[1] < 10 ? '0' : ''}${this.time[1]}:${this.time[2] < 10 ? '0' : ''}${this.time[2]}`
         text(time, 1 * this.grid_size, 11 * this.grid_size)
-    }
-
-    update_time() {
-        if(frameCount % this.gameplay_speed == 0) {
-            // hours
-            if(this.time[0] >= 23 && this.time[1] >= 59 && this.time[2] >= 59) {
-                this.time[0] = 0
-            } else if (this.time[1] >= 59 && this.time[2] >= 59) {
-                this.time[0] = this.time[0] + 1
+        if(this.gameplay_play == true) {
+            if(frameCount % this.gameplay_speed == 0) {
+                // hours
+                if(this.time[0] >= 23 && this.time[1] >= 59 && this.time[2] >= 59) {
+                    this.time[0] = 0
+                } else if (this.time[1] >= 59 && this.time[2] >= 59) {
+                    this.time[0] = this.time[0] + 1
+                }
+    
+                // minutes
+                if(this.time[1] >= 59 && this.time[2] >= 59) {
+                    this.time[1] = 0
+                } else if (this.time[2] == 59) {
+                    this.time[1] = this.time[1] + 1
+                }
+                
+                // seconds
+                if(this.time[2] >= 59) {
+                    this.time[2] = 0
+                } else {
+                    this.time[2] = this.time[2] + 1
+                }
             }
 
-            // minutes
-            if(this.time[1] >= 59 && this.time[2] >= 59) {
-                this.time[1] = 0
-            } else if (this.time[2] == 59) {
-                this.time[1] = this.time[1] + 1
-            }
-            
-            // seconds
-            if(this.time[2] >= 59) {
-                this.time[2] = 0
-            } else {
-                this.time[2] = this.time[2] + 1
-            }
         }
     }
 
@@ -148,8 +155,26 @@ class Grid {
             } 
         }
 
+        for(let j = 0; j < this.runway.length; j++) {
+            if(this.runway[j][0] == x && this.runway[j][1] == y) {
+                not_found = true
+                return false
+            } 
+        }
+
         if(not_found) {
             return false
         }
+    }
+
+    create_stop_start_button() {
+        this.play_pause_button.position(2.5 * this.grid_size, 10.7 * this.grid_size)
+    }
+
+    show_stop_start_button() {
+        this.play_pause_button.mousePressed(() => {
+            console.log('play/pause clicked')
+            this.gameplay_play == true ? this.gameplay_play = false : this.gameplay_play = true
+        })
     }
 }

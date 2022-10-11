@@ -100,9 +100,7 @@ class Plane {
     }
 
     show_callsign_path_destination() {
-        console.log(this.path_to_destination[this.path_to_destination.length - 1])
         noFill()
-        // rect(this.path_to_destination[this.path_to_destination.length - 1][0] * grid.grid_size, this.path_to_destination[this.path_to_destination.length - 1][1] * grid.grid_size, grid.grid_size, grid.grid_size)
         rect(this.path_to_destination[this.path_to_destination.length - 1][0] * grid.grid_size, this.path_to_destination[this.path_to_destination.length - 1][1] * grid.grid_size, grid.grid_size, grid.grid_size)
     }
 

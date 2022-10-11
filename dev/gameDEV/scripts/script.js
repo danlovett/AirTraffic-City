@@ -3,8 +3,6 @@ let grid_x, grid_y
 let grid_size = 60
 let planes = []
 
-let continue_gameplay = true;
-
 
 function setup() {
     createCanvas(windowWidth, windowHeight)
@@ -28,6 +26,8 @@ function setup() {
         planes[i].add_plane_info()
     }
 
+    grid.create_stop_start_button()
+
 
     // remove context menu to allow right clicks in browser
 	for (let element of document.getElementsByClassName("p5Canvas")) {
@@ -45,19 +45,16 @@ function draw() {
 
     grid.render()
     grid.show_areas()
-    grid.show_time()
-    // grid.actions('pushback', 2)
-    if(continue_gameplay == true) {
-        grid.update_time()
-    }
+    grid.time_now()
+    grid.show_stop_start_button()
     
     //PLANES MOVEMENT
     for(let i = 0; i < planes.length; i++) {
         planes[i].spawn()
         planes[i].show_plane_info()
-        if(continue_gameplay == true) { // all gameplay actions
+        if(grid.gameplay_play == true) { // all gameplay actions
             for(let j = 0; j < planes.length; j++) {
-                if(planes[i].intersects(planes[j]) && j!=i) continue_gameplay = false
+                if(planes[i].intersects(planes[j]) && j!=i) grid.gameplay_play = false
             }
             
             planes[i].update_position()
@@ -66,7 +63,7 @@ function draw() {
             if(planes[i].path_to_destination.length != 0 && planes[i].permit_path == true) {
                 let path = planes[i].path_to_destination[planes[i].path_to_destination.length - 1]
                 if([grid_x, grid_y] != path && grid.is_a_neighbour(grid_x, grid_y, i) && grid.point_is_valid(grid_x, grid_y)) planes[i].update_travel_points([grid_x, grid_y])
-                if(!grid.point_is_valid(grid_x,grid_y)) planes[i].permit_path = false
+                if(grid.point_is_valid(grid_x,grid_y) == false) planes[i].permit_path = false
             }
             
             if(planes[i].path_to_destination.length != 0 && planes[i].permit_path == false && planes[i].handover == false) {
@@ -89,36 +86,44 @@ function draw() {
 }
 
 function keyPressed() {
-    for(let i = 0; i < planes.length; i++) {
-        planes[i].permit_path = false
-        for(let j = 0; j < grid.holding_points.length; j++) {
-            if(planes[i].handover == false) {
-                if(planes[i].current_x == grid.holding_points[j][0] && planes[i].current_y == grid.holding_points[j][1] && grid_x == grid.holding_points[j][0] && grid_y == grid.holding_points[j][1] && key == 'h') {
-                    const button_handover = createButton('handover')
-                    button_handover.position(mouseX, mouseY)
-                    button_handover.mousePressed(() => {
-                        console.log(planes[i].callsign,'handover clicked')
-                        planes[i].handover_plane()
-                        button_handover.hide()
-                    })
-                } 
+    if(grid.gameplay_play == true) {
+        for(let i = 0; i < planes.length; i++) {
+            planes[i].permit_path = false
+            for(let j = 0; j < grid.holding_points.length; j++) {
+                if(planes[i].handover == false) {
+                    if(planes[i].current_x == grid.holding_points[j][0]
+                        && planes[i].current_y == grid.holding_points[j][1]
+                        && grid_x == grid.holding_points[j][0]
+                        && grid_y == grid.holding_points[j][1]
+                        && key == 'h') {
+                        const button_handover = createButton('handover')
+                        button_handover.position(mouseX, mouseY)
+                        button_handover.mousePressed(() => {
+                            planes[i].handover_plane()
+                            button_handover.hide()
+                        })
+                    } 
+                }
             }
         }
     }
 }
 
 function mousePressed() {
-    for(let i = 0; i < planes.length; i++) {
-        if(mouseButton == LEFT) {
-            if (grid_x == planes[i].current_x && grid_y == planes[i].current_y) {
-                planes[i].update_travel_points([grid_x, grid_y])
-                planes[i].permit_path = true
+    if(grid.gameplay_play == true) {
+        for(let i = 0; i < planes.length; i++) {
+            if(mouseButton == LEFT) {
+                if (grid_x == planes[i].current_x && grid_y == planes[i].current_y) {
+                    console.log(i)
+                    planes[i].update_travel_points([grid_x, grid_y])
+                    planes[i].permit_path = true
+                }
             }
-        }
-        
-        if (mouseButton == RIGHT ) {
-            planes[i].enable_moving = true
-            planes[i].permit_path = false
+            
+            if (mouseButton == RIGHT ) {
+                planes[i].enable_moving = true
+                planes[i].permit_path = false
+            }
         }
     }
 }
