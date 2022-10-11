@@ -2,6 +2,6 @@
     "users" : {
         "names": ["Daniel Lovett"],
         "emails": ["dlovett@test.com", "samsmith@test.com"],
-        "passwords": ["rerjeardsl-erwenjka-erer"]
+        "passwords": ["*******-*******-****"]
     }
 }
