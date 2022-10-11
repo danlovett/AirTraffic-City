@@ -11,6 +11,7 @@ function setup() {
 
     for(let row = 0; row < grid.total_grid_size; row++) {
         for(let col = 0; col < grid.total_grid_size; col++) {
+            if(grid.grid[row][col] == "0") grid.grass_areas.push([row, col])
             if(grid.grid[row][col] == "1") grid.spawn_areas.push([row, col])
             if(grid.grid[row][col] == "2") grid.moveable_areas.push([row, col])
             if(grid.grid[row][col] == "3") grid.holding_points.push([row, col])
@@ -62,8 +63,11 @@ function draw() {
             
             if(planes[i].path_to_destination.length != 0 && planes[i].permit_path == true) {
                 let path = planes[i].path_to_destination[planes[i].path_to_destination.length - 1]
-                if([grid_x, grid_y] != path && grid.is_a_neighbour(grid_x, grid_y, i) && grid.point_is_valid(grid_x, grid_y)) planes[i].update_travel_points([grid_x, grid_y])
-                if(grid.point_is_valid(grid_x,grid_y) == false) planes[i].permit_path = false
+                if([grid_x, grid_y] != path && grid.is_a_neighbour(grid_x, grid_y, i) && grid.point_is_valid(grid_x, grid_y, planes[i])) planes[i].update_travel_points([grid_x, grid_y])
+                if(grid.point_is_valid(grid_x,grid_y, planes[i]) == false) {
+                    planes[i].permit_path = false
+                    planes[i].enable_moving = true
+                } 
             }
             
             if(planes[i].path_to_destination.length != 0 && planes[i].permit_path == false && planes[i].handover == false) {
@@ -113,7 +117,7 @@ function mousePressed() {
     if(grid.gameplay_play == true) {
         for(let i = 0; i < planes.length; i++) {
             if(mouseButton == LEFT) {
-                if (grid_x == planes[i].current_x && grid_y == planes[i].current_y) {
+                if (grid_x == planes[i].current_x && grid_y == planes[i].current_y && planes[i].enable_moving == false) {
                     console.log(i)
                     planes[i].update_travel_points([grid_x, grid_y])
                     planes[i].permit_path = true

@@ -19,6 +19,7 @@ class Grid {
             ["5", "4", "4", "4", "4", "4", "4", "4", "4", "5"],
         ]
         // declare areas
+        this.grass_areas = [];
         this.moveable_areas = [];
         this.spawn_areas = [];
         this.holding_points = [];
@@ -131,40 +132,30 @@ class Grid {
         }
     }
 
-    point_is_valid(x, y) {
-        let not_found = true
-        // check taxiway
-        for(let i = 0; i < this.moveable_areas.length; i++) {
-            if(this.moveable_areas[i][0] == x && this.moveable_areas[i][1] == y) {
-                not_found = false
-                return true
-            } 
-        }
+    point_is_valid(x, y, plane) {
         // check stands
         for(let j = 0; j < this.spawn_areas.length; j++) {
-            if(this.spawn_areas[j][0] != x && this.spawn_areas[j][1] != y) {
-                not_found = false
+            if((plane.current_x == x && plane.current_y == y)) {
                 return true
-            } 
+            }
         }
+
+        //check taxiway
+        for(let i = 0; i < this.moveable_areas.length; i++) {
+            if(this.moveable_areas[i][0] == x && this.moveable_areas[i][1] == y) return true
+        }
+
         // check hold
         for(let j = 0; j < this.holding_points.length; j++) {
-            if(this.holding_points[j][0] == x && this.holding_points[j][1] == y) {
-                not_found = false
-                return true
-            } 
+            if(this.holding_points[j][0] == x && this.holding_points[j][1] == y) return true
         }
 
+        // check runway
         for(let j = 0; j < this.runway.length; j++) {
-            if(this.runway[j][0] == x && this.runway[j][1] == y) {
-                not_found = true
-                return false
-            } 
+            if(this.runway[j][0] == x && this.runway[j][1] == y) return false
         }
-
-        if(not_found) {
-            return false
-        }
+        // if all not true, then return false and allow movement
+        return false
     }
 
     create_stop_start_button() {
