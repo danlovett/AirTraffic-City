@@ -27,7 +27,7 @@ function setup() {
         planes[i].add_plane_info()
     }
 
-    grid.create_stop_start_button()
+    grid.create_gameplay_buttons()
 
 
     // remove context menu to allow right clicks in browser
@@ -47,44 +47,10 @@ function draw() {
     grid.render()
     grid.show_areas()
     grid.time_now()
-    grid.show_stop_start_button()
+    grid.show_gameplay_buttons()
     
     //PLANES MOVEMENT
-    for(let i = 0; i < planes.length; i++) {
-        planes[i].spawn()
-        planes[i].show_plane_info()
-        if(grid.gameplay_play == true) { // all gameplay actions
-            for(let j = 0; j < planes.length; j++) {
-                if(planes[i].intersects(planes[j]) && j!=i) grid.gameplay_play = false
-            }
-            
-            planes[i].update_position()
-            planes[i].update_status()
-            
-            if(planes[i].path_to_destination.length != 0 && planes[i].permit_path == true) {
-                let path = planes[i].path_to_destination[planes[i].path_to_destination.length - 1]
-                if([grid_x, grid_y] != path && grid.is_a_neighbour(grid_x, grid_y, i) && grid.point_is_valid(grid_x, grid_y, planes[i])) planes[i].update_travel_points([grid_x, grid_y])
-                if(grid.point_is_valid(grid_x,grid_y, planes[i]) == false) {
-                    planes[i].permit_path = false
-                    planes[i].enable_moving = true
-                } 
-            }
-            
-            if(planes[i].path_to_destination.length != 0 && planes[i].permit_path == false && planes[i].handover == false) {
-                fill(planes[i].color)
-                rect(planes[i].path_to_destination[planes[i].path_to_destination.length - 1][0] * grid.grid_size, planes[i].path_to_destination[planes[i].path_to_destination.length - 1][1] * grid.grid_size, grid.grid_size, grid.grid_size)
-                fill('black')
-                text(planes[i].callsign, planes[i].path_to_destination[planes[i].path_to_destination.length - 1][0] * grid.grid_size + (grid.grid_size/6), planes[i].path_to_destination[planes[i].path_to_destination.length - 1][1] * grid.grid_size + (grid.grid_size/2))
-            }
-            for(let j = 0; j < grid.holding_points.length; j++) {
-                if(planes[i].current_x == grid.holding_points[j][0] && planes[i].current_y == grid.holding_points[j][1]){
-                    planes[i].permit_path = false
-                }
-
-            }
-        }
-        
-    }
+    process_plane_movement()
 
     grid.render_selector_tool(grid_x, grid_y)
 }
@@ -135,4 +101,42 @@ function mousePressed() {
 // allow window resize and show more of canvas that may be hidden
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight)
+}
+
+function process_plane_movement() {
+    for(let i = 0; i < planes.length; i++) {
+        planes[i].spawn()
+        planes[i].show_plane_info()
+        if(grid.gameplay_play == true) { // all gameplay actions
+            for(let j = 0; j < planes.length; j++) {
+                if(planes[i].intersects(planes[j]) && j!=i) grid.gameplay_play = false
+            }
+            
+            planes[i].update_position()
+            planes[i].update_status()
+            
+            if(planes[i].path_to_destination.length != 0 && planes[i].permit_path == true) {
+                let path = planes[i].path_to_destination[planes[i].path_to_destination.length - 1]
+                if([grid_x, grid_y] != path && grid.is_a_neighbour(grid_x, grid_y, i) && grid.point_is_valid(grid_x, grid_y, planes[i])) planes[i].update_travel_points([grid_x, grid_y])
+                if(grid.point_is_valid(grid_x,grid_y, planes[i]) == false) {
+                    planes[i].permit_path = false
+                    planes[i].enable_moving = true
+                } 
+            }
+            
+            if(planes[i].path_to_destination.length != 0 && planes[i].permit_path == false && planes[i].handover == false) {
+                fill(planes[i].color)
+                rect(planes[i].path_to_destination[planes[i].path_to_destination.length - 1][0] * grid.grid_size, planes[i].path_to_destination[planes[i].path_to_destination.length - 1][1] * grid.grid_size, grid.grid_size, grid.grid_size)
+                fill('black')
+                text(planes[i].callsign, planes[i].path_to_destination[planes[i].path_to_destination.length - 1][0] * grid.grid_size + (grid.grid_size/6), planes[i].path_to_destination[planes[i].path_to_destination.length - 1][1] * grid.grid_size + (grid.grid_size/2))
+            }
+            for(let j = 0; j < grid.holding_points.length; j++) {
+                if(planes[i].current_x == grid.holding_points[j][0] && planes[i].current_y == grid.holding_points[j][1]){
+                    planes[i].permit_path = false
+                }
+
+            }
+        }
+        
+    }
 }

@@ -20,15 +20,15 @@ class Plane {
         this.speed = (type) => {
                 switch (type) {
                     case 'A320':
-                        return 60
+                        return 60 * grid.gameplay_speed
                     case 'B738':
-                        return 60
+                        return 60 * grid.gameplay_speed
                     case 'B777':
-                        return 80
+                        return 80 * grid.gameplay_speed
                     case 'E145s':
-                        return 30
+                        return 30 * grid.gameplay_speed
                     default:
-                        return 40
+                        return 40 * grid.gameplay_speed
                 }
         }
 

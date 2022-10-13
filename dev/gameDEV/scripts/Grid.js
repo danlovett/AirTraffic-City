@@ -46,6 +46,10 @@ class Grid {
         this.gameplay_status_button = 'pause'
 
         this.play_pause_button = createButton(`play/pause`)
+        this.speed_one_button = createButton(`x1`)
+        this.speed_two_button = createButton(`x2`)
+        this.speed_five_button = createButton(`x5`)
+        this.speed_ten_button = createButton(`x10`)
 
     }
 
@@ -154,18 +158,48 @@ class Grid {
         for(let j = 0; j < this.runway.length; j++) {
             if(this.runway[j][0] == x && this.runway[j][1] == y) return false
         }
+
+        console.log(`${x}, ${y} invalid placement for this aircraft's projection`)
         // if all not true, then return false and allow movement
         return false
     }
 
-    create_stop_start_button() {
+    create_gameplay_buttons() {
+        // show the buttons at set posititions (uses grid size to place in correct cell)
+        // do this for each button, adding 0.5 to the grid for each speed
         this.play_pause_button.position(2.5 * this.grid_size, 10.7 * this.grid_size)
+        this.speed_one_button.position(4.5 * this.grid_size, 10.7 * this.grid_size)
+        this.speed_two_button.position(5.0 * this.grid_size, 10.7 * this.grid_size)
+        this.speed_five_button.position(5.5 * this.grid_size, 10.7 * this.grid_size)
+        this.speed_ten_button.position(6 * this.grid_size, 10.7 * this.grid_size)
+        
     }
 
-    show_stop_start_button() {
+    show_gameplay_buttons() {
+        // if the play/pause is pressed, then
         this.play_pause_button.mousePressed(() => {
-            console.log('play/pause clicked')
+            // swap the value
             this.gameplay_play == true ? this.gameplay_play = false : this.gameplay_play = true
+        })
+        // if the x1 speed button pressed, then
+        this.speed_one_button.mousePressed(() => {
+            // modify the value of variable
+            this.gameplay_speed = 30
+        })
+        // if the x2 speed button pressed, then
+        this.speed_two_button.mousePressed(() => {
+            // modify the value of variable
+            this.gameplay_speed = 10
+        })
+        // if the x5 speed button pressed, then
+        this.speed_five_button.mousePressed(() => {
+            // modify the value of variable
+            this.gameplay_speed = 2
+        })
+        // if the x10 speed button pressed, then
+        this.speed_ten_button.mousePressed(() => {
+            // modify the value of variable
+            this.gameplay_speed = 0.5
         })
     }
 }
