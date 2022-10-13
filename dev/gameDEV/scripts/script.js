@@ -1,13 +1,14 @@
 // declaring to make globally avail
 let grid_x, grid_y
-let grid_size = 60
 let planes = []
 
 
 function setup() {
     createCanvas(windowWidth, windowHeight)
 
-    grid = new Grid(10, 10, grid_size)
+    score = new Score()
+
+    grid = new Grid(10, 10)
 
     for(let row = 0; row < grid.total_grid_size; row++) {
         for(let col = 0; col < grid.total_grid_size; col++) {
@@ -24,7 +25,7 @@ function setup() {
         grid.spawn_areas.splice(grid.spawn_areas.indexOf(spawn_point), 1)
         
         planes.push(new Plane(spawn_point))
-        planes[i].add_plane_info()
+        planes[i].add_plane_info('dep')
     }
 
     grid.create_gameplay_buttons()
@@ -52,6 +53,10 @@ function draw() {
     //PLANES MOVEMENT
     process_plane_movement()
 
+    // score stuff
+    text(score.show_score(), 1 * grid.grid_size, 12 * grid.grid_size)
+
+    // placed at end of block code to make result appear on top
     grid.render_selector_tool(grid_x, grid_y)
 }
 
@@ -65,13 +70,15 @@ function keyPressed() {
                         && planes[i].current_y == grid.holding_points[j][1]
                         && grid_x == grid.holding_points[j][0]
                         && grid_y == grid.holding_points[j][1]
-                        && key == 'h') {
+                        && key == 'h'
+                        && planes[i].handover == false) {
                         const button_handover = createButton('handover')
                         button_handover.position(mouseX, mouseY)
                         button_handover.mousePressed(() => {
                             planes[i].handover_plane()
                             button_handover.hide()
                         })
+
                     } 
                 }
             }
@@ -134,7 +141,6 @@ function process_plane_movement() {
                 if(planes[i].current_x == grid.holding_points[j][0] && planes[i].current_y == grid.holding_points[j][1]){
                     planes[i].permit_path = false
                 }
-
             }
         }
         

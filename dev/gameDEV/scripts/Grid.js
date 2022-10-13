@@ -1,8 +1,8 @@
 class Grid {
-    constructor(cols, rows, size_of_cell) {
+    constructor(cols, rows) {
         this.cols = cols;
         this.rows = rows;
-        this.grid_size = size_of_cell;
+        this.grid_size = 60;
         this.total_grid_size = 10
 
         //declare grid
@@ -90,6 +90,10 @@ class Grid {
         // runway numbers
         for(let i = 0; i < this.runway_entry.length; i++) {
             text(this.runway_numbers[i], this.runway_entry[i][0] * this.grid_size + (this.grid_size/7), this.runway_entry[i][1] * this.grid_size + (this.grid_size/2))
+        }
+        // hp numbers
+        for(let i = 0; i < this.holding_points.length; i++) {
+            text(this.holding_points[i], this.holding_points[i][0] * this.grid_size + (this.grid_size/7), this.holding_points[i][1] * this.grid_size + (this.grid_size/2))
         }
     }
 
