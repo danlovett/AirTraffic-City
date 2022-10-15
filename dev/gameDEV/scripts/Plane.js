@@ -140,7 +140,7 @@ class Plane {
                 this.enable_moving = false
             }
             // getting time off stand, detecting when it left spawn area
-            if([this.current_x, this.current_y] != this.spawn_point) {
+            if(this.current_x != this.spawn_point[0] && this.current_y != this.spawn_point[1]) {
                 this.time_off_stand = grid.time
                 grid.spawn_areas.push(this.spawn_point)
             }

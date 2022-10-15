@@ -10,10 +10,11 @@ function setup() {
 
     grid = new Grid(10, 10)
 
-    for(let row = 0; row < grid.total_grid_size; row++) {
-        for(let col = 0; col < grid.total_grid_size; col++) {
+    for(let col = 0; col < grid.total_grid_size; col++) {
+        for(let row = 0; row < grid.total_grid_size; row++) {
             if(grid.grid[row][col] == "0") grid.grass_areas.push([row, col])
             if(grid.grid[row][col] == "1") grid.spawn_areas.push([row, col])
+            if(grid.grid[row][col] == "1") grid.stands.push([row, col])
             if(grid.grid[row][col] == "2") grid.moveable_areas.push([row, col])
             if(grid.grid[row][col] == "3") grid.holding_points.push([row, col])
             if(grid.grid[row][col] == "4") grid.runway.push([row, col])
@@ -21,7 +22,8 @@ function setup() {
         }
     }
 
-    for(let i = 0; i <= 10; i++) {
+
+    for(let i = 0; i <= floor(random(5, 9)); i++) {
         let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]
         grid.spawn_areas.splice(grid.spawn_areas.indexOf(spawn_point), 1)
         

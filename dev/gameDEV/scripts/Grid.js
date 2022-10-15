@@ -3,25 +3,28 @@ class Grid {
         this.cols = cols;
         this.rows = rows;
         this.grid_size = 60;
-        this.total_grid_size = 10
+        this.total_grid_size = 12
 
         //declare grid
         this.grid = [
-            ["5", "4", "4", "4", "4", "4", "4", "4", "4", "5"],
-            ["3", "0", "0", "3", "0", "0", "3", "0", "0", "3"],
-            ["2", "0", "0", "2", "0", "0", "2", "0", "0", "2"],
-            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
-            ["2", "1", "1", "1", "1", "1", "1", "1", "1", "2"],
-            ["2", "1", "1", "1", "1", "1", "1", "1", "1", "2"],
-            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
-            ["2", "0", "0", "2", "0", "0", "2", "0", "0", "2"],
-            ["3", "0", "0", "3", "0", "0", "3", "0", "0", "3"],
-            ["5", "4", "4", "4", "4", "4", "4", "4", "4", "5"],
+            ["5", "4", "4", "4", "4", "4", "4", "4", "4", "4", "4", "5"],
+            ["3", "0", "0", "0", "3", "0", "0", "0", "0", "0", "0", "3"],
+            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
+            ["0", "0", "0", "2", "0", "0", "0", "0", "2", "0", "0", "0"],
+            ["0", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
+            ["0", "2", "1", "1", "1", "6", "6", "6", "1", "1", "1", "2"],
+            ["0", "2", "6", "6", "6", "6", "6", "6", "6", "6", "6", "2"],
+            ["0", "2", "1", "1", "1", "6", "6", "6", "1", "1", "1", "2"],
+            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
+            ["3", "0", "0", "3", "0", "0", "0", "0", "3", "0", "0", "3"],
+            ["5", "4", "4", "4", "4", "4", "4", "4", "4", "4", "4", "5"],
+            ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
         ]
         // declare areas
         this.grass_areas = [];
         this.moveable_areas = [];
         this.spawn_areas = [];
+        this.stands = [];
         this.holding_points = [];
         this.runway = [];
         this.runway_entry = [];
@@ -39,7 +42,7 @@ class Grid {
         this.gameplay_speed = 30 // lower val = faster, higher val = slower default = 30
 
         this.color_grass = color(100, 250, 70)
-        this.color_stand = color(70, 200, 50) 
+        this.color_stand = color(70, 70, 70) 
         this.color_taxiway = color(100, 100, 100)
         this.color_holding_point = color(50, 50, 50)
         this.color_runway = color(0, 0, 0)
@@ -74,8 +77,8 @@ class Grid {
 
     show_areas() {
         // showing all areas with colours
-        for(let col = 0; col < this.total_grid_size; col++) {
-            for(let row = 0; row < this.total_grid_size; row++) {
+        for(let row = 0; row < this.total_grid_size; row++) {
+            for(let col = 0; col < this.total_grid_size; col++) {
                 if(this.grid[row][col] == "1") fill(this.color_stand) // stands
                 if(this.grid[row][col] == "2") fill(this.color_taxiway) // taxiway
                 if(this.grid[row][col] == "3") fill(this.color_holding_point) // holding points
@@ -86,6 +89,11 @@ class Grid {
 
             }
         }
+        // stands
+        for(let i = 0; i < this.stands.length; i++) {
+            text(i + 1, this.stands[i][0] * this.grid_size + (this.grid_size-35), this.stands[i][1] * this.grid_size + (this.grid_size-35))
+        }
+
         // text setup for numbers runway
         textSize(20)
         // runway numbers
@@ -93,15 +101,16 @@ class Grid {
             text(this.runway_numbers[i], this.runway_entry[i][0] * this.grid_size + (this.grid_size/7), this.runway_entry[i][1] * this.grid_size + (this.grid_size/2))
         }
         // hp numbers
+        textSize(15)
         for(let i = 0; i < this.holding_points.length; i++) {
-            text(this.holding_points[i], this.holding_points[i][0] * this.grid_size + (this.grid_size/7), this.holding_points[i][1] * this.grid_size + (this.grid_size/2))
+            text(`${char(i + 65)}1`, this.holding_points[i][0] * this.grid_size + (this.grid_size/7), this.holding_points[i][1] * this.grid_size + (this.grid_size/2))
         }
     }
 
     time_now() {
         fill('black')
         textSize(20)
-        text(`Time: ${this.format_time(this.time)}`, 10.5 * this.grid_size, 1.5 * this.grid_size)
+        text(`Time: ${this.format_time(this.time)}`, (this.total_grid_size + 1.5) * this.grid_size, 1.5 * this.grid_size)
         if(this.gameplay_play == true) {
             if(frameCount % this.gameplay_speed == 0) {
                 // hours
@@ -176,11 +185,11 @@ class Grid {
     create_gameplay_buttons() {
         // show the buttons at set posititions (uses grid size to place in correct cell)
         // do this for each button, adding 0.5 to the grid for each speed
-        this.play_pause_button.position(10.5 * this.grid_size, 1.7 * this.grid_size)
-        this.speed_one_button.position(10.5 * this.grid_size, 2.2 * this.grid_size)
-        this.speed_two_button.position(11 * this.grid_size, 2.2 * this.grid_size)
-        this.speed_five_button.position(11.5 * this.grid_size, 2.2 * this.grid_size)
-        this.speed_ten_button.position(12 * this.grid_size, 2.2 * this.grid_size)
+        this.play_pause_button.position((this.total_grid_size + 1.5) * this.grid_size, 1.7 * this.grid_size)
+        this.speed_one_button.position((this.total_grid_size + 1.5) * this.grid_size, 2.2 * this.grid_size)
+        this.speed_two_button.position((this.total_grid_size + 2) * this.grid_size, 2.2 * this.grid_size)
+        this.speed_five_button.position((this.total_grid_size + 2.5) * this.grid_size, 2.2 * this.grid_size)
+        this.speed_ten_button.position((this.total_grid_size + 3) * this.grid_size, 2.2 * this.grid_size)
         
     }
 

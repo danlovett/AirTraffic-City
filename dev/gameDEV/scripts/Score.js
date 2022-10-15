@@ -16,7 +16,7 @@ class Score {
     show_score() {
         textSize(20)
         fill('black')
-        text(`Score: ${this.total_score}`, 10.5 * grid.grid_size, 1 * grid.grid_size)
+        text(`Score: ${this.total_score}`, (grid.total_grid_size + 1.5) * grid.grid_size, 1 * grid.grid_size)
     }
 
     update_score(type, plane) {
