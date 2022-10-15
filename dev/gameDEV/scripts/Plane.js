@@ -17,7 +17,7 @@ class Plane {
         this.time_off_stand = [];
         this.score = 0;
         this.ctot = [];
-        this.ctot_to_mins = [];
+        this.ctot_to_mins = 0;
 
         this.handover = false
         this.permit_path = true
@@ -66,11 +66,12 @@ class Plane {
         fill('white')
     }
 
-    make_ctot(add_mins, type) {
+    make_ctot(add_mins, type, operation) {
         let made_time = []
         let add_hours
         let temp = (add_mins/60)
-        let time_to_mins = (grid.time[0] * 60) + grid.time[1]
+        let time_to_mins 
+        operation == 'get_ctot_variance' ? time_to_mins = (this.ctot[0] * 60) + this.ctot[1] : time_to_mins = (grid.time[0] * 60) + grid.time[1]
         grid.time_to_mins = time_to_mins
         
         if(temp.toString().split('.')[1] >= '5') {
@@ -173,8 +174,10 @@ class Plane {
     
     handover_plane() {
         this.handover = true
-        let lower_ctot = this.make_ctot(-5, 'mins')
-        let upper_ctot = this.make_ctot(10, 'mins')
+        let lower_ctot = this.make_ctot(-5, 'mins', 'get_ctot_variance')
+        let upper_ctot = this.make_ctot(10, 'mins', 'get_ctot_variance')
+
+        console.log(this.make_ctot(-5, 'mins', 'get_ctot_variance'))
 
         if(this.hp_destination[0] == this.current_x && this.hp_destination[1] == this.current_y) {
             this.color = color(20, 200, 20)
