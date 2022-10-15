@@ -34,8 +34,9 @@ class Grid {
 
         this.gameplay_play = true
         
-        this.time = [23, 59, 0]
-        this.gameplay_speed = 2 // lower val = faster, higher val = slower default = 30
+        this.time = [23, 30, 0]
+        this.time_to_mins = 0;
+        this.gameplay_speed = 30 // lower val = faster, higher val = slower default = 30
 
         this.color_grass = color(100, 250, 70)
         this.color_stand = color(70, 200, 50) 
@@ -100,8 +101,7 @@ class Grid {
     time_now() {
         fill('black')
         textSize(20)
-        let time = `${this.time[0] < 10 ? '0' : ''}${this.time[0]}:${this.time[1] < 10 ? '0' : ''}${this.time[1]}:${this.time[2] < 10 ? '0' : ''}${this.time[2]}`
-        text(time, 1 * this.grid_size, 11 * this.grid_size)
+        text(`Time: ${this.format_time(this.time)}`, 10.5 * this.grid_size, 1.5 * this.grid_size)
         if(this.gameplay_play == true) {
             if(frameCount % this.gameplay_speed == 0) {
                 // hours
@@ -125,8 +125,15 @@ class Grid {
                     this.time[2] = this.time[2] + 1
                 }
             }
-
         }
+    }
+
+    format_time(time) {
+        return `${time[0] < 10 ? '0' : ''}${time[0]}:${time[1] < 10 ? '0' : ''}${time[1]}:${time[2] < 10 ? '0' : ''}${time[2]}`
+    }
+
+    time_mins() {
+        return (this.time[0] * 60) + this.time[1]
     }
 
     is_a_neighbour(x , y, current_p) {
@@ -162,8 +169,6 @@ class Grid {
         for(let j = 0; j < this.runway.length; j++) {
             if(this.runway[j][0] == x && this.runway[j][1] == y) return false
         }
-
-        console.log(`${x}, ${y} invalid placement for this aircraft's projection`)
         // if all not true, then return false and allow movement
         return false
     }
@@ -171,11 +176,11 @@ class Grid {
     create_gameplay_buttons() {
         // show the buttons at set posititions (uses grid size to place in correct cell)
         // do this for each button, adding 0.5 to the grid for each speed
-        this.play_pause_button.position(2.5 * this.grid_size, 10.7 * this.grid_size)
-        this.speed_one_button.position(4.5 * this.grid_size, 10.7 * this.grid_size)
-        this.speed_two_button.position(5.0 * this.grid_size, 10.7 * this.grid_size)
-        this.speed_five_button.position(5.5 * this.grid_size, 10.7 * this.grid_size)
-        this.speed_ten_button.position(6 * this.grid_size, 10.7 * this.grid_size)
+        this.play_pause_button.position(10.5 * this.grid_size, 1.7 * this.grid_size)
+        this.speed_one_button.position(10.5 * this.grid_size, 2.2 * this.grid_size)
+        this.speed_two_button.position(11 * this.grid_size, 2.2 * this.grid_size)
+        this.speed_five_button.position(11.5 * this.grid_size, 2.2 * this.grid_size)
+        this.speed_ten_button.position(12 * this.grid_size, 2.2 * this.grid_size)
         
     }
 

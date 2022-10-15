@@ -16,6 +16,8 @@ class Plane {
         this.current_status;
         this.time_off_stand = [];
         this.score = 0;
+        this.ctot = [];
+        this.ctot_to_mins = [];
 
         this.handover = false
         this.permit_path = true
@@ -49,17 +51,59 @@ class Plane {
         this.type = grid.ac_types[index][0]
         this.wake_cat = grid.ac_types[index][1]
         this.destination = grid.destinations[floor(random(grid.destinations.length))]
+
     }
 
     show_plane_info() {
         fill('black')
-        textSize(15)
-        text(this.callsign, this.current_x * grid.grid_size + (grid.grid_size-50), this.current_y * grid.grid_size + (grid.grid_size-45))
+        textSize(13)
+        text(this.callsign, this.current_x * grid.grid_size + (grid.grid_size-55), this.current_y * grid.grid_size + (grid.grid_size-45))
         textSize(10)
-        text(`${this.type} ${this.wake_cat}`, this.current_x * grid.grid_size + (grid.grid_size-50), this.current_y * grid.grid_size + (grid.grid_size - 30))
-        text(this.destination, this.current_x * grid.grid_size + (grid.grid_size/3.5), this.current_y * grid.grid_size + (grid.grid_size - 5))
-        text(this.hp_destination, this.current_x * grid.grid_size + (grid.grid_size/3.5), this.current_y * grid.grid_size + (grid.grid_size - 15))
+        text(`${this.type} ${this.wake_cat}`, this.current_x * grid.grid_size + (grid.grid_size-55), this.current_y * grid.grid_size + (grid.grid_size - 30))
+        text(`${grid.format_time(this.ctot)}`, this.current_x * grid.grid_size + (grid.grid_size-55), this.current_y * grid.grid_size + (grid.grid_size - 18))
+        text(this.destination, this.current_x * grid.grid_size + (grid.grid_size - 33), this.current_y * grid.grid_size + (grid.grid_size - 5))
+        text(this.hp_destination, this.current_x * grid.grid_size + (grid.grid_size - 55), this.current_y * grid.grid_size + (grid.grid_size - 5))
         fill('white')
+    }
+
+    make_ctot(add_mins, type) {
+        let made_time = []
+        let add_hours
+        let temp = (add_mins/60)
+        let time_to_mins = (grid.time[0] * 60) + grid.time[1]
+        grid.time_to_mins = time_to_mins
+        
+        if(temp.toString().split('.')[1] >= '5') {
+            add_hours = ceil(temp)
+        } else {
+            add_hours = floor(temp)
+        }
+        
+        made_time[0] = floor(time_to_mins/60) + add_hours
+
+        if(made_time[0] >= 24) {
+            made_time[0] = 0 + (made_time[0] % 24)
+        } 
+        
+        made_time[1] = floor((time_to_mins + add_mins) % 60)
+        made_time[2] = 0
+
+        // checking for negative when calc ctot lower in score class
+        if(Math.sign(made_time[0]) === -1) {
+            made_time[0] = 24 + made_time[0]
+        }
+        if(Math.sign(made_time[1]) === -1) {
+            made_time[1] = 60 + made_time[1]
+        }
+
+        this.ctot_to_mins =  (made_time[0] * 60) + made_time[1]
+
+        if(type == 'mins') {
+            return this.ctot_to_mins
+        } else {
+            return made_time
+        }
+
     }
 
     spawn() {
@@ -129,12 +173,22 @@ class Plane {
     
     handover_plane() {
         this.handover = true
+        let lower_ctot = this.make_ctot(-5, 'mins')
+        let upper_ctot = this.make_ctot(10, 'mins')
+
         if(this.hp_destination[0] == this.current_x && this.hp_destination[1] == this.current_y) {
             this.color = color(20, 200, 20)
-            score.update_score(String("correct_runway"), this)
-
+            score.update_score("correct_hp", this)
         } else {
             this.color = color(200, 20, 20)
+            score.update_score("wrong_hp", this)
+        }
+
+        if(lower_ctot < grid.time_mins()
+            && upper_ctot > grid.time_mins()) {
+            score.update_score('correct_ctot', this)
+        } else {
+            score.update_score('wrong_ctot', this)
         }
     }
 }

@@ -20,16 +20,17 @@ function setup() {
             if(grid.grid[row][col] == "5") grid.runway_entry.push([row, col])
         }
     }
+
     for(let i = 0; i <= 10; i++) {
         let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]
         grid.spawn_areas.splice(grid.spawn_areas.indexOf(spawn_point), 1)
         
         planes.push(new Plane(spawn_point))
         planes[i].add_plane_info('dep')
+        planes[i].ctot = planes[i].make_ctot(floor(random(20, 120)))
     }
 
     grid.create_gameplay_buttons()
-
 
     // remove context menu to allow right clicks in browser
 	for (let element of document.getElementsByClassName("p5Canvas")) {
@@ -53,8 +54,7 @@ function draw() {
     //PLANES MOVEMENT
     process_plane_movement()
 
-    // score stuff
-    text(score.show_score(), 1 * grid.grid_size, 12 * grid.grid_size)
+    score.show_score()
 
     // placed at end of block code to make result appear on top
     grid.render_selector_tool(grid_x, grid_y)
@@ -91,7 +91,6 @@ function mousePressed() {
         for(let i = 0; i < planes.length; i++) {
             if(mouseButton == LEFT) {
                 if (grid_x == planes[i].current_x && grid_y == planes[i].current_y && planes[i].enable_moving == false) {
-                    console.log(i)
                     planes[i].update_travel_points([grid_x, grid_y])
                     planes[i].permit_path = true
                 }
@@ -135,7 +134,8 @@ function process_plane_movement() {
                 fill(planes[i].color)
                 rect(planes[i].path_to_destination[planes[i].path_to_destination.length - 1][0] * grid.grid_size, planes[i].path_to_destination[planes[i].path_to_destination.length - 1][1] * grid.grid_size, grid.grid_size, grid.grid_size)
                 fill('black')
-                text(planes[i].callsign, planes[i].path_to_destination[planes[i].path_to_destination.length - 1][0] * grid.grid_size + (grid.grid_size/6), planes[i].path_to_destination[planes[i].path_to_destination.length - 1][1] * grid.grid_size + (grid.grid_size/2))
+                text(planes[i].callsign, planes[i].path_to_destination[planes[i].path_to_destination.length - 1][0] * grid.grid_size + (grid.grid_size-55), planes[i].path_to_destination[planes[i].path_to_destination.length - 1][1] * grid.grid_size + (grid.grid_size-45))
+                text(planes[i].type, planes[i].path_to_destination[planes[i].path_to_destination.length - 1][0] * grid.grid_size + (grid.grid_size-55), planes[i].path_to_destination[planes[i].path_to_destination.length - 1][1] * grid.grid_size + (grid.grid_size-5))
             }
             for(let j = 0; j < grid.holding_points.length; j++) {
                 if(planes[i].current_x == grid.holding_points[j][0] && planes[i].current_y == grid.holding_points[j][1]){
