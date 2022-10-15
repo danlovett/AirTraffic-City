@@ -1,26 +1,29 @@
 class Plane {
     constructor(spawn_point) {
         this.spawn_point = spawn_point
+        this.current_status;
+        this.hp_destination_name;
 
         this.callsign = undefined;
         this.type = undefined;
         this.fpln_type = undefined;
         this.wake_cat = undefined;
         this.destination = undefined;
-        this.hp_destination = grid.holding_points[floor(random(grid.holding_points.length))]
-
-        this.current_x = this.spawn_point[0];
-        this.current_y = this.spawn_point[1];
+        
         this.enable_moving = false;
-        this.path_to_destination = [];
-        this.current_status;
-        this.time_off_stand = [];
-        this.score = 0;
-        this.ctot = [];
-        this.ctot_to_mins = 0;
-
         this.handover = false
         this.permit_path = true
+        
+        this.score = 0;
+        this.ctot_to_mins = 0;
+        
+        this.current_x = this.spawn_point[0];
+        this.current_y = this.spawn_point[1];
+        this.hp_destination = [];
+        this.path_to_destination = [];
+        this.time_off_stand = [];
+        this.ctot = [];
+
 
         this.speed = (type) => {
                 switch (type) {
@@ -47,10 +50,13 @@ class Plane {
         let prefix = grid.callsign_prefixses[floor(random(grid.callsign_prefixses.length))]
         let numbers = `${floor(random(9))}${floor(random(9))}`
         let index = floor(random(grid.ac_types.length))
+        let random_hp_destination = floor(random(grid.holding_points.length))
         this.callsign = `${prefix}${numbers}`
         this.type = grid.ac_types[index][0]
         this.wake_cat = grid.ac_types[index][1]
         this.destination = grid.destinations[floor(random(grid.destinations.length))]
+        this.hp_destination = grid.holding_points[random_hp_destination]
+        this.hp_destination_name = grid.holding_point_names[random_hp_destination]
 
     }
 
@@ -62,7 +68,7 @@ class Plane {
         text(`${this.type} ${this.wake_cat}`, this.current_x * grid.grid_size + (grid.grid_size-55), this.current_y * grid.grid_size + (grid.grid_size - 30))
         text(`${grid.format_time(this.ctot)}`, this.current_x * grid.grid_size + (grid.grid_size-55), this.current_y * grid.grid_size + (grid.grid_size - 18))
         text(this.destination, this.current_x * grid.grid_size + (grid.grid_size - 33), this.current_y * grid.grid_size + (grid.grid_size - 5))
-        text(this.hp_destination, this.current_x * grid.grid_size + (grid.grid_size - 55), this.current_y * grid.grid_size + (grid.grid_size - 5))
+        text(this.hp_destination_name, this.current_x * grid.grid_size + (grid.grid_size - 55), this.current_y * grid.grid_size + (grid.grid_size - 5))
         fill('white')
     }
 

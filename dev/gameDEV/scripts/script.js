@@ -22,6 +22,10 @@ function setup() {
         }
     }
 
+    for(let i = 0; i < grid.holding_points.length; i++) {
+        grid.holding_point_names.push(`${char(i + 65)}1`)
+    }
+
 
     for(let i = 0; i <= floor(random(5, 9)); i++) {
         let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]

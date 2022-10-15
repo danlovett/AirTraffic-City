@@ -26,6 +26,7 @@ class Grid {
         this.spawn_areas = [];
         this.stands = [];
         this.holding_points = [];
+        this.holding_point_names = [];
         this.runway = [];
         this.runway_entry = [];
         // declare specifics
