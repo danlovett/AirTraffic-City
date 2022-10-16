@@ -47,7 +47,14 @@ class Plane {
         if(type == 'dep') this.fpln_type = 'out'
         if(type == 'arr') this.fpln_type = 'in'
 
-        let prefix = grid.callsign_prefixses[floor(random(grid.callsign_prefixses.length))]
+        let prefix_array = [];
+        for(let j = 0; j < grid.callsign_prefixses.length; j++) {
+            for(let i = 1; i < grid.callsign_prefixses[j].length; i++) {
+                if(grid.callsign_prefixses[j][i] == grid.airport) prefix_array.push(grid.callsign_prefixses[j][0])
+            }
+        }
+
+        let prefix = prefix_array[floor(random(prefix_array.length))]
         let numbers = `${floor(random(9))}${floor(random(9))}`
         let index = floor(random(grid.ac_types.length))
         let random_hp_destination = floor(random(grid.holding_points.length))
@@ -121,12 +128,12 @@ class Plane {
     }
 
     update_status() {
-        if(this.current_x == this.spawn_point[0] && this.current_y == this.spawn_point[1]) this.current_status = 'at-stand'
+        if(this.current_x == this.spawn_point[0] && this.current_y == this.spawn_point[1]) this.current_status = `stand ${grid.translate_point_to_text(grid.stands, this.current_x, this.current_y)}`
 
-        if(this.path_to_destination.length > 0) this.current_status = 'taxying'
+        if(this.path_to_destination.length > 0) this.current_status = `taxi to ${this.path_to_destination[this.path_to_destination.length - 1]}`
 
         for(let i = 0; i < grid.holding_points.length; i++) {
-            if(this.current_x == grid.holding_points[i][0] && this.current_y == grid.holding_points[i][1]) this.current_status = 'hold'
+            if(this.current_x == grid.holding_points[i][0] && this.current_y == grid.holding_points[i][1]) this.current_status = `holding at ${grid.holding_points[i][2]}`
         }
 
         for(let i = 0; i < grid.runway.length; i ++) {

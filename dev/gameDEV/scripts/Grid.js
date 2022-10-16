@@ -13,7 +13,7 @@ class Grid {
             ["0", "0", "0", "2", "0", "0", "0", "0", "2", "0", "0", "0"],
             ["0", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
             ["0", "2", "1", "1", "1", "6", "6", "6", "1", "1", "1", "2"],
-            ["0", "2", "6", "6", "6", "6", "6", "6", "6", "6", "6", "2"],
+            ["0", "2", "6", "6", "6", "6", "7", "6", "6", "6", "6", "2"],
             ["0", "2", "1", "1", "1", "6", "6", "6", "1", "1", "1", "2"],
             ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
             ["3", "0", "0", "3", "0", "0", "0", "0", "3", "0", "0", "3"],
@@ -29,11 +29,13 @@ class Grid {
         this.holding_point_names = [];
         this.runway = [];
         this.runway_entry = [];
+        this.control_tower = [];
         // declare specifics
         this.runway_numbers = ['18 R', '36 L', '18 L', '36 R']
-        this.callsign_prefixses = ['LXG', 'BLE', 'EZY', 'BAW', 'RYR', 'VLG', 'PR', 'G-E', 'B-RT', 'LIN', 'FBE', 'CGG']
+        this.callsign_prefixses = [['LXG', 'EGLL'], ['BLE', 'EGGW'], ['EZY', 'EGGW', 'EGCC', 'EGKK'], ['BAW', 'EGLL', 'EGKK', 'EGCC'], ['RYR', 'EGCC', 'EGSS', 'EGKK'], ['VLG', 'EGLL', 'EGKK'], ['PR', 'EGSS'], ['G-E', 'EGKK'], ['B-RT', 'EGLL', 'EGCC'], ['LIN', 'EGGW'], ['FBE', 'EGGW'], ['CGG', 'EGLL', 'EGKK']]
         this.ac_types = [['A320', 'LM'], ['B738', 'LM'], ['B777', 'H'], ['E145s', 'S'], ['B752', 'UM'], ['A220', 'LM'], ['P28A', 'L']]
         this.destinations = ['LXGB', 'EDDF', 'EDDM', 'LFPG', 'LFRS', 'EGSL', 'EGPH', 'EGGW', 'EGPE', 'EGPF', 'EGGD', 'EGGP']
+        this.airport = 'EGLL'
         // game start time
 
         this.gameplay_play = true
@@ -44,11 +46,11 @@ class Grid {
 
         this.color_grass = color(100, 250, 70)
         this.color_stand = color(70, 70, 70) 
+        this.color_terminal = color(255,127,80)
+        this.color_control_tower = color(2111, 143, 175)
         this.color_taxiway = color(100, 100, 100)
         this.color_holding_point = color(50, 50, 50)
         this.color_runway = color(0, 0, 0)
-
-        this.gameplay_status_button = 'pause'
 
         this.play_pause_button = createButton(`play/pause`)
         this.speed_one_button = createButton(`x1`)
@@ -84,6 +86,8 @@ class Grid {
                 if(this.grid[row][col] == "2") fill(this.color_taxiway) // taxiway
                 if(this.grid[row][col] == "3") fill(this.color_holding_point) // holding points
                 if(this.grid[row][col] == "4" || this.grid[row][col] == "5") fill(this.color_runway) // runway || runway entry point
+                if(this.grid[row][col] == "6") fill(this.color_terminal) // terminal points
+                if(this.grid[row][col] == "7") fill(this.color_control_tower) // control tower points
                 if(this.grid[row][col] == "0") fill(this.color_grass) // grass
                 rect(row * this.grid_size, col * this.grid_size, this.grid_size, this.grid_size)
                 fill('white')
@@ -106,12 +110,12 @@ class Grid {
         for(let i = 0; i < this.holding_points.length; i++) {
             text(`${char(i + 65)}1`, this.holding_points[i][0] * this.grid_size + (this.grid_size/7), this.holding_points[i][1] * this.grid_size + (this.grid_size/2))
         }
+
+        // ATC tower
+        text('Tower', this.control_tower[0] * this.grid_size + 10, this.control_tower[1] * this.grid_size + 30)
     }
 
     time_now() {
-        fill('black')
-        textSize(20)
-        text(`Time: ${this.format_time(this.time)}`, (this.total_grid_size + 1.5) * this.grid_size, 1.5 * this.grid_size)
         if(this.gameplay_play == true) {
             if(frameCount % this.gameplay_speed == 0) {
                 // hours
@@ -144,6 +148,15 @@ class Grid {
 
     time_mins() {
         return (this.time[0] * 60) + this.time[1]
+    }
+
+    translate_point_to_text(type, plane_x, plane_y) {
+            for(let i = 0; i < type.length; i++) {
+                if(type[i][0] == plane_x && type[i][1] == plane_y) {
+                    if(type == grid.stands) return i +1
+                    if(type == grid.holding_points) return this.holding_point_names[i]
+                }
+            }
     }
 
     is_a_neighbour(x , y, current_p) {
@@ -183,18 +196,22 @@ class Grid {
         return false
     }
 
-    create_gameplay_buttons() {
-        // show the buttons at set posititions (uses grid size to place in correct cell)
-        // do this for each button, adding 0.5 to the grid for each speed
+    buttons_text() {
+        fill('black')
+        textSize(20)
+        text(`${this.airport}`, 0.2 * this.grid_size, (this.total_grid_size + 0.5) * this.grid_size)
+        text(`Score: ${score.total_score}\nTime: ${this.format_time(this.time)}`, (this.total_grid_size + 1.5) * this.grid_size, 1 * this.grid_size)
+
+        for(let i = 0; i < planes.length; i++) {
+            text(`${planes[i].callsign}: ${planes[i].current_status}`, (this.total_grid_size + 1.5) * this.grid_size, (3.5 + (i/2)) * this.grid_size)
+        }
+
         this.play_pause_button.position((this.total_grid_size + 1.5) * this.grid_size, 1.7 * this.grid_size)
         this.speed_one_button.position((this.total_grid_size + 1.5) * this.grid_size, 2.2 * this.grid_size)
         this.speed_two_button.position((this.total_grid_size + 2) * this.grid_size, 2.2 * this.grid_size)
         this.speed_five_button.position((this.total_grid_size + 2.5) * this.grid_size, 2.2 * this.grid_size)
         this.speed_ten_button.position((this.total_grid_size + 3) * this.grid_size, 2.2 * this.grid_size)
-        
-    }
 
-    show_gameplay_buttons() {
         // if the play/pause is pressed, then
         this.play_pause_button.mousePressed(() => {
             // swap the value

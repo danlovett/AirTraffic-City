@@ -19,11 +19,12 @@ function setup() {
             if(grid.grid[row][col] == "3") grid.holding_points.push([row, col])
             if(grid.grid[row][col] == "4") grid.runway.push([row, col])
             if(grid.grid[row][col] == "5") grid.runway_entry.push([row, col])
+            if(grid.grid[row][col] == "7") grid.control_tower =[row, col]
         }
     }
 
     for(let i = 0; i < grid.holding_points.length; i++) {
-        grid.holding_point_names.push(`${char(i + 65)}1`)
+        grid.holding_points[i].push(`${char(i + 65)}1`)
     }
 
 
@@ -35,8 +36,6 @@ function setup() {
         planes[i].add_plane_info('dep')
         planes[i].ctot = planes[i].make_ctot(floor(random(20, 120)))
     }
-
-    grid.create_gameplay_buttons()
 
     // remove context menu to allow right clicks in browser
 	for (let element of document.getElementsByClassName("p5Canvas")) {
@@ -55,7 +54,7 @@ function draw() {
     grid.render()
     grid.show_areas()
     grid.time_now()
-    grid.show_gameplay_buttons()
+    grid.buttons_text()
     
     //PLANES MOVEMENT
     process_plane_movement()
@@ -89,6 +88,15 @@ function keyPressed() {
                 }
             }
         }
+        if(key == '1') grid.gameplay_speed = 30
+        if(key == '2') grid.gameplay_speed = 10
+        if(key == '3') grid.gameplay_speed = 2
+        if(key == '4') grid.gameplay_speed = 0.5
+        if(keyCode == 32) {
+            if(grid.gameplay_play == true)  grid.gameplay_play = false 
+            if(grid.gameplay_play == false) grid.gameplay_play = true
+
+        } 
     }
 }
 
