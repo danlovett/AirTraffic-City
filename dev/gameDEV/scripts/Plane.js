@@ -42,7 +42,11 @@ class Plane {
                 }
         }
 
-        this.color = color(random(100, 255), random(50, 255), random(50, 255))
+        this.ac_text = 'black'
+        this.color = color(random(100, 150), random(200, 250), random(80, 150))
+        this.action_color = [color(135,206,250), color(255,127,80), color(128,0,32), color('red')]
+        this.good_hp_color = color('green')
+        this.bad_hp_color = color('red')
     }
 
     add_plane_info(type) {
@@ -77,7 +81,7 @@ class Plane {
     }
 
     show_plane_info() {
-        fill('black')
+        fill(this.ac_text)
         textSize(13)
         text(this.callsign, this.current_x * grid.grid_size + (grid.grid_size-55), this.current_y * grid.grid_size + (grid.grid_size-45)) // callsign text to user
         textSize(10)
@@ -145,17 +149,58 @@ class Plane {
         noStroke() // reset default stroke
     }
 
+    live_info_check() {
+        if(this.ctot_to_mins - 10 <= grid.time_to_mins) {
+            this.color = this.action_color[0]
+            this.ac_text = 'black'
+        }
+        
+        if(this.ctot_to_mins - 5 <= grid.time_to_mins) {
+            this.color = this.action_color[1]
+            this.ac_text = 'black'
+        }
+        
+        if(this.ctot_to_mins + 10 <= grid.time_to_mins) {
+            this.color = this.action_color[2]
+            this.ac_text = 'white'
+        }
+
+        if(this.ctot_to_mins + 20 <= grid.time_to_mins) {
+            if(frameCount % 40 === 0) {
+                if(this.ac_text == 'white') {
+                    this.color = this.action_color[3]
+                    this.ac_text == 'black'
+                }
+                
+                if (this.ac_text == 'black') {
+                    this.color = this.action_color[2]
+                    this.ac_text = 'white'
+                }
+            }
+        }
+
+        if(this.ctot_to_mins + 30 <= grid.time_to_mins) {
+            control_planes.splice(control_planes.indexOf(this), 1)
+            score.update_score('remove_ac_ctot', this)
+        }
+    }
+
     update_status() {
         // if aircraft in a stand location, show the stand number in the aircraft information section of game
         if(this.current_x == this.spawn_point[0] && this.current_y == this.spawn_point[1]) {
             this.current_status = `stand ${grid.translate_point_to_text(grid.stands, this.current_x, this.current_y)}`
             this.cs_raw = 'stand'
-        } 
-        // if aircraft's path has a value, show which vector its moving to and display to aircraft_infromation section of game
-        if(this.path_to_destination.length > 0) {
+            
+        }
+        
+        if(this.path_to_destination.length > 0) { // if aircraft's path has a value, show which vector its moving to and display to aircraft_infromation section of game
             this.current_status = `taxying`
             this.cs_raw = 'taxi'
         } 
+        if(this.path_to_destination.length == 0 && this.current_x != this.spawn_point[0] && this.current_y != this.spawn_point[1]) {
+            this.current_status = `holding position at ${this.current_x}, ${this.current_y}`
+            this.cs_raw = 'stopped'
+        }
 
         // seeing if aircraft at a holding point position
         for(let i = 0; i < grid.holding_points.length; i++) { // search through all indexs of the holding_points array
@@ -175,6 +220,12 @@ class Plane {
         for(let i = 0; i < grid.runway.length; i ++) {
             if(this.current_x == grid.runway[i][0] && this.current_y == grid.runway[i][1]) this.current_status = 'taking-off'
         }
+
+        for(let i = 0; i < control_planes.length; i++) {
+            for(let j = 0; j < control_planes.length; j++) {
+                if(control_planes[i].current_x == control_planes[j].current_x && control_planes[i].current_y == control_planes[j].current_y && i!=j) control_planes[i].current_status = `Crashed with ${control_planes[j].callsign}` 
+            }
+        }
     }
 
     update_position() {
@@ -191,6 +242,7 @@ class Plane {
                 this.path_history.push(this.path_to_destination[0]) // add this array in path history array
             } else {
                 this.enable_moving = false // set to false if path is finished
+                this.permit_path = true
             }
             // getting time off stand, detecting when it left spawn area
             if(this.current_x != this.spawn_point[0] && this.current_y != this.spawn_point[1]) {
@@ -223,6 +275,7 @@ class Plane {
     intersects(other) {
         // does the posititon of two different aircraft match?
 		if(this.current_x == other.current_x && this.current_y == other.current_y) {
+            // console.log('crash')
 			return true // if yes, return true
 		} else {
 			return false // otherwise return false
@@ -256,10 +309,10 @@ class Plane {
         // scoring uses external functions that are called
         // if the aircraft posititon is the holding point destination, then add points
         if(this.hp_destination[0] == this.current_x && this.hp_destination[1] == this.current_y) {
-            this.color = color(20, 200, 20)
+            this.color = this.good_hp_color
             score.update_score("correct_hp", this)
         } else { // otherwise remove points
-            this.color = color(200, 20, 20)
+            this.color = this.bad_hp_color
             score.update_score("wrong_hp", this)
         }
 
@@ -269,6 +322,14 @@ class Plane {
             score.update_score('correct_ctot', this) // add points if correct
         } else {
             score.update_score('wrong_ctot', this) // remove points if wrong
+        }
+
+        this.ai_movement()
+    }
+
+    ai_movement() {
+        if(frameCount % this.speed(this.type) == 0) {
+            other_control.pop()
         }
     }
 }

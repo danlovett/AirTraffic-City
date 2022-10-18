@@ -7,18 +7,18 @@ class Grid {
 
         //declare grid
         this.grid = [
-            ["5", "4", "4", "4", "4", "4", "4", "4", "4", "4", "4", "5"],
-            ["3", "0", "0", "0", "3", "0", "0", "0", "0", "0", "0", "3"],
-            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
-            ["0", "0", "0", "2", "0", "0", "0", "0", "2", "0", "0", "0"],
-            ["0", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
-            ["0", "2", "1", "1", "1", "6", "6", "6", "1", "1", "1", "2"],
-            ["0", "2", "6", "6", "6", "6", "7", "6", "6", "6", "6", "2"],
-            ["0", "2", "1", "1", "1", "6", "6", "6", "1", "1", "1", "2"],
-            ["2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
-            ["3", "0", "0", "3", "0", "0", "0", "0", "3", "0", "0", "3"],
-            ["5", "4", "4", "4", "4", "4", "4", "4", "4", "4", "4", "5"],
-            ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+            ["5", "3", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
+            ["4", "0", "2", "0", "2", "0", "1", "1", "1", "1", "1", "1"],
+            ["4", "0", "2", "0", "2", "0", "0", "0", "0", "0", "0", "0"],
+            ["4", "0", "2", "0", "2", "0", "1", "1", "1", "1", "1", "1"],
+            ["4", "0", "2", "0", "2", "2", "2", "2", "2", "2", "2", "2"],
+            ["4", "0", "2", "0", "2", "0", "1", "1", "1", "1", "1", "1"],
+            ["4", "0", "2", "0", "2", "0", "0", "0", "0", "0", "0", "0"],
+            ["4", "0", "2", "0", "2", "0", "1", "1", "1", "1", "1", "1"],
+            ["4", "0", "2", "0", "2", "2", "2", "2", "2", "2", "2", "2"],
+            ["4", "0", "2", "0", "2", "0", "1", "1", "1", "1", "1", "1"],
+            ["4", "0", "2", "0", "2", "0", "1", "1", "1", "1", "1", "1"],
+            ["5", "3", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2"]
         ]
         // declare areas
         this.grass_areas = [];
@@ -28,6 +28,7 @@ class Grid {
         this.holding_points = [];
         this.holding_point_names = [];
         this.runway = [];
+        this.runway_copy = []
         this.runway_entry = [];
         this.control_tower = [];
         // declare specifics
@@ -35,14 +36,16 @@ class Grid {
         this.callsign_prefixses = [['LXG', 'EGLL'], ['BLE', 'EGGW'], ['EZY', 'EGGW', 'EGCC', 'EGKK'], ['BAW', 'EGLL', 'EGKK', 'EGCC'], ['RYR', 'EGCC', 'EGSS', 'EGKK'], ['VLG', 'EGLL', 'EGKK'], ['PR', 'EGSS'], ['G-E', 'EGKK'], ['B-RT', 'EGLL', 'EGCC'], ['LIN', 'EGGW'], ['FBE', 'EGGW'], ['CGG', 'EGLL', 'EGKK']]
         this.ac_types = [['A320', 'LM'], ['B738', 'LM'], ['B777', 'H'], ['E145s', 'S'], ['B752', 'UM'], ['A220', 'LM'], ['P28A', 'L']]
         this.destinations = ['LXGB', 'EDDF', 'EDDM', 'LFPG', 'LFRS', 'EGSL', 'EGPH', 'EGGW', 'EGPE', 'EGPF', 'EGGD', 'EGGP']
-        this.airport = 'EGLL'
+        this.airport = 'EGSS'
         
+        this.gameplay_allowed = true
         this.gameplay_play = true
         
         // game start time
-        this.time = [23, 30, 0]
+        this.time = [10, 15, 30]
         this.time_to_mins = 0;
         this.gameplay_speed = 30 // lower val = faster, higher val = slower default = 30
+        this.finish_time;
 
         this.color_grass = color(100, 250, 70)
         this.color_stand = color(70, 70, 70) 
@@ -56,6 +59,31 @@ class Grid {
         this.speed_buttons = [createButton(`x1`), createButton(`x2`), createButton(`x5`), createButton(`x10`)]
         this.gameplay_speeds = [30, 10, 2, 0.5]
 
+    }
+
+    init() {
+        for(let col = 0; col < this.total_grid_size; col++) {
+            for(let row = 0; row < this.total_grid_size; row++) {
+                if(this.grid[row][col] == "0") this.grass_areas.push([row, col])
+                if(this.grid[row][col] == "1") this.spawn_areas.push([row, col])
+                if(this.grid[row][col] == "1") this.stands.push([row, col])
+                if(this.grid[row][col] == "2") this.moveable_areas.push([row, col])
+                if(this.grid[row][col] == "3") this.holding_points.push([row, col])
+                if(this.grid[row][col] == "4") this.runway.push([row, col])
+                if(this.grid[row][col] == "5") this.runway_entry.push([row, col])
+                if(this.grid[row][col] == "7") this.control_tower =[row, col]
+            }
+        }
+
+        this.runway.sort((a,b) => {
+            if (a[0] === b[0]) {
+                return 0;
+            } else {
+                return (a[0] < b[0]) ? -1 : 1;
+            }
+        }) 
+
+        this.finish_time = [this.time[0] + 3, this.time[1], 0]
     }
 
     render() {
@@ -114,6 +142,7 @@ class Grid {
     }
 
     time_now() {
+
         if(this.gameplay_play == true) {
             if(frameCount % this.gameplay_speed == 0) {
                 // hours
@@ -122,7 +151,7 @@ class Grid {
                 } else if (this.time[1] >= 59 && this.time[2] >= 59) {
                     this.time[0] = this.time[0] + 1
                 }
-    
+                
                 // minutes
                 if(this.time[1] >= 59 && this.time[2] >= 59) {
                     this.time[1] = 0
@@ -136,8 +165,13 @@ class Grid {
                 } else {
                     this.time[2] = this.time[2] + 1
                 }
+                this.time_to_mins = (this.time[0] * 60) + this.time[1]
             }
         }
+
+        if(this.time[1] % 40 == 0 && this.time[2] % 60 == 0 && can_spawn_now) spawn_proto()
+        if(this.time[1] == 30) can_spawn_now = true
+        if(this.time[0] == this.finish_time[0] && this.time[1] == this.finish_time[1]) this.gameplay_allowed = false
     }
 
     format_time(time) {
@@ -194,15 +228,34 @@ class Grid {
         return false
     }
 
+    find_nearest_runway(plane_x, plane_y) {
+        for(let i = 0; i < this.runway.length; i++) {
+            if(((plane_x + 1 == this.runway[i][0] && plane_y == this.runway[i][1]) || 
+            (plane_x - 1 == this.runway[i][0] && plane_y == this.runway[i][1]) ||
+            (plane_x == this.runway[i][0] && plane_y + 1 == this.runway[i][1]) ||
+            (plane_x == this.runway[i][0] && plane_y - 1 == this.runway[i][1]) )) {
+                return this.runway[i]
+            }
+        }
+    }
+
     buttons_text() {
         fill('black')
         textSize(20)
         text(`${this.airport}`, 0.2 * this.grid_size, (this.total_grid_size + 0.5) * this.grid_size)
         text(`Score: ${score.total_score}\nTime: ${this.format_time(this.time)}`, (this.total_grid_size + 1.5) * this.grid_size, 1 * this.grid_size)
 
-        // !!update this later to show two aircraft crash if true!!
+        text('In your AoC:', (this.total_grid_size + 1.5) * this.grid_size, 4 * this.grid_size)
+        textSize(17)
         for(let i = 0; i < control_planes.length; i++) {
-            text(`${control_planes[i].callsign}: ${control_planes[i].current_status}`, (this.total_grid_size + 1.5) * this.grid_size, (3.5 + (i/2)) * this.grid_size)
+            text(`${control_planes[i].callsign}: ${control_planes[i].current_status}`, (this.total_grid_size + 1.5) * this.grid_size, (4.5 + (i/2)) * this.grid_size)
+        }
+
+        textSize(20)
+        text('Other planes:', 0.2 * this.grid_size, (this.total_grid_size + 1) * this.grid_size)
+        textSize(17)
+        for(let i = 0; i < other_control.length; i++) {
+            text(`${other_control[i].callsign}: ${other_control[i].current_status}`, 0.2 * this.grid_size, (this.total_grid_size + 1.5 + (i/2)) * this.grid_size)
         }
 
         this.play_pause_button.position((this.total_grid_size + 1.5) * this.grid_size, 1.7 * this.grid_size)
@@ -239,6 +292,17 @@ class Grid {
                 this.speed_buttons[index].style('background-color', 'black')
                 this.speed_buttons[index].style('color', 'white')
             }
+        }
+    }
+
+    finish_game() {
+        // console.log('game finished')
+        this.gameplay_play = false
+
+        // hide all buttons
+        this.play_pause_button.hide()
+        for(let i = 0; i < this.speed_buttons.length; i++) {
+            this.speed_buttons[i].hide()
         }
     }
 }

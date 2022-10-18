@@ -5,6 +5,8 @@ class Score {
         this.hp_score = 10
         this.near_miss = 5;
 
+        this.ctot_delete = 50
+
         this.total_score = 0;
     
         // future code
@@ -51,6 +53,11 @@ class Score {
         if(type == 'near_miss') {
             this.total_score = this.total_score + this.near_miss;
             plane.score = plane.score + this.near_miss;
+        }
+
+        if(type == 'remove_ac_ctot') {
+            this.total_score = this.total_score - this.ctot_delete;
+            plane.score = plane.score - this.ctot_delete;
         }
     }
 }
