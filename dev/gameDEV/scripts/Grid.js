@@ -36,10 +36,10 @@ class Grid {
         this.ac_types = [['A320', 'LM'], ['B738', 'LM'], ['B777', 'H'], ['E145s', 'S'], ['B752', 'UM'], ['A220', 'LM'], ['P28A', 'L']]
         this.destinations = ['LXGB', 'EDDF', 'EDDM', 'LFPG', 'LFRS', 'EGSL', 'EGPH', 'EGGW', 'EGPE', 'EGPF', 'EGGD', 'EGGP']
         this.airport = 'EGLL'
-        // game start time
-
+        
         this.gameplay_play = true
         
+        // game start time
         this.time = [23, 30, 0]
         this.time_to_mins = 0;
         this.gameplay_speed = 30 // lower val = faster, higher val = slower default = 30
@@ -52,11 +52,9 @@ class Grid {
         this.color_holding_point = color(50, 50, 50)
         this.color_runway = color(0, 0, 0)
 
-        this.play_pause_button = createButton(`play/pause`)
-        this.speed_one_button = createButton(`x1`)
-        this.speed_two_button = createButton(`x2`)
-        this.speed_five_button = createButton(`x5`)
-        this.speed_ten_button = createButton(`x10`)
+        this.play_pause_button = createButton(`play/pause`).style('background-color', 'white')
+        this.speed_buttons = [createButton(`x1`), createButton(`x2`), createButton(`x5`), createButton(`x10`)]
+        this.gameplay_speeds = [30, 10, 2, 0.5]
 
     }
 
@@ -160,7 +158,7 @@ class Grid {
     }
 
     is_a_neighbour(x , y, current_p) {
-        let last_vector = planes[current_p].path_to_destination[planes[current_p].path_to_destination.length - 1] || undefined
+        let last_vector = control_planes[current_p].path_to_destination[control_planes[current_p].path_to_destination.length - 1] || undefined
         if(last_vector != undefined) {
             if(last_vector[0] + 1 == x || last_vector[1] + 1 == y || last_vector[0] - 1 == x || last_vector[1] - 1 == y) {
                 return true
@@ -202,40 +200,45 @@ class Grid {
         text(`${this.airport}`, 0.2 * this.grid_size, (this.total_grid_size + 0.5) * this.grid_size)
         text(`Score: ${score.total_score}\nTime: ${this.format_time(this.time)}`, (this.total_grid_size + 1.5) * this.grid_size, 1 * this.grid_size)
 
-        for(let i = 0; i < planes.length; i++) {
-            text(`${planes[i].callsign}: ${planes[i].current_status}`, (this.total_grid_size + 1.5) * this.grid_size, (3.5 + (i/2)) * this.grid_size)
+        // !!update this later to show two aircraft crash if true!!
+        for(let i = 0; i < control_planes.length; i++) {
+            text(`${control_planes[i].callsign}: ${control_planes[i].current_status}`, (this.total_grid_size + 1.5) * this.grid_size, (3.5 + (i/2)) * this.grid_size)
         }
 
         this.play_pause_button.position((this.total_grid_size + 1.5) * this.grid_size, 1.7 * this.grid_size)
-        this.speed_one_button.position((this.total_grid_size + 1.5) * this.grid_size, 2.2 * this.grid_size)
-        this.speed_two_button.position((this.total_grid_size + 2) * this.grid_size, 2.2 * this.grid_size)
-        this.speed_five_button.position((this.total_grid_size + 2.5) * this.grid_size, 2.2 * this.grid_size)
-        this.speed_ten_button.position((this.total_grid_size + 3) * this.grid_size, 2.2 * this.grid_size)
 
+        let button_pos_y = 1.5
+        for(let i = 0; i < this.speed_buttons.length; i++) {
+            this.speed_buttons[i].position((this.total_grid_size + button_pos_y) * this.grid_size, 2.2 * this.grid_size)
+            button_pos_y = button_pos_y + 0.7
+        }
+        
         // if the play/pause is pressed, then
         this.play_pause_button.mousePressed(() => {
-            // swap the value
-            this.gameplay_play == true ? this.gameplay_play = false : this.gameplay_play = true
+            if(this.gameplay_play == true) {
+                this.gameplay_play = false
+                this.play_pause_button.style('background-color', 'black')
+                this.play_pause_button.style('color', 'white')
+            }  else {
+                this.gameplay_play = true
+                this.play_pause_button.style('background-color', 'white')
+                this.play_pause_button.style('color', 'black')
+            }
         })
-        // if the x1 speed button pressed, then
-        this.speed_one_button.mousePressed(() => {
-            // modify the value of variable
-            this.gameplay_speed = 30
-        })
-        // if the x2 speed button pressed, then
-        this.speed_two_button.mousePressed(() => {
-            // modify the value of variable
-            this.gameplay_speed = 10
-        })
-        // if the x5 speed button pressed, then
-        this.speed_five_button.mousePressed(() => {
-            // modify the value of variable
-            this.gameplay_speed = 2
-        })
-        // if the x10 speed button pressed, then
-        this.speed_ten_button.mousePressed(() => {
-            // modify the value of variable
-            this.gameplay_speed = 0.5
-        })
+
+        for(let i = 0; i < this.speed_buttons.length; i++) {
+            this.speed_buttons[i].mousePressed(() => {
+                this.gameplay_speed = this.gameplay_speeds[i]
+            })
+        }
+        for(let index = 0; index < this.speed_buttons.length; index++) {
+            if(this.gameplay_speeds[index] == this.gameplay_speed) {
+                this.speed_buttons[index].style('background-color', 'white')
+                this.speed_buttons[index].style('color', 'black')
+            } else {
+                this.speed_buttons[index].style('background-color', 'black')
+                this.speed_buttons[index].style('color', 'white')
+            }
+        }
     }
 }
