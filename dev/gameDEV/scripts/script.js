@@ -3,29 +3,38 @@ let grid_x, grid_y
 let control_planes = []
 let other_control = []
 let can_spawn_now = true
+let grid
+let json_level
+
 
 
 function setup() {
     createCanvas(windowWidth, windowHeight)
-
+    
     score = new Score()
-
+    
     grid = new Grid(10, 10)
-
-    grid.init()
-
-    for(let i = 0; i <= floor(random(5, 9)); i++) {
-        let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]
-        grid.spawn_areas.splice(grid.spawn_areas.indexOf(spawn_point), 1)
+    
+    $.get('../../pkg/JSON/levels/stansted.json', (json_level) => {
+        json_level = json_level
+        grid.init(json_level)
+        for(let i = 0; i <= floor(random(4, 9)); i++) {
+            let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]
+            grid.spawn_areas.splice(grid.spawn_areas.indexOf(spawn_point), 1)
+            
+            control_planes.push(new Plane(spawn_point))
+            control_planes[i].add_plane_info('dep')
+            control_planes[i].ctot = control_planes[i].make_ctot(floor(random(20, 80)))
+        }
         
-        control_planes.push(new Plane(spawn_point))
-        control_planes[i].add_plane_info('dep')
-        control_planes[i].ctot = control_planes[i].make_ctot(floor(random(20, 80)))
-    }
+        for(let i = 0; i < grid.holding_points.length; i++) {
+            grid.holding_points[i].push(`${char(i + 65)}1`)
+        }
+    })
+    
+    
 
-    for(let i = 0; i < grid.holding_points.length; i++) {
-        grid.holding_points[i].push(`${char(i + 65)}1`)
-    }
+
 
 
     // spawn_proto()

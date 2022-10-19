@@ -6,37 +6,23 @@ class Grid {
         this.total_grid_size = 12
 
         //declare grid
-        this.grid = [
-            ["5", "3", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2"],
-            ["4", "0", "2", "0", "2", "6", "1", "1", "1", "1", "1", "1"],
-            ["4", "0", "2", "0", "2", "6", "6", "6", "6", "6", "6", "6"],
-            ["4", "0", "2", "0", "2", "6", "1", "1", "1", "1", "1", "1"],
-            ["4", "0", "2", "0", "2", "2", "2", "2", "2", "2", "2", "2"],
-            ["4", "0", "2", "7", "2", "6", "1", "1", "1", "1", "1", "1"],
-            ["4", "0", "2", "0", "2", "6", "6", "6", "6", "6", "6", "6"],
-            ["4", "0", "2", "0", "2", "6", "1", "1", "1", "1", "1", "1"],
-            ["4", "0", "2", "0", "2", "2", "2", "2", "2", "2", "2", "2"],
-            ["4", "0", "2", "0", "2", "6", "1", "1", "1", "1", "1", "1"],
-            ["4", "0", "2", "0", "2", "6", "1", "1", "1", "1", "1", "1"],
-            ["5", "3", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2"]
-        ]
+        this.grid;
         // declare areas
         this.grass_areas = [];
         this.moveable_areas = [];
         this.spawn_areas = [];
         this.stands = [];
         this.holding_points = [];
-        this.holding_point_names = [];
         this.runway = [];
         this.runway_copy = []
         this.runway_entry = [];
         this.control_tower = [];
         // declare specifics
         this.runway_numbers = ['18 R', '36 L', '18 L', '36 R']
-        this.callsign_prefixses = [['LXG', 'EGLL'], ['BLE', 'EGGW'], ['EZY', 'EGGW', 'EGCC', 'EGKK'], ['BAW', 'EGLL', 'EGKK', 'EGCC'], ['RYR', 'EGCC', 'EGSS', 'EGKK'], ['VLG', 'EGLL', 'EGKK'], ['PR', 'EGSS'], ['G-E', 'EGKK'], ['B-RT', 'EGLL', 'EGCC'], ['LIN', 'EGGW'], ['FBE', 'EGGW'], ['CGG', 'EGLL', 'EGKK']]
+        this.callsign_prefixses;
         this.ac_types = [['A320', 'LM'], ['B738', 'LM'], ['B777', 'H'], ['E145s', 'S'], ['B752', 'UM'], ['A220', 'LM'], ['P28A', 'L']]
-        this.destinations = ['LXGB', 'EDDF', 'EDDM', 'LFPG', 'LFRS', 'EGSL', 'EGPH', 'EGGW', 'EGPE', 'EGPF', 'EGGD', 'EGGP']
-        this.airport = 'EGSS'
+        this.destinations;
+        this.airport;
         
         this.gameplay_allowed = true
         this.gameplay_play = true
@@ -61,7 +47,15 @@ class Grid {
 
     }
 
-    init() {
+    init(json_level) {
+        this.airport = json_level.airport
+        this.grid = json_level.grid;
+        this.callsign_prefixses = json_level.airlines
+        this.destinations = json_level.destinations
+        this.ac_types = json_level.aircraft_types
+
+
+
         for(let col = 0; col < this.total_grid_size; col++) {
             for(let row = 0; row < this.total_grid_size; row++) {
                 if(this.grid[row][col] == "0") this.grass_areas.push([row, col])
