@@ -38,16 +38,16 @@ class Score {
         
         // negative results
         if(type == "wrong_runway") {
-            this.total_score = this.total_score - this.runway_score;
-            plane.score = plane.score - this.runway_score;
+            this.total_score = this.total_score - (this.runway_score / 2);
+            plane.score = plane.score - (this.runway_score / 2);
         }
         if(type == "wrong_ctot") {
-            this.total_score = this.total_score - this.ctot_score;
-            plane.score = plane.score - this.ctot_score;
+            this.total_score = this.total_score - (this.ctot_score / 2);
+            plane.score = plane.score - (this.ctot_score / 2);
         }
         if(type == 'wrong_hp') {
-            this.total_score = this.total_score - this.hp_score;
-            plane.score = plane.score - this.hp_score;
+            this.total_score = this.total_score - (this.hp_score / 2);
+            plane.score = plane.score - (this.hp_score / 2);
         }
 
         if(type == 'near_miss') {
@@ -58,6 +58,11 @@ class Score {
         if(type == 'remove_ac_ctot') {
             this.total_score = this.total_score - this.ctot_delete;
             plane.score = plane.score - this.ctot_delete;
+        }
+
+
+        if(this.total_score <= -100) {
+            grid.finish_game()
         }
     }
 }

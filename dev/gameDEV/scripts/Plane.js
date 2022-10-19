@@ -1,30 +1,32 @@
 class Plane {
     constructor(spawn_point) {
-        this.spawn_point = spawn_point
-        this.current_status;
-        this.cs_raw;
-        this.hp_destination_name;
-
         this.callsign = undefined;
         this.type = undefined;
-        this.fpln_type = undefined;
         this.wake_cat = undefined;
         this.destination = undefined;
+        this.fpln_type = undefined;
+        
+        this.spawn_point = spawn_point
+        
+        this.current_x = this.spawn_point[0];
+        this.current_y = this.spawn_point[1];
+        this.current_status;
+        this.cs_raw;
+
+        this.time_off_stand = [];
+        this.ctot = [];
+        this.ctot_to_mins = 0;
         
         this.enable_moving = false;
         this.handover = false
         this.permit_path = true
         
         this.score = 0;
-        this.ctot_to_mins = 0;
         
-        this.current_x = this.spawn_point[0];
-        this.current_y = this.spawn_point[1];
+        
         this.hp_destination = [];
         this.path_to_destination = [];
         this.path_history = [];
-        this.time_off_stand = [];
-        this.ctot = [];
 
 
         this.speed = (type) => {
@@ -68,18 +70,27 @@ class Plane {
         this.callsign = `${prefix}${numbers}` // finalise callsign and assign it
         
         let index = floor(random(grid.ac_types.length)) // set up for type and wake cat
-        // for now, random_hp_destination gets a random hp for aircraft to taxi to
-        let random_hp_destination = floor(random(grid.holding_points.length)) // update later to get set hp for dep runway
         
         this.type = grid.ac_types[index][0]
         this.wake_cat = grid.ac_types[index][1]
+        
         // get a random destination for aicraft to fly to from destinations array in grid class
         this.destination = grid.destinations[floor(random(grid.destinations.length))]
+        
+        // for now, random_hp_destination gets a random hp for aircraft to taxi to
+        let random_hp_destination = floor(random(grid.holding_points.length)) // update later to get set hp for dep runway
         this.hp_destination = grid.holding_points[random_hp_destination] // get vector for hp_dest
-        this.hp_destination_name = grid.holding_point_names[random_hp_destination] // get text name for hp_dest
 
     }
 
+    spawn() {
+        fill(color(this.color)) // get randomly made colour for `this`
+        stroke('black')
+        rect(this.current_x * grid.grid_size, this.current_y * grid.grid_size, grid.grid_size, grid.grid_size) // show the aircraft using grid size and positioning
+        noStroke() // reset default stroke
+    }
+
+    // TO DO!!! add function below to spawn ^^^^^ better code usage and efficiency
     show_plane_info() {
         fill(this.ac_text)
         textSize(13)
@@ -93,98 +104,54 @@ class Plane {
         fill('white')
     }
 
-    make_ctot(add_mins, type, operation) {
-        // declare local variables
-        let made_time = []
-        // add_hours delcared here to allow manipulation to it
-        let add_hours
-        // temporarily make variable for the hours returned (getting float as well so floor() and ceil() not used here)
-        let temp = (add_mins/60)
-        let time_to_mins 
-        // set up which operation to complete
-        // ?CTOT variance for score calculation
-        // ?make the CTOT itself
-        operation == 'get_ctot_variance' ? time_to_mins = (this.ctot[0] * 60) + this.ctot[1] : time_to_mins = (grid.time[0] * 60) + grid.time[1]
-        grid.time_to_mins = time_to_mins
-        
-        if(temp.toString().split('.')[1] >= '5') { // if the excact value is .5, ceil() it
-            add_hours = ceil(temp)
-        } else { // otherwise floor() it
-            add_hours = floor(temp)
-        }
-        
-        // set the hour value from time_to_mins variable
-        made_time[0] = floor(time_to_mins/60) + add_hours
-
-        // time reset it if reaches past midnight 
-        if(made_time[0] >= 24) {
-            made_time[0] = 0 + (made_time[0] % 24) // get remainder off 24
-        } 
-        
-        made_time[1] = floor((time_to_mins + add_mins) % 60) // add mins from current time and get the remainder of it using MOD 60
-        made_time[2] = 0
-
-        // checking for negative when calc ctot lower in score class
-        if(Math.sign(made_time[0]) === -1) { // negative value?
-            made_time[0] = 24 + made_time[0] // using sign logic, add the parsed arg to 24 to, in turn, remove it from 24
-        }
-        if(Math.sign(made_time[1]) === -1) { // native value?
-            made_time[1] = 60 + made_time[1] // using sign logic, add the parsed arg to 24 to, in turn, remove it from 24
-        }
-
-        this.ctot_to_mins =  (made_time[0] * 60) + made_time[1] // convert time into mins and assign it to this ctot_to_mins
-
-        if(type == 'mins') {
-            return this.ctot_to_mins // want the ctot in mins? return it then
-        } else {
-            return made_time // want the ctot as a time array? return it then
-        }
-
-    }
-
-    spawn() {
-        fill(color(this.color)) // get randomly made colour for `this`
-        stroke('black')
-        rect(this.current_x * grid.grid_size, this.current_y * grid.grid_size, grid.grid_size, grid.grid_size) // show the aircraft using grid size and positioning
-        noStroke() // reset default stroke
-    }
-
-    live_info_check() {
-        if(this.ctot_to_mins - 10 <= grid.time_to_mins) {
-            this.color = this.action_color[0]
-            this.ac_text = 'black'
-        }
-        
-        if(this.ctot_to_mins - 5 <= grid.time_to_mins) {
-            this.color = this.action_color[1]
-            this.ac_text = 'black'
-        }
-        
-        if(this.ctot_to_mins + 10 <= grid.time_to_mins) {
-            this.color = this.action_color[2]
-            this.ac_text = 'white'
-        }
-
-        if(this.ctot_to_mins + 20 <= grid.time_to_mins) {
-            if(frameCount % 40 === 0) {
-                if(this.ac_text == 'white') {
-                    this.color = this.action_color[3]
-                    this.ac_text == 'black'
-                }
-                
-                if (this.ac_text == 'black') {
-                    this.color = this.action_color[2]
-                    this.ac_text = 'white'
-                }
+    // update the current position of aircraft if the speed allows
+    update_position() {
+        // only update if the speed value == frame number
+        if(frameCount % this.speed(this.type) == 0) {
+            // if this aircraft can move, then move it using the first posititon in path_to_destination
+            if(this.path_to_destination.length != 0 && this.enable_moving == true) {
+                textSize(20)
+                this.show_plane_info() // update the position of aicraft info
+                this.current_x = this.path_to_destination[0][0] // update x pos
+                this.current_y = this.path_to_destination[0][1] // update y pos
+                this.path_to_destination.splice(this.path_to_destination[0], 1) // remove this array in path array
+                this.path_history.push(this.path_to_destination[0]) // add this array in path history array
+            } else {
+                this.enable_moving = false // set to false if path is finished
+                this.permit_path = true
             }
-        }
-
-        if(this.ctot_to_mins + 30 <= grid.time_to_mins) {
-            control_planes.splice(control_planes.indexOf(this), 1)
-            score.update_score('remove_ac_ctot', this)
+            // getting time off stand, detecting when it left spawn area
+            if(this.current_x != this.spawn_point[0] && this.current_y != this.spawn_point[1]) {
+                this.time_off_stand = grid.time
+                grid.spawn_areas.push(this.spawn_point) // allow posititon to be spawnable again
+            }
+            return true
+        } else {
+            return false
         }
     }
 
+    // hp destination display to user
+    show_grid_destination_info() { // show text and colour of plane at the path destination point (text: aircraft callsign and type)
+        fill(this.color)
+        rect(this.path_to_destination[this.path_to_destination.length - 1][0] * grid.grid_size, this.path_to_destination[this.path_to_destination.length - 1][1] * grid.grid_size, grid.grid_size, grid.grid_size)
+        fill('black')
+        text(this.callsign, this.path_to_destination[this.path_to_destination.length - 1][0] * grid.grid_size + (grid.grid_size-55), this.path_to_destination[this.path_to_destination.length - 1][1] * grid.grid_size + (grid.grid_size-45))
+        text(this.type, this.path_to_destination[this.path_to_destination.length - 1][0] * grid.grid_size + (grid.grid_size-55), this.path_to_destination[this.path_to_destination.length - 1][1] * grid.grid_size + (grid.grid_size-5))
+    }
+
+    // add a different point from path_to_destination[path_to_destination.length - 1] to the array
+    update_travel_points(point) {
+        if(point != this.path_to_destination[this.path_to_destination.length - 1]) { // is the point trying to be added not the same as point already pushed to array?
+            this.path_to_destination.push(point) // add point
+            return true
+        } else {
+            return false // don't add point and return false
+        }
+    }
+
+    // raw and extended is updated here.
+    // what is the aircraft currently doing?
     update_status() {
         // if aircraft in a stand location, show the stand number in the aircraft information section of game
         if(this.current_x == this.spawn_point[0] && this.current_y == this.spawn_point[1]) {
@@ -228,50 +195,99 @@ class Plane {
         }
     }
 
-    update_position() {
+    // create/get temporary value of/modify ctot
+    make_ctot(add_mins, type, operation) {
+        // declare local variables
+        let made_time = []
+        // add_hours delcared here to allow manipulation to it
+        let add_hours
+        // temporarily make variable for the hours returned (getting float as well so floor() and ceil() not used here)
+        let temp = (add_mins/60)
+        let time_to_mins 
+        // set up which operation to complete
+        // ?CTOT variance for score calculation
+        // ?make the CTOT itself
+        operation == 'get_ctot_variance' ? time_to_mins = (this.ctot[0] * 60) + this.ctot[1] : time_to_mins = (grid.time[0] * 60) + grid.time[1]
+        grid.time_to_mins = time_to_mins
+        
+        if(temp.toString().split('.')[1] >= '5') { // if the excact value is .5, ceil() it
+            add_hours = ceil(temp)
+        } else { // otherwise floor() it
+            add_hours = floor(temp)
+        }
+        
+        // set the hour value from time_to_mins variable
+        made_time[0] = floor(time_to_mins/60) + add_hours
 
-        // only update if the speed value == frame number
-        if(frameCount % this.speed(this.type) == 0) {
-            // if this aircraft can move, then move it using the first posititon in path_to_destination
-            if(this.path_to_destination.length != 0 && this.enable_moving == true) {
-                textSize(20)
-                this.show_plane_info() // update the position of aicraft info
-                this.current_x = this.path_to_destination[0][0] // update x pos
-                this.current_y = this.path_to_destination[0][1] // update y pos
-                this.path_to_destination.splice(this.path_to_destination[0], 1) // remove this array in path array
-                this.path_history.push(this.path_to_destination[0]) // add this array in path history array
-            } else {
-                this.enable_moving = false // set to false if path is finished
-                this.permit_path = true
-            }
-            // getting time off stand, detecting when it left spawn area
-            if(this.current_x != this.spawn_point[0] && this.current_y != this.spawn_point[1]) {
-                this.time_off_stand = grid.time
-                grid.spawn_areas.push(this.spawn_point) // allow posititon to be spawnable again
-            }
-            return true
+        // time reset it if reaches past midnight 
+        if(made_time[0] >= 24) {
+            made_time[0] = 0 + (made_time[0] % 24) // get remainder off 24
+        } 
+        
+        made_time[1] = floor((time_to_mins + add_mins) % 60) // add mins from current time and get the remainder of it using MOD 60
+        made_time[2] = 0
+
+        // checking for negative when calc ctot lower in score class
+        if(Math.sign(made_time[0]) === -1) { // negative value?
+            made_time[0] = 24 + made_time[0] // using sign logic, add the parsed arg to 24 to, in turn, remove it from 24
+        }
+        if(Math.sign(made_time[1]) === -1) { // native value?
+            made_time[1] = 60 + made_time[1] // using sign logic, add the parsed arg to 24 to, in turn, remove it from 24
+        }
+
+        this.ctot_to_mins =  (made_time[0] * 60) + made_time[1] // convert time into mins and assign it to this ctot_to_mins
+
+        if(type == 'mins') {
+            return this.ctot_to_mins // want the ctot in mins? return it then
+        } 
+        
+        if(type == 'make_ctot'){
+            this.ctot = made_time // want the ctot as a time array? 
         } else {
-            return false
+            return made_time
+        }
+
+    }
+
+    // update plane color and text 
+    // CTOT usage
+    live_info_check() {
+        if(this.ctot_to_mins - 10 <= grid.time_to_mins) {
+            this.color = this.action_color[0]
+            this.ac_text = 'black'
+        }
+        
+        if(this.ctot_to_mins - 5 <= grid.time_to_mins) {
+            this.color = this.action_color[1]
+            this.ac_text = 'black'
+        }
+        
+        if(this.ctot_to_mins + 10 <= grid.time_to_mins) {
+            this.color = this.action_color[2]
+            this.ac_text = 'white'
+        }
+
+        if(this.ctot_to_mins + 20 <= grid.time_to_mins) {
+            if(frameCount % 40 === 0) {
+                if(this.ac_text == 'white') {
+                    this.color = this.action_color[3]
+                    this.ac_text == 'black'
+                }
+                
+                if (this.ac_text == 'black') {
+                    this.color = this.action_color[2]
+                    this.ac_text = 'white'
+                }
+            }
+        }
+
+        if(this.ctot_to_mins + 30 == grid.time_to_mins) {
+            control_planes.splice(control_planes.indexOf(this), 1)
+            score.update_score('remove_ac_ctot', this)
         }
     }
 
-    show_grid_destination_info() { // show text and colour of plane at the path destination point (text: aircraft callsign and type)
-        fill(this.color)
-        rect(this.path_to_destination[this.path_to_destination.length - 1][0] * grid.grid_size, this.path_to_destination[this.path_to_destination.length - 1][1] * grid.grid_size, grid.grid_size, grid.grid_size)
-        fill('black')
-        text(this.callsign, this.path_to_destination[this.path_to_destination.length - 1][0] * grid.grid_size + (grid.grid_size-55), this.path_to_destination[this.path_to_destination.length - 1][1] * grid.grid_size + (grid.grid_size-45))
-        text(this.type, this.path_to_destination[this.path_to_destination.length - 1][0] * grid.grid_size + (grid.grid_size-55), this.path_to_destination[this.path_to_destination.length - 1][1] * grid.grid_size + (grid.grid_size-5))
-    }
-
-    update_travel_points(point) {
-        if(point != this.path_to_destination[this.path_to_destination.length - 1]) { // is the point trying to be added not the same as point already pushed to array?
-            this.path_to_destination.push(point) // add point
-            return true
-        } else {
-            return false // don't add point and return false
-        }
-    }
-
+    // is there a crash?
     intersects(other) {
         // does the posititon of two different aircraft match?
 		if(this.current_x == other.current_x && this.current_y == other.current_y) {
@@ -281,7 +297,7 @@ class Plane {
 			return false // otherwise return false
 		}
 	}
-
+    // true/false - detect if two aircraft are near each other (+-1 from current pos)
     near_miss(other) {
         if(frameCount % this.speed(this.type) === 0) {
             if(((this.current_x + 1 == other.current_x && this.current_y == other.current_y) || 
@@ -295,7 +311,8 @@ class Plane {
              }
         }
     }
-    
+
+    // handover process when plane reaches the holding point
     handover_plane() { // make aircraft unmoveable, change colour, and update score
         this.handover = true
 

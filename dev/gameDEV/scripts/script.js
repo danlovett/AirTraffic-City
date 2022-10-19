@@ -131,7 +131,7 @@ function spawn_proto() {
             
             control_planes.push(new Plane(spawn_point))
             control_planes[new_plane_index].add_plane_info('dep')
-            control_planes[new_plane_index].ctot = control_planes[new_plane_index].make_ctot(floor(random(20, 120)))
+            control_planes[new_plane_index].make_ctot(floor(random(20, 120)), 'make_ctot')
             new_plane_index++
         }
     }
@@ -152,7 +152,7 @@ function control_my_planes(control_planes) {
             control_planes[i].update_status()
             control_planes[i].live_info_check()
             
-            if(control_planes[i].path_to_destination.length != 0 && control_planes[i].permit_path == true) {
+            if(control_planes[i].path_to_destination != [] && control_planes[i].permit_path == true) {
                 let path = control_planes[i].path_to_destination[control_planes[i].path_to_destination.length - 1]
                 if([grid_x, grid_y] != path && grid.is_a_neighbour(grid_x, grid_y, i) && grid.point_is_valid(grid_x, grid_y, control_planes[i])) control_planes[i].update_travel_points([grid_x, grid_y])
                 if(grid.point_is_valid(grid_x,grid_y, control_planes[i]) == false) {
