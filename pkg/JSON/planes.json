@@ -1,7 +1,0 @@
-{
-    "types" : {
-        "small" : [],
-        "medium": [["A318", ["BAW", "BAE", "JBE"]], ["A319", ["EZY", "BAW", "SPS", "KEL"]], ["A320", ["EZY", "BAW", "RYR", "ERR"]], ["A321",  ["EZY", "BAW", "RYR", "ERR"]], ["B737", ["EZY", "BAW", "RYR", "ERR"]], ["B738",  ["EZY", "BAW", "RYR", "ERR"]], ["B739"], ["EZY", "BAW", "RYR", "ERR"]],
-        "large": []
-    }
-}
