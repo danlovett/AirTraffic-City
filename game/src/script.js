@@ -12,12 +12,9 @@ function setup() {
 
     grid = new Grid()
 
-    level_name = window.location.href.split('?')[1]
-
-    $(document).prop('title', level_name);
-
     // grid = new Grid(10, 10)
-    $.get(`../../lib/raw/level_config/${level_name.toLowerCase()}.json`, (json_level) => {
+    $.get(`../../lib/raw/level_config/${window.location.href.split('?')[1].toLowerCase()}.json`, (json_level) => {
+        json_level = json_level
         grid.init(json_level)
         for(let i = 0; i <= floor(random(4, 9)); i++) {
             let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]
@@ -141,7 +138,7 @@ function windowResized() {
 function spawn_proto() {
     let new_plane_index = control_planes.length 
     if(grid.spawn_areas.length > 1) {
-        for(let i = 0; i < floor(random(grid.spawn_areas.length)); i++) {
+        for(let i = 0; i < grid.spawn_areas.length / 3; i++) {
             let spawn_point = grid.spawn_areas[0]
             grid.spawn_areas.splice(grid.spawn_areas.indexOf(spawn_point), 1)
             
@@ -185,6 +182,7 @@ function control_my_planes(control_planes) {
                 }
             }
         }
+        
     }
 }
 
