@@ -4,18 +4,16 @@ let control_planes = []
 let other_control = []
 let can_spawn_now = true
 let grid
-let json_level
-
-
 
 function setup() {
     createCanvas(windowWidth, windowHeight)
     
     score = new Score()
-    
-    grid = new Grid(10, 10)
-    
-    $.get('../../lib/raw/level_config/stansted.json', (json_level) => {
+
+    grid = new Grid()
+
+    // grid = new Grid(10, 10)
+    $.get(`../../lib/raw/level_config/${window.location.href.split('?')[1].toLowerCase()}.json`, (json_level) => {
         json_level = json_level
         grid.init(json_level)
         for(let i = 0; i <= floor(random(4, 9)); i++) {
@@ -31,12 +29,6 @@ function setup() {
             grid.holding_points[i].push(`${char(i + 65)}1`)
         }
     })
-    
-    
-
-
-
-
     // spawn_proto()
 
     // remove context menu to allow right clicks in browser

@@ -3,7 +3,7 @@ class Grid {
         this.cols = cols;
         this.rows = rows;
         this.grid_size = 60;
-        this.total_grid_size = 12
+        this.total_grid_size = 12;
 
         //declare grid
         this.grid;
@@ -20,7 +20,6 @@ class Grid {
         // declare specifics
         this.runway_numbers = ['18 R', '36 L', '18 L', '36 R']
         this.callsign_prefixses;
-        this.ac_types = [['A320', 'LM'], ['B738', 'LM'], ['B777', 'H'], ['E145s', 'S'], ['B752', 'UM'], ['A220', 'LM'], ['P28A', 'L']]
         this.destinations;
         this.airport;
         
