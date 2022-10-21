@@ -2,10 +2,3 @@
 node_modules/
 .package.json
 .package-lock.json
-
-dev/grid/
-dev/movement/
-dev/Render&Detection/
-dev/spawning/
-game/
-pkg/JSON/users.json
