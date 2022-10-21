@@ -229,12 +229,12 @@ class Plane {
         if(Math.sign(made_time[1]) === -1) { // native value?
             made_time[1] = 60 + made_time[1] // using sign logic, add the parsed arg to 24 to, in turn, remove it from 24
         }
-
-        this.ctot_to_mins =  (made_time[0] * 60) + made_time[1] // convert time into mins and assign it to this ctot_to_mins
-
+        
+        
         if(type == 'mins') {
             return this.ctot_to_mins // want the ctot in mins? return it then
         } else {
+            this.ctot_to_mins =  (made_time[0] * 60) + made_time[1] // convert time into mins and assign it to this ctot_to_mins
             return made_time
         }
 

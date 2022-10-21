@@ -164,7 +164,7 @@ class Grid {
 
         if(this.time[1] % 40 == 0 && this.time[2] % 60 == 0 && can_spawn_now) spawn_proto()
         if(this.time[1] == 30) can_spawn_now = true
-        if(this.time[0] == this.finish_time[0] && this.time[1] == this.finish_time[1]) this.gameplay_allowed = false
+        if(this.time == this.finish_time) this.finish_game()
     }
 
     format_time(time) {
@@ -289,7 +289,6 @@ class Grid {
     }
 
     finish_game() {
-        // console.log('game finished')
         this.gameplay_play = false
 
         // hide all buttons
