@@ -1,5 +1,53 @@
 * {
     margin: auto;
     padding: auto;
-    background-color: grey;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+section {
+    margin-top: 20vh;
+    display: grid;
+    padding: 40px;
+    height: 50vh;
+    width: 80vw;
+    border-radius: 15px;
+}
+
+a {
+    text-decoration: none;
+    transition: ease-in-out;
+    transition-duration: 0.2s;
+}
+
+a:hover {
+    transition: ease-in-out;
+    transition-duration: 0.2s;
+    background-color: rgba(223, 223, 223, 0.8);
+    border-radius: 60px;
+    padding: 0px 90px;
+}
+
+.pdetail {
+    font-size: 13px;
+}
+
+.point {
+    padding: 5px 0px;
+}
+
+.container {
+    padding: 20px;
+    background-color: rgba(221, 221, 221, 0.8);
+    border-radius: 20px;
+    display: grid;
+    height: 50%;
+    width: 70%;
+}
+
+.details {
+    padding-top: 30px;
+}
+
+#endgame {
+    background-size: cover;
 }

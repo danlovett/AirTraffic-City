@@ -1,22 +1,16 @@
 class Score {
     constructor() {
         this.runway_score = 30;
-        this.ctot_score = 20;
-        this.hp_score = 10
-        this.near_miss = 5;
+        this.ctot_score = 50;
+        this.hp_score = 20;
+        this.near_miss = 2;
 
-        this.ctot_delete = 50
+        this.ctot_delete = 40
 
         this.total_score = 0;
     
         // future code
         this.correct_arrival_stand = 40
-    }
-
-    show_score() {
-        textSize(20)
-        fill('black')
-        text(`Score: ${this.total_score}`, (grid.total_grid_size + 1.5) * grid.grid_size, 1 * grid.grid_size)
     }
 
     update_score(type, plane) {
@@ -60,9 +54,11 @@ class Score {
             plane.score = plane.score - this.ctot_delete;
         }
 
+        console.log(plane, type)
 
-        if(this.total_score <= -100) {
-            grid.finish_game()
-        }
+
+        // if(this.total_score <= -100) {
+        //     grid.gameplay_allowed = false
+        // }
     }
 }

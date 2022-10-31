@@ -203,7 +203,6 @@ class Plane {
         // ?CTOT variance for score calculation
         // ?make the CTOT itself
         operation == 'get_ctot_variance' ? time_to_mins = (this.ctot[0] * 60) + this.ctot[1] : time_to_mins = (grid.time[0] * 60) + grid.time[1]
-        grid.time_to_mins = time_to_mins
         
         if(temp.toString().split('.')[1] >= '5') { // if the excact value is .5, ceil() it
             add_hours = ceil(temp)
@@ -271,7 +270,7 @@ class Plane {
             }
         }
 
-        if(this.ctot_to_mins + 30 == grid.time_to_mins) {
+        if(this.ctot_to_mins + 30 <= grid.time_to_mins) {
             control_planes.splice(control_planes.indexOf(this), 1)
             score.update_score('remove_ac_ctot', this)
         }
@@ -281,7 +280,6 @@ class Plane {
     intersects(other) {
         // does the posititon of two different aircraft match?
 		if(this.current_x == other.current_x && this.current_y == other.current_y) {
-            // console.log('crash')
 			return true // if yes, return true
 		} else {
 			return false // otherwise return false
@@ -309,10 +307,6 @@ class Plane {
         control_planes.splice(control_planes.indexOf(this), 1) // remove plane from user control
         other_control.push(this) // add it to a different array which will act as AI access and movements
 
-
-        let lower_ctot = this.make_ctot(-5, 'mins', 'get_ctot_variance')
-        let upper_ctot = this.make_ctot(10, 'mins', 'get_ctot_variance')
-
         // scoring uses external functions that are called
         // if the aircraft posititon is the holding point destination, then add points
         if(this.hp_destination[0] == this.current_x && this.hp_destination[1] == this.current_y) {
@@ -324,8 +318,8 @@ class Plane {
         }
 
         // check lower and upper ctot variables, and check this with the current time in mins
-        if(lower_ctot < grid.time_mins()
-            && upper_ctot > grid.time_mins()) {
+        if(this.ctot_to_mins - 5 <= grid.time_to_mins
+            && this.ctot_to_mins + 10 >= grid.time_to_mins) {
             score.update_score('correct_ctot', this) // add points if correct
         } else {
             score.update_score('wrong_ctot', this) // remove points if wrong

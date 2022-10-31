@@ -2,6 +2,7 @@
 let grid_x, grid_y
 let control_planes = []
 let other_control = []
+let all_planes = []
 let can_spawn_now = true
 let grid
 
@@ -26,6 +27,8 @@ function setup() {
             control_planes.push(new Plane(spawn_point))
             control_planes[i].add_plane_info('dep')
             control_planes[i].ctot = control_planes[i].make_ctot(floor(random(20, 80)))
+
+            all_planes.push(control_planes[i])
         }
         
         for(let i = 0; i < grid.holding_points.length; i++) {
@@ -59,15 +62,11 @@ function draw() {
         control_my_planes(control_planes)
         control_other_planes()
     
-    
-        score.show_score()
-    
         // placed at end of block code to make result appear on top
         grid.render_selector_tool(grid_x, grid_y)
     } else {
-        grid.finish_game()
+        window.location.href = `http://127.0.0.1:5500/game/endgame.html?${grid.ellapsed_time_seconds}&${score.total_score}&${level_name}`
     }
-
 }
 
 function keyPressed() {
@@ -148,6 +147,7 @@ function spawn_proto() {
             control_planes.push(new Plane(spawn_point))
             control_planes[new_plane_index].add_plane_info('dep')
             control_planes[new_plane_index].ctot = control_planes[new_plane_index].make_ctot(floor(random(20, 120)))
+            all_planes.push(control_planes[new_plane_index])
             new_plane_index++
         }
     }

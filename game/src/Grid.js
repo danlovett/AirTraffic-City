@@ -14,7 +14,6 @@ class Grid {
         this.stands = [];
         this.holding_points = [];
         this.runway = [];
-        this.runway_copy = []
         this.runway_entry = [];
         this.control_tower = [];
         // declare specifics
@@ -23,7 +22,7 @@ class Grid {
         this.destinations;
         this.airport;
         
-        this.gameplay_allowed = true
+        this.gameplay_allowed = false
         this.gameplay_play = true
         
         // game start time
@@ -31,6 +30,8 @@ class Grid {
         this.time_to_mins = 0;
         this.gameplay_speed = 30 // lower val = faster, higher val = slower default = 30
         this.finish_time;
+        this.finish_time_to_mins;
+        this.ellapsed_time_seconds = 0;
 
         this.color_grass = color(100, 250, 70)
         this.color_stand = color(70, 70, 70)
@@ -76,7 +77,7 @@ class Grid {
             }
         }) 
 
-        this.finish_time = [this.time[0] + 3, this.time[1], 0]
+        this.finish_time = [this.time[0], this.time[1] + 5, 0]
     }
 
     render() {
@@ -138,6 +139,7 @@ class Grid {
 
         if(this.gameplay_play == true) {
             if(frameCount % this.gameplay_speed == 0) {
+                this.ellapsed_time_seconds++
                 // hours
                 if(this.time[0] >= 23 && this.time[1] >= 59 && this.time[2] >= 59) {
                     this.time[0] = 0
@@ -159,12 +161,13 @@ class Grid {
                     this.time[2] = this.time[2] + 1
                 }
                 this.time_to_mins = (this.time[0] * 60) + this.time[1]
+                this.finish_time_to_mins = (this.finish_time[0] * 60) + this.finish_time[1]
             }
         }
 
         if(this.time[1] % 40 == 0 && this.time[2] % 60 == 0 && can_spawn_now) spawn_proto()
         if(this.time[1] == 30) can_spawn_now = true
-        if(this.time == this.finish_time) this.finish_game()
+        if(this.time_to_mins == this.finish_time_to_mins) this.gameplay_allowed = false
     }
 
     format_time(time) {
@@ -285,17 +288,6 @@ class Grid {
                 this.speed_buttons[index].style('background-color', 'black')
                 this.speed_buttons[index].style('color', 'white')
             }
-        }
-    }
-
-    finish_game() {
-        // console.log('game finished')
-        this.gameplay_play = false
-
-        // hide all buttons
-        this.play_pause_button.hide()
-        for(let i = 0; i < this.speed_buttons.length; i++) {
-            this.speed_buttons[i].hide()
         }
     }
 }
