@@ -18,7 +18,7 @@
         </div> 
         <ul id="links">
             <div id="auth">
-                <li><a href="#" onclick="openThis('leaderboard', 'block', true)">Leaderboard</a></li>
+                <li><a href="#" onclick="openThis('leaderboard', 'block', true); getLeaderboardEntries()">Leaderboard</a></li>
                 <li><a href="#" onclick="openThis('history', 'block', true)">History</a></li>
                 <li><a href="#" onclick="openThis('profile', 'block', true)"><img src="../lib/src/pfp_demo.png" style="margin-right: 5px;" alt=""> Profile</a></li>
             </div>
@@ -72,21 +72,13 @@
             <h1 class="fs20 color-black">Leaderboard</h1>
         </div>
         <div class="entries-levels">
-            <div class="entries w100">
-                <div class="entry">
+            <div id="leaderboard-board" class="entries w100">
+                <a>
                     <span class="color-black fs20 m20">Name</span>
-                    <span class="color-black fs20 m20">Date/Time</span>
-                    <span class="color-black fs20 m20">Level</span>
-                    <span class="color-black fs20 m20">Score</span>
+                    <span class="color-black fs20 m20">Date</span>
+                    <span class="color-black fs20 m20">Total Score</span>
                     <span class="color-black fs20 m20">Errors</span>
-                </div>
-                <div class="entry">
-                    <span class="color-black fs20 m20">Name</span>
-                    <span class="color-black fs20 m20">Date/Time</span>
-                    <span class="color-black fs20 m20">Level</span>
-                    <span class="color-black fs20 m20">Score</span>
-                    <span class="color-black fs20 m20">Errors</span>
-                </div>
+                <a>
             </div>
         </div>
     </section>
