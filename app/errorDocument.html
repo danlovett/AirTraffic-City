@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATC | Page not found</title>
+</head>
+<body>
+    <section id="section" class="container 404-error-bg">
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script>
+        $('<img>', {
+            src: `../lib/src/error-pages/${Math.floor(Math.random() * 32)}.png`,
+        }).css('scale', '0.8').appendTo('#section')
+        $('<h1>', {
+            text: '404. Thats an error'
+        }).appendTo('#section')
+        $('<p>', {
+            text: 'page not found'
+        }).appendTo('#section')
+    </script>
+</body>
+</html>

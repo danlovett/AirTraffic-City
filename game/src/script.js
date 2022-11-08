@@ -18,7 +18,7 @@ function setup() {
     $(document).prop('title', level_name);
 
     // grid = new Grid(10, 10)
-    $.get(`../../lib/raw/level_config/${level_name.toLowerCase()}.json`, (json_level) => {
+    $.get(`../../lib/config/level_config/${level_name.toLowerCase()}.json`, (json_level) => {
         grid.init(json_level)
         for(let i = 0; i <= floor(random(4, 9)); i++) {
             let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]
@@ -49,22 +49,29 @@ function draw() {
 
     if(grid.gameplay_allowed) {
         // GRID
+        // integer values of the mouseX/Y positions, divide by total grid size, and constrain to the length of grid from 0
         grid_x = constrain(floor((mouseX/grid.grid_size)), 0, grid.total_grid_size - 1)
         grid_y = constrain(floor((mouseY/grid.grid_size)), 0, grid.total_grid_size - 1)
-    
+        
+        // show the grid with basic stroke (groundwork)
         grid.render()
+        // add the layers for each differernt section.
         grid.show_areas()
+        // update the in-time game
         grid.time_now()
+        // show time, score, buttons to control speed and play/pause, 
+        // ... and any aicraft in their AoC
         grid.buttons_text()
     
         
-        //control_planes MOVEMENT
-        control_my_planes(control_planes)
-        control_other_planes()
+        control_my_planes(control_planes) // control my planes
+        control_other_planes() // control other planes outside my AoC
     
         // placed at end of block code to make result appear on top
         grid.render_selector_tool(grid_x, grid_y)
-    } else {
+    } else { // if grid.gameplay_allowed is false
+        // redirect user to this page with set values
+        // console.log(`Ended game:\n${'-' *50}\nTime: ${grid.ellapsed_time_seconds}\nScore: ${score.total_score}\nLevel Name: ${level_name}`)
         window.location.href = `http://127.0.0.1:5500/game/endgame.html?${grid.ellapsed_time_seconds}&${score.total_score}&${level_name}`
     }
 }

@@ -1,9 +1,5 @@
 /* TAGS */
 
-html {
-    min-width: 970px;
-}
-
 * {
     margin: auto;
     font-size: 46px;
@@ -60,7 +56,6 @@ h1 {
 }
 
 /* RIGHT */
-
 ul {
     display: flex;
     background-color: #1118;
@@ -212,9 +207,12 @@ img {
 
 .entries {
     margin-top: 30px;
-    display: block;
 }
 
+.entries a {
+    display: grid;
+    grid-template-columns: 20vw 25vw 20vw 10vw;
+}
 /* Signup */
 
 #signup {

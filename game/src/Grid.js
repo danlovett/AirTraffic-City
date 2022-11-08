@@ -22,7 +22,7 @@ class Grid {
         this.destinations;
         this.airport;
         
-        this.gameplay_allowed = false
+        this.gameplay_allowed = true
         this.gameplay_play = true
         
         // game start time
@@ -31,7 +31,7 @@ class Grid {
         this.gameplay_speed = 30 // lower val = faster, higher val = slower default = 30
         this.finish_time;
         this.finish_time_to_mins;
-        this.ellapsed_time_seconds = 0;
+        this.ellapsed_time_seconds = "0";
 
         this.color_grass = color(100, 250, 70)
         this.color_stand = color(70, 70, 70)
@@ -266,6 +266,7 @@ class Grid {
         this.play_pause_button.mousePressed(() => {
             if(this.gameplay_play == true) {
                 this.gameplay_play = false
+                this.gameplay_allowed = false
                 this.play_pause_button.style('background-color', 'black')
                 this.play_pause_button.style('color', 'white')
             }  else {
