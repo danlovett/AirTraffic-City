@@ -123,11 +123,9 @@ img {
     height: 50vh;
     width: 30vw;
     overflow: auto;
-    transition-duration: 0.2s;
 }
 
 .quick-play h2 {
-    font-size: 30px;
     transition-duration: 0.2s;
 }
 
@@ -182,7 +180,6 @@ img {
     font-size: 30px;
     transition: ease-in-out;
     transition-duration: 0.2s;
-
 }
 
 
@@ -205,13 +202,14 @@ img {
     margin-top: 30px;
 }
 
-.entries {
-    margin-top: 30px;
+table {
+    width: 100%;
+    text-align: left;
+    margin-left: 33px;
 }
 
-.entries a {
-    display: grid;
-    grid-template-columns: 20vw 25vw 20vw 10vw;
+tr {
+    text-align: center;
 }
 /* Signup */
 

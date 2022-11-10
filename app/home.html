@@ -4,22 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library</title>
+    <title>Library | AT City</title>
     <link rel="stylesheet" href="./src/style.css">
     <link rel="stylesheet" href="./src/dynamicBackground.css">
     <link rel="stylesheet" href="./src/universal.css">
+    <link rel="stylesheet" href="./src/fa.css">
     <link rel="shortcut icon" href="../lib/src/logo.png" type="image/x-icon">
 </head>
 <body>
     <section class="navbar vw80">
         <div class="static-left">
-            <a href="/main/index.html"><img src="../lib/src/logo.png" alt=""></a>
+            <a href="./index.html"><img src="../lib/src/logo.png" alt=""></a>
             <span id="time" class="fs30"><div class="time-loading"></div></span>
         </div> 
         <ul id="links">
             <div id="auth">
-                <li><a href="#" onclick="openThis('leaderboard', 'block', true); getLeaderboardEntries()">Leaderboard</a></li>
-                <li><a href="#" onclick="openThis('history', 'block', true)">History</a></li>
+                <li><a href="#" onclick="openThis('leaderboard', 'block', true); getEntries('leaderboard')">Leaderboard</a></li>
+                <li><a href="#" onclick="openThis('history', 'block', true); getEntries('history')">History</a></li>
                 <li><a href="#" onclick="openThis('profile', 'block', true)"><img src="../lib/src/pfp_demo.png" style="margin-right: 5px;" alt=""> Profile</a></li>
             </div>
             <li id="no-auth" style="display: none;" onclick="openThis('signup', 'grid', false)"><a href="#">Signup</a></li>
@@ -68,52 +69,14 @@
     </section>
     <section id="leaderboard" class="board p20 vw75 m0 color-black" style="display: none;">
         <div class="header">
-            <a href="#"><img src="../lib/src/close_btn.png" onclick="closeThis('leaderboard')" alt=""></a>
+            <a href="#"><img src="../lib/src/close_btn.png" onclick="closeThis('leaderboard'); clearTable('leaderboard')" alt=""></a>
             <h1 class="fs20 color-black">Leaderboard</h1>
-        </div>
-        <div class="entries-levels">
-            <div id="leaderboard-board" class="entries w100">
-                <a>
-                    <span class="color-black fs20 m20" id="name">Name</span>
-                    <span class="color-black fs20 m20" id="date">Date</span>
-                    <span class="color-black fs20 m20" id="score">Total Score</span>
-                    <span class="color-black fs20 m20" id="errors">Errors</span>
-                <a>
-            </div>
         </div>
     </section>
     <section id="history" class="board p20 vw75 m0 color-black" style="display: none;">
         <div class="header">
-            <a href="#"><img src="../lib/src/close_btn.png" onclick="closeThis('history')" alt=""></a>
-            <h1 class="color-black">History</h1>
-        </div>
-        <div class="entries-levels">
-            <div class="entries w100">
-                <div class="entry">
-                    <span class="color-black fs20 m20">Name</span>
-                    <span class="color-black fs20 m20">Date/Time</span>
-                    <span class="color-black fs20 m20">Level</span>
-                    <span class="color-black fs20 m20">Score</span>
-                    <span class="color-black fs20 m20">Errors</span>
-                </div>
-                <div class="entry">
-                    <span class="color-black fs20 m20">Name</span>
-                    <span class="color-black fs20 m20">Date/Time</span>
-                    <span class="color-black fs20 m20">Level</span>
-                    <span class="color-black fs20 m20">Score</span>
-                    <span class="color-black fs20 m20">Errors</span>
-                </div>
-                <div class="entry">
-                    <span class="color-black fs20 m20">Name</span>
-                    <span class="color-black fs20 m20">Date/Time</span>
-                    <span class="color-black fs20 m20">Level</span>
-                    <span class="color-black fs20 m20">Score</span>
-                    <span class="color-black fs20 m20">Errors</span>
-                </div>
-            </div>
-            <div class="levels">
-
-            </div>
+            <a href="#"><img src="../lib/src/close_btn.png" onclick="closeThis('history'); clearTable('history')" alt=""></a>
+            <h1 class="color-black">History - [FIRST NAME]</h1>
         </div>
     </section>
     <section id="signup" class="auth-board p20 vw75 m0 color-black" style="display: none;">

@@ -7,11 +7,11 @@
     "library": {
         "best_played": {
             "title": "Manchester",
-            "image": "../lib/src/temp/played_best.jpg"
+            "image": "../lib/src/levels/manchester.jpg"
         },
         "last_played": {
             "title": "Luton",
-            "image": "../lib/src/temp/played_last.jpg"
+            "image": "../lib/src/levels/luton.jpg"
         },
         "levels": {
            "titles": ["Manchester", "Stansted", "Gatwick", "Luton"],
