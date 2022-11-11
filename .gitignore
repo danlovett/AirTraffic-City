@@ -2,5 +2,3 @@
 node_modules/
 .package.json
 .package-lock.json
-lib/app_management/db
-app/src/fa.css

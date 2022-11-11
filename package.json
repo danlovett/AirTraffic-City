@@ -1,13 +1,28 @@
 {
-  "type": "module",
-  "name": "javascript",
+  "name": "airtraffic-city",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "main": "app/index.html",
+  "directories": {
+    "lib": "lib"
   },
-  "keywords": [],
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danlovett/AirTraffic-City.git"
+  },
   "author": "",
-  "license": "ISC"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danlovett/AirTraffic-City/issues"
+  },
+  "homepage": "https://github.com/danlovett/AirTraffic-City#readme",
+  "dependencies": {
+    "node": "^19.0.1",
+    "socket.io": "^4.5.3",
+    "sqlite": "^4.1.2",
+    "sqlite3": "^5.1.2"
+  }
 }
