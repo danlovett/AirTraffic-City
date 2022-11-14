@@ -20,7 +20,7 @@
     },
 
     "temp": {
-        "auth": true
+        "auth": false
         
     }
 }

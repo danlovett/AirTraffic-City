@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="./src/style.css">
     <link rel="stylesheet" href="./src/dynamicBackground.css">
     <link rel="stylesheet" href="./src/universal.css">
-    <link rel="stylesheet" href="./src/fa.css">
+    <!-- <link rel="stylesheet" href="./src/fa.css"> -->
     <link rel="shortcut icon" href="../lib/src/logo.png" type="image/x-icon">
 </head>
 <body>
@@ -86,17 +86,17 @@
             <h2 id="login-title" class="color-black text-cetner fs30" style="display: none;">Login</h2>
         </div>
             <form action="" id="signup-form">
-                <div class="input">
+                <div class="input" id="s-name">
                     <p class="fs20 color-black">Name: </p>
                     <input type="text" name="name" id="signup-full-name" placeholder="What's your name?" class="color-black fs20 m10 item"> <br>
                 </div>
-                <div class="input">
+                <div class="input" id="s-email">
                     <p class="fs20 color-black">Email: </p>
                     <input type="email" name="email" id="signup-email" placeholder="What's your email" class="color-black fs20 m10 item"> <br>
                 </div>
-                <div class="input">
+                <div class="input" id="s-password">
                     <p class="fs20 color-black">Password: </p>
-                    <input type="password" name="password" id="signup-password" placeholder="What's your password" class="color-black fs20 m10 item">
+                    <input type="password" name="password" id="signup-password" autocomplete="on" placeholder="What's your password" class="color-black fs20 m10 item">
 
                 </div>
                 <button class="fs20 color-black text-center w100 m10" type="submit">Sign Up</button>
@@ -109,14 +109,14 @@
             <form action="" style="display: none;" id="login-form">
                 <div class="input">
                     <p class="fs20 color-black">username: </p>
-                    <input type="name" name="name" id="username" placeholder="What's your username" class="color-black fs20 m10 item"> <br>
+                    <input type="name" name="name" id="username" placeholder="What's your username" autocomplete="on" class="color-black fs20 m10 item"> <br>
                 </div>
                 <div class="input">
                     <p class="fs20 color-black">Password: </p>
-                    <input type="password" name="password" id="password" placeholder="What's your password" class="color-black fs20 m10 item">
+                    <input type="password" name="password" id="password" autocomplete="on" placeholder="What's your password" class="color-black fs20 m10 item">
 
                 </div>
-                <button class="fs20 color-black text-center w100 m10">Login</button>
+                <button class="fs20 color-black text-center w100 m10" onclick="handleLogin()">Login</button>
 
                 <div class="auth-link">
                     <p class="fs20 color-black">Want an account?</p>
@@ -143,5 +143,6 @@
     <script src="../lib/app_management/auth.js"></script>
     <script src="../lib/app_management/home.js"></script>
     <script src="../lib/app_management/Time.js"></script>
+    <!-- <script src="../lib/app_management/database/users.js"></script> -->
 </body>
 </html>
