@@ -1,0 +1,24 @@
+/* Signup */
+
+#signup {
+    background-color: aliceblue;
+    border-radius: 35px;
+    position: relative;
+}
+
+.input {
+    display: flex;
+}
+
+button {
+    align-items: center;
+}
+
+
+.auth-link {
+    display: flex;
+}
+
+.auth-board {
+    width: 50%;
+}

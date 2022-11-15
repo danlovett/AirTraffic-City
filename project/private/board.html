@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/private/css/framework.css">
+    <link rel="stylesheet" href="/private/css/boards.css">
+    <link rel="stylesheet" href="/private/css/navbar.css">
+    <link rel="shortcut icon" href="/private/images/logo.png" type="image/x-icon">
+    <title>Leaderboard</title>
+</head>
+<body onload="getEntries()">
+    <div id="nav"></div>
+    <section id="leaderboard" class="board p20 m0 color-black">
+        <h1 class="fs30 color-black" id="header"></h1>
+        <div style="background-color: black; width: 100%; padding: 2px; border-radius: 30px;"></div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="/private/src/QLeadHist.js"></script>
+    <script>
+        $(() => {
+            $('#nav').load('/private/navbar.html')
+        })
+    </script>
+</body>
+</html>

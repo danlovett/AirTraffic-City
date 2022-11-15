@@ -1,0 +1,86 @@
+/* NAVBAR */
+
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0px;
+    width: inherit;
+    margin: 0px;
+}
+
+.static-left {
+    display: flex;
+    background-color: #1118;
+    border-radius: 100px;
+    padding-right: 20px;
+    margin-left: 1px;
+}
+
+.static-left img {
+    height: 50px;
+    margin-left: 20px;
+}
+
+#auth {
+    display: flex;
+}
+
+#time {
+    color: white;
+    font-size: 20px;
+    background-color: rgb(73, 73, 73);
+    padding: 0px 20px;
+    border-radius: 35px;
+}
+
+h1 {
+    white-space: nowrap;
+    font-size: 20px;
+}
+
+.time-loading {
+    background-color: rgb(188, 188, 188, 50);
+    border-radius: 35px;
+    padding: 10px 40px;
+}
+
+/* RIGHT */
+ul {
+    display: flex;
+    background-color: #1118;
+    padding: 12.5px;
+    border-radius: 50px;
+    margin-right: 0px;
+}
+
+li {
+    list-style-type: none;
+    text-align: center;
+    padding: 0px 20px;
+    font-size: 12px;
+}
+
+a {
+    display: flex;
+    justify-content: space-evenly;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+/* User-based */
+
+img {
+    height: 25px;
+    width: auto;
+    border-radius: 100px;
+}
+
+#user li {
+    padding-left: 10px;
+    padding-right: 0px;
+}
+
+#user #username {
+    padding-right: 30px;
+    white-space: nowrap;
+}

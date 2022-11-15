@@ -1,0 +1,16 @@
+<section class="navbar vw80">
+    <div class="static-left">
+        <a href="#"><img src="/private/images/logo.png" alt="" onclick="javascript:window.history.back(-1);return false;"></a>
+        <span id="time" class="fs30"><div class="time-loading"></div></span>
+    </div> 
+    <ul id="links">
+        <div id="auth">
+            <li><a href="/board?dest=leaderboard">Leaderboard</a></li>
+            <li><a href="/board?dest=history">History</a></li>
+            <li><a href="/error?404"><img src="/private/images/pfp_demo.png" style="margin-right: 5px;" alt=""> Profile</a></li>
+        </div>
+        <li id="no-auth" style="display: none;"><a href="/auth/signup">Signup</a></li>
+        <li id="no-auth" style="display: none;"><a href="/auth/login">Login</a></li>
+    </ul>
+</section>
+<script src="/private/src/Time.js"></script>

@@ -1,0 +1,26 @@
+/* Leaderboard & History */
+
+.header {
+    display: flex;
+    float: left;
+}
+
+.header a {
+    margin-right: 10px;
+}
+
+
+.board {
+    background-color: aliceblue;
+    border-radius: 35px;    
+}
+
+table {
+    width: 100%;
+    text-align: left;
+    margin-left: 33px;
+}
+
+tr {
+    text-align: center;
+}

@@ -1,0 +1,48 @@
+.level-detail {
+    position: absolute;
+    height: 70%;
+    top: 15%;
+    padding: 20px;
+}
+
+.container {
+    padding: 20px;
+    text-align: center;
+    background-color: rgba(25, 25, 25, 0.4);
+    margin-bottom: 30px;
+}
+
+.splitter {
+    display: flex;
+    width: 100%;
+    background-color: rgba(39, 39, 39, 0.8);
+}
+
+.level-play {
+    position: absolute;
+    padding: 20px;
+    border-radius: 20px 20px 0 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(39, 39, 39, 0.8);
+    width: 89%;
+    }
+
+.content {
+    margin-top: 30px;
+    display: flex;
+}
+
+.content img {
+    height: 100px;
+    border-radius: 0px;
+    border: 5px solid grey;
+    margin: 0px 5px 0px 35px;
+}
+
+.profile-detail {
+    display: block;
+    margin-left: 10px;
+    margin-top: 0px;
+}
