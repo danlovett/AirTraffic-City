@@ -5,20 +5,15 @@ let total_score = details.split('&')[1] // second value
 let level_played = details.split('&')[2] // third value
 // let best_plane = details.split('&')[3] // fourth value
 
-console.log(time_taken/60)
-
-$.get('./app.json', json => { // get the data from this file location, use json as variable
+$.get('../../app.json', json => { // get the data from this file location, use json as variable
     // getting the image through cycling all level names in the json file
     for(let i = 0; i < json.library.levels.titles.length; i++) {
         if(json.library.levels.titles[i] == level_played) {
             // set the background to correlated condition
-            $('#endgame').css('background-image', `url(../lib/src/levels/${level_played}.jpg)`)
+            $('#endgame').css('background-image', `url(../images/levels/${level_played}.jpg)`)
         }
     }
 })
-
-function convert_time(time) {
-}
 
 // setting text for each differernt id in the endgame.html file
 $('#level').text(`Game ended at ${level_played}`)

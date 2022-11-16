@@ -7,15 +7,15 @@
     "library": {
         "best_played": {
             "title": "Manchester",
-            "image": "../lib/src/levels/manchester.jpg"
+            "image": "../private/images/levels/manchester.jpg"
         },
         "last_played": {
             "title": "Luton",
-            "image": "../lib/src/levels/luton.jpg"
+            "image": "../private/images/levels/luton.jpg"
         },
         "levels": {
            "titles": ["Manchester", "Stansted", "Gatwick", "Luton"],
-           "src": ["../lib/src/levels/manchester.jpg", "../lib/src/levels/stansted.jpg", "../lib/src/levels/gatwick.jpg", "../lib/src/levels/luton.jpg"]
+           "src": ["/private/images/levels/manchester.jpg", "../private/images/levels/stansted.jpg", "../private/images/levels/gatwick.jpg", "../private/images/levels/luton.jpg"]
         }
     },
 

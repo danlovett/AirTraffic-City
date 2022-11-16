@@ -1,6 +1,6 @@
 function getEntries() {
     let type = window.location.href.split('=')[1]
-    $.get(`../../lib/config/user/${type}.json`, json => {
+    $.get(`./db/${type}.json`, json => {
         const data = json.data
         //leaderboard stuff
         const id_types = ['name', 'date', 'score', 'errors']

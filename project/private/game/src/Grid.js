@@ -77,7 +77,7 @@ class Grid {
             }
         }) 
 
-        this.finish_time = [this.time[0], this.time[1] + 5, 0]
+        this.finish_time = [this.time[0] + 2, this.time[1], 0]
     }
 
     render() {
@@ -266,7 +266,6 @@ class Grid {
         this.play_pause_button.mousePressed(() => {
             if(this.gameplay_play == true) {
                 this.gameplay_play = false
-                this.gameplay_allowed = false
                 this.play_pause_button.style('background-color', 'black')
                 this.play_pause_button.style('color', 'white')
             }  else {
