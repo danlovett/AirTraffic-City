@@ -11,7 +11,7 @@ $.get('./app.json', json => {
     $('<a>',{
         text: `Play at ${urlQuery}`,
         class: 'level-play',
-        href: `/private/game/index.html?${urlQuery}`,
+        href: `/game/index.html?${urlQuery}`,
     }).appendTo('#level-detail');
 
     $(document).prop('title', `Play @ ${urlQuery} | ATC`)

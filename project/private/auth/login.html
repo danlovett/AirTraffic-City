@@ -4,9 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <link rel="stylesheet" href="../css/auth.css">
+    <title>Login | ATC</title>
 </head>
 <body>
-    
+    <div id="nav"></div>
+    <section id="signup" class="auth-board p20 vw75 m0 color-black">
+        <form action="" id="login-form">
+            <div class="input">
+                <p class="fs20 color-black">username: </p>
+                <input type="name" name="name" id="username" placeholder="What's your username" autocomplete="on" class="color-black fs20 m10 item"> <br>
+            </div>
+            <div class="input">
+                <p class="fs20 color-black">Password: </p>
+                <input type="password" name="password" id="password" autocomplete="on" placeholder="What's your password" class="color-black fs20 m10 item">
+
+            </div>
+            <button class="fs20 color-black text-center w100 m10" type="submit">Login</button>
+
+            <div class="auth-link">
+                <p class="fs20 color-black">Want an account?</p>
+                <a href="/auth/signup" style="color: blue;">Signup.</a>
+            </div>
+        </form>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script>
+        $(() => {
+            $('#nav').load('/private/navbar.html')
+        })
+    </script>
 </body>
 </html>

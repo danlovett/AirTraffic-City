@@ -1,7 +1,6 @@
-let libraryLocation = '../../app.json'
 
 // read from .json file
-$.get(libraryLocation, function(data) {
+$.get('../../app.json', function(data) {
     // set the whole file to variable
     let lib = JSON.parse(data)
 
@@ -20,7 +19,7 @@ $.get(libraryLocation, function(data) {
     } else {
 
     }
-
+    
     $('#link-best-played').attr('href', `/level?id=${lib.library.best_played.title}`)
     $('#link-last-played').attr('href', `/level?id=${lib.library.last_played.title}`)
 
@@ -62,6 +61,7 @@ $.get(libraryLocation, function(data) {
 
 $('#link-library').bind('click', () => {
     $('#link-quick-play').css('background-color', 'black')
+
     $('#link-quick-play').css('color', 'white')
     $('#quick-play-ui').css('display', 'none')
 
@@ -79,6 +79,7 @@ $('#link-quick-play').bind('click', () => {
 
     $('#link-library').css('background-color', 'black')
     $('#link-library').css('color', 'white')
+
     $('#lib-ui').css('display', 'none')
 
     $(document).prop('title', `Quick Play | ATC`)

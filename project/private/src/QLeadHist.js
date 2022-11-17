@@ -1,9 +1,10 @@
+
 function getEntries() {
     let type = window.location.href.split('=')[1]
     $.get(`./db/${type}.json`, json => {
-        const data = json.data
+        const entries = json.entries
         //leaderboard stuff
-        const id_types = ['name', 'date', 'score', 'errors']
+        const id_types = ['name', 'date', 'score', 'errors', 'level']
         
         
         $('<table>', {
@@ -17,22 +18,23 @@ function getEntries() {
         
         for(let i = 0; i < id_types.length; i++) {
             $('<th>', {
-                text: `${id_types[i]}`,
+                text: `${id_types[i].charAt(0).toUpperCase() + id_types[i].slice(1)}`,
                 class: "color-black fs20 m20"
             }).appendTo('#table-header')
         }
         
-        for(let x = 0; x < data.length; x++) {
+        for(let x = 0; x < entries.length; x++) {
             $('<tr>',{
                 id: `entry${x + 1}`,
-                href: '#'
             }).appendTo(`#${type}-entries`)
-            for(let i = 0; i < data[x].length; i++) {
-                $('<th>',{
-                    class: "color-black fs20 m20",
-                    id: id_types[i],
-                    text: data[x][i]
-                }).appendTo(`#entry${x + 1}`)
+            let obj = Object.values(entries[x])
+            for(let value of obj) {
+                    $('<th>',{
+                        class: "color-black fs20 m20",
+                        id: id_types[x],
+                        text: value,
+                        href: `remove?id=${x}`
+                    }).appendTo(`#entry${x + 1}`)
             }
         }
         

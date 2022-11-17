@@ -14,8 +14,8 @@
     <div id="nav"></div>
     <section id="library" class="vw80">
         <div class="quick-actions">
-            <a href="#" id="link-quick-play">Quick Play</a>
-            <a href="#" id="link-library">Library</a>
+            <a class="level-nav" href="#" id="link-quick-play">Quick Play</a>
+            <a class="level-nav" href="#" id="link-library">Library</a>
         </div>
         <div class="container" id="quick-play-ui">
             <span class="fs30">Quick Play</span>
@@ -23,16 +23,14 @@
                 <a href="#" id="link-best-played">
                     <div id="best-played" class="quick-play"> 
                         <div class="detail background-filter ph50 pv20">
-                            <h2 class="fs30"></h2>
-                            <p id="best-played-title" class="fs20"></p>
+                            <h2 class="fs20" id="best-played-title"></h2>
                         </div>
                     </div>
                 </a>
                 <a href='#' id="link-last-played"> 
                     <div id="last-played" class="quick-play">
                         <div class="detail background-filter ph50 pv20">
-                            <h2 class="fs30"></h2>
-                            <p id="last-played-title" class="fs20"></p> 
+                            <h2 class="fs20" id="last-played-title"></h2>
                         </div>
                     </div>
                 </a>
@@ -43,27 +41,36 @@
             <div id="levels" class="levels m10"></div>
         </div>
     </section>
-    <section id="profile" class="board p20 vw75 m0 color-black" style="display: none; height: 100%;">
-        <div class="header">
-            <a href="#"><img src="../lib/src/close_btn.png" onclick="closeThis('profile')" alt=""></a>
-            <h1 class="color-black">Profile</h1>
-        </div>
-        <div class="content">
-            <img src="../lib/src/pfp_demo.png" alt="">
-            <div class="profile-detail">
-                <h1 class="fs20 color-black">Daniel Lovett</h1>
-                <p class="color-black fs20">Edit profile</p>
-            </div>
-        </div>
 
-    </section>
-    
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script src="/private/src/Qhome.js"></script>
     <script>
         $(() => {
             $('#nav').load('/private/navbar.html')
         })
+
+        // $(document).ready(() => {
+        //     $('#link-quick-play').hover(() => {
+        //         $(this).css("background-color", 'grey')
+        //     }, () => {
+        //         $(this).css("color", 'white')
+        //     }, () => {
+        //         $(this).css("transition", 'ease-in-out')
+        //     }, () => {
+        //         $(this).css("transition-duration", '1s')
+        //     })
+            
+        //     $('#link-library').hover(() => {
+        //         $(this).css("background-color", 'grey')
+        //     }, () => {
+        //         $(this).css("color", 'white')
+        //     }, () => {
+        //         $(this).css("transition", 'ease-in-out')
+        //     }, () => {
+        //         $(this).css("transition-duration", '1s')
+        //     })
+        // })
+
     </script>
 </body>
 </html>

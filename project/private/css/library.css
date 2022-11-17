@@ -22,7 +22,6 @@
     padding: 5px 20px;
     border-radius: 35px;
     margin: 0px 10px;
-
 }
 
 .quick-access {
@@ -48,7 +47,7 @@
 }
 
 .quick-play:hover h2 {
-    font-size: 35px;
+    font-size: 25px;
     transition: ease-in-out;
     transition-duration: 0.2s;
 }
@@ -100,7 +99,7 @@
     transition-duration: 0.2s;
 }
 
-.content {
+/* .content {
     margin-top: 30px;
     display: flex;
 }
@@ -116,4 +115,4 @@
     display: block;
     margin-left: 10px;
     margin-top: 0px;
-}
+} */

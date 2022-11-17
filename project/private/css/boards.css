@@ -1,24 +1,29 @@
 /* Leaderboard & History */
 
-.header {
-    display: flex;
-    float: left;
-}
-
-.header a {
-    margin-right: 10px;
+#header {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 
 .board {
-    background-color: aliceblue;
-    border-radius: 35px;    
+    background-color: rgba(200, 200, 200, 0.75);
+    border-radius: 36px;
+    width: 70%;
+    margin-top: 30px;
+  }
+
+.sep {
+    background-color: black;
+    width: 100%;
+    padding: 2px;
+    border-radius: 30px;
+    margin-bottom: 10px;
 }
 
 table {
     width: 100%;
     text-align: left;
-    margin-left: 33px;
 }
 
 tr {

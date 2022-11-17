@@ -18,7 +18,7 @@ function setup() {
     $(document).prop('title', level_name);
 
     // grid = new Grid(10, 10)
-    $.get(`/private/game/config/${level_name.toLowerCase()}.json`, (json_level) => {
+    $.get(`/game/config/${level_name.toLowerCase()}.json`, (json_level) => {
         grid.init(json_level)
         for(let i = 0; i <= floor(random(4, 9)); i++) {
             let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]

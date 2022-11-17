@@ -1,16 +1,31 @@
-<section class="navbar vw80">
-    <div class="static-left">
-        <a href="#"><img src="/private/images/logo.png" alt="" onclick="javascript:window.history.back(-1);return false;"></a>
-        <span id="time" class="fs30"><div class="time-loading"></div></span>
-    </div> 
-    <ul id="links">
-        <div id="auth">
-            <li><a href="/board?dest=leaderboard">Leaderboard</a></li>
-            <li><a href="/board?dest=history">History</a></li>
-            <li><a href="/error?404"><img src="/private/images/pfp_demo.png" style="margin-right: 5px;" alt=""> Profile</a></li>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../private/css/navbar.css">
+    <link rel="stylesheet" href="../private/css/framework.css">
+</head>
+<body>
+    <section class="navbar">
+        <div class="static-left">
+            <a href="#"><img src="/private/images/logo.png" alt="" onclick="javascript:window.history.back(-1);return false;"></a>
+            <span id="time" class="fs30"><div class="time-loading"></div></span>
+        </div> 
+        <ul id="links">
+            <div id="auth">
+                <li><a href="/board?dest=leaderboard">Leaderboard</a></li>
+                <li><a href="/board?dest=history">History</a></li>
+                <li><a href="/error?404"><img src="/private/images/pfp_demo.png" style="margin-right: 5px;" alt=""> Profile</a></li>
+            </div>
+            <div id="no-auth">
+                <li><a href="/auth/signup">Signup</a></li>
+                <li><a href="/auth/login">Login</a></li>
+            </ul>
         </div>
-        <li id="no-auth" style="display: none;"><a href="/auth/signup">Signup</a></li>
-        <li id="no-auth" style="display: none;"><a href="/auth/login">Login</a></li>
-    </ul>
-</section>
-<script src="/private/src/Time.js"></script>
+    </section>
+    <script src="/private/src/Time.js"></script>
+    <script src="/private/src/Qnav.js"></script>    
+</body>
+</html>
+
+
+

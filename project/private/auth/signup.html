@@ -4,9 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Sign Up | ATC</title>
 </head>
 <body>
-    
+    <div id="nav"></div>
+    <section id="signup" class="auth-board p20 vw75 m0 color-black">
+        <form action="" id="signup-form">
+            <div class="input" id="s-name">
+                <p class="fs20 color-black">Name: </p>
+                <input type="text" name="name" id="signup-full-name" placeholder="What's your name?" class="color-black fs20 m10 item"> <br>
+            </div>
+            <div class="input" id="s-email">
+                <p class="fs20 color-black">Email: </p>
+                <input type="email" name="email" id="signup-email" placeholder="What's your email" class="color-black fs20 m10 item"> <br>
+            </div>
+            <div class="input" id="s-password">
+                <p class="fs20 color-black">Password: </p>
+                <input type="password" name="password" id="signup-password" autocomplete="on" placeholder="What's your password" class="color-black fs20 m10 item">
+
+            </div>
+            <button class="fs20 color-black text-center w100 m10" type="submit">Sign Up</button>
+            
+            <div class="auth-link">
+                <p class="fs20 color-black">Already have an account?</p>
+                <a href="/auth/login" style="color: blue;">Login.</a>
+            </div>
+        </form>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script>
+        $(() => {
+            $('#nav').load('/private/navbar.html')
+        })
+    </script>
 </body>
 </html>
