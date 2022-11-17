@@ -10,7 +10,7 @@ $.get('../../app.json', json => { // get the data from this file location, use j
     for(let i = 0; i < json.library.levels.titles.length; i++) {
         if(json.library.levels.titles[i] == level_played) {
             // set the background to correlated condition
-            $('#endgame').css('background-image', `url(../images/levels/${level_played}.jpg)`)
+            $('#endgame').css('background-image', `url(../../private/images/levels/${level_played}.jpg)`)
         }
     }
 })
@@ -21,3 +21,6 @@ $('#timetaken').text(`You took ${time_taken/60} minute${time_taken/60 != 1 ? 's'
 $('#score').text(`You gained ${total_score} point${total_score == 1 ? '' : 's'}`)
 // $('#bestaircraft').text(`Best performing aircraft: ${best_plane}`)
 
+$('#submit-eog').click(() => {
+    window.location.href = `${window.location.origin}/results?name=${$('#name').val()}&score=${total_score}&errors=0&level=${level_played}&redirect=leaderboard`
+})

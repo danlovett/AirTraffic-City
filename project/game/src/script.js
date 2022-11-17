@@ -72,7 +72,7 @@ function draw() {
     } else { // if grid.gameplay_allowed is false
         // redirect user to this page with set values
         // console.log(`Ended game:\n${'-' *50}\nTime: ${grid.ellapsed_time_seconds}\nScore: ${score.total_score}\nLevel Name: ${level_name}`)
-        window.location.href = `${window.location.origin}/private/game/endgame.html?${grid.ellapsed_time_seconds}&${score.total_score}&${level_name}`
+        window.location.href = `${window.location.origin}/gameEnded?${grid.ellapsed_time_seconds}&${score.total_score}&${level_name}`
     }
 }
 

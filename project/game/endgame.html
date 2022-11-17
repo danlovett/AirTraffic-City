@@ -7,7 +7,7 @@
     <title>Ended | AT city</title>
     <link rel="shortcut icon" href="/private/images/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="/private/css/framework.css">
-    <link rel="stylesheet" href="/private/game/style.css">
+    <link rel="stylesheet" href="/game/style.css">
 </head>
 <body>
     <section id="endgame">
@@ -15,15 +15,16 @@
             <h1 id="level">Game Ended </h1>
             <p class="pdetail">Details on your performance:</p>
             <div class="details">
+                <input id="name" type="text" class="fs20 color-black text-center" placeholder="Your name?">
                 <p class="point fs20" id="timetaken"></p>
                 <p class="point fs20" id="bestaircraft">Best aircraft: undefined</p>
                 <p class="point fs20" id="score"></p>
             </div>
-            <a href="/go/to/page/here" class="fs20" onclick="doSomeFunction()">Add to leaderboard</a>
+            <button id="submit-eog" class="fs20">Add to leaderboard</a>
         </div>
     </section>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <script src="/private/game/src/endgame.js"></script>
+    <script src="/game/src/endgame.js"></script>
 </body>
 </html>
