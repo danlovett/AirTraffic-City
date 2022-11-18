@@ -28,7 +28,7 @@
 #time {
     color: white;
     font-size: 20px;
-    background-color: rgb(73, 73, 73);
+    background-color: rgba(20, 20, 20, 0.8);
     padding: 0px 20px;
     border-radius: 35px;
 }

@@ -66,21 +66,23 @@
 /* Levels */
 
 .container {
-    background-color: rgba(73, 73, 73, 0.5);
-    padding: 5px 20px;
-    margin-bottom: 40px;
+    background-color: rgba(20, 20, 20, 0.8);
+    margin: 20px 50px;
+    border-radius: 20px;
+    padding: 10px 30px;
 }
 
 .levels {
-    display: flex;
-    justify-content: flex-start;
-    background-color: #2b4b47;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    background-color: rgba(30, 30, 30, 0.2);
+    padding: 20px;
     overflow-x: auto;
 }
 
 .child {
     margin: 15px 5px;
-    height: 100px;
+    height: 20vh;
     padding: 20px 10px;
     background-size: cover;
 }
