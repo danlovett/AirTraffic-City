@@ -16,19 +16,36 @@ section {
 a {
     text-decoration: none;
     transition: ease-in-out;
-    transition-duration: 0.2s;
+    transition-duration: 1s;
 }
 
 a:hover {
+    color: blue;
     transition: ease-in-out;
-    transition-duration: 0.2s;
-    background-color: rgba(223, 223, 223, 0.8);
-    border-radius: 60px;
-    padding: 0px 90px;
+    transition-duration: 1s;
+}
+
+.flex {
+    display: flex;
+    width: 100%;
 }
 
 .pdetail {
     font-size: 13px;
+}
+
+.input {
+    display: flex;
+}
+
+.input p {
+    margin-right: 20px;
+    margin-left: 0px;
+}
+
+.input input {
+    width: 50%;
+    margin: 0px;
 }
 
 .point {
@@ -37,7 +54,7 @@ a:hover {
 
 .container {
     padding: 20px;
-    background-color: rgba(221, 221, 221, 0.8);
+    background-color: rgba(20, 20, 20, 0.8);
     border-radius: 20px;
     display: grid;
     width: 70%;
@@ -51,6 +68,28 @@ a:hover {
     background-size: cover;
 }
 
-p {
-    font-size: 20px;
+button{
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 10px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition: cubic-bezier(.68,-0.55,.27,1.55);
+    transition-duration: 1s;
+    width: 70%;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+button:hover {
+    background-color: rgb(216, 216, 216); /* Green */
+    color: black;
+    transition: cubic-bezier(.68,-0.55,.27,1.55);
+    transition-duration: 1s;
+    border-radius: 50px;
+    width: 95%;
 }

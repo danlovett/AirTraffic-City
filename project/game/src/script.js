@@ -71,8 +71,7 @@ function draw() {
         grid.render_selector_tool(grid_x, grid_y)
     } else { // if grid.gameplay_allowed is false
         // redirect user to this page with set values
-        // console.log(`Ended game:\n${'-' *50}\nTime: ${grid.ellapsed_time_seconds}\nScore: ${score.total_score}\nLevel Name: ${level_name}`)
-        window.location.href = `${window.location.origin}/gameEnded?${grid.ellapsed_time_seconds}&${score.total_score}&${level_name}`
+        window.location.href = `${window.location.origin}/gameEnded?${CryptoJS.AES.encrypt(`${grid.ellapsed_time_seconds}`, "time")}&${CryptoJS.AES.encrypt(`${score.total_score}`, "score")}&${CryptoJS.AES.encrypt(`${level_name}`, "level")}`
     }
 }
 

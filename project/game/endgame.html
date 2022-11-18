@@ -10,21 +10,37 @@
     <link rel="stylesheet" href="/game/style.css">
 </head>
 <body>
+    
     <section id="endgame">
         <div class="container">
-            <h1 id="level">Game Ended </h1>
+            <h1 id="level" class="text-center"></h1>
             <p class="pdetail">Details on your performance:</p>
-            <div class="details">
-                <input id="name" type="text" class="fs20 color-black text-center" placeholder="Your name?">
-                <p class="point fs20" id="timetaken"></p>
-                <p class="point fs20" id="bestaircraft">Best aircraft: undefined</p>
-                <p class="point fs20" id="score"></p>
-            </div>
-            <button id="submit-eog" class="fs20">Add to leaderboard</a>
+            <table>
+                <tr>
+                    <th class="text-center fs20">Name: </th>
+                    <th><input id="name" type="text" class="fs20 color-black" placeholder="Full Name"></th>
+                </tr>
+                <tr>
+                    <th class="text-center fs20">Time: </th>
+                    <th id="timetaken" class="point fs20"></th>
+                </tr>
+                <!-- <tr>
+                    <th class="text-center fs20">Best Performing Aircraft: </th>
+                    <th id="bestaircraft" class="point fs20"></th>
+                </tr> -->
+                <tr>
+                    <th class="text-center fs20">Score: </th>
+                    <th id="score" class="point fs20"></th>
+                </tr>
+            </table>
+            <button id="submit-eog" class="fs15">Add to leaderboard</button>
+            <p class="fs15">or alternatively <a class="fs15" href="/library">Back to home</a></p>
+
         </div>
     </section>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/game/src/endgame.js"></script>
 </body>
 </html>

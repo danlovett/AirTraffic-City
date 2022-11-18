@@ -4,38 +4,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/private/css/framework.css">
+    <link rel="stylesheet" href="/private/css/boards.css">
+    <link rel="shortcut icon" href="/private/images/logo.png" type="image/x-icon">
     <title>Sign Up | ATC</title>
 </head>
 <body>
-    <div id="nav"></div>
-    <section id="signup" class="auth-board p20 vw75 m0 color-black">
-        <form action="" id="signup-form">
+    <section id="signup" class="board p20 vw75 m0 color-black" style="position: absolute;left: 10%;top: 25%;">
+        <h1 class="color-black text-center">Sign up</h1>
+        <div class="sep"></div>
+        <form action="" id="signup-form" style="text-align: center;">
             <div class="input" id="s-name">
-                <p class="fs20 color-black">Name: </p>
+                <label class="fs20 color-black">Full Name: </label>
                 <input type="text" name="name" id="signup-full-name" placeholder="What's your name?" class="color-black fs20 m10 item"> <br>
             </div>
             <div class="input" id="s-email">
-                <p class="fs20 color-black">Email: </p>
+                <label class="fs20 color-black">Email: </label>
                 <input type="email" name="email" id="signup-email" placeholder="What's your email" class="color-black fs20 m10 item"> <br>
             </div>
             <div class="input" id="s-password">
-                <p class="fs20 color-black">Password: </p>
+                <label class="fs20 color-black">Password: </label>
                 <input type="password" name="password" id="signup-password" autocomplete="on" placeholder="What's your password" class="color-black fs20 m10 item">
 
             </div>
-            <button class="fs20 color-black text-center w100 m10" type="submit">Sign Up</button>
+            <button class="fs20 color-black text-center m10" type="submit" style="width: 50%;background-color: cornflowerblue;">Sign Up</button>
             
             <div class="auth-link">
-                <p class="fs20 color-black">Already have an account?</p>
-                <a href="/auth/login" style="color: blue;">Login.</a>
+                <p class="fs20 color-black">Already have an account? <a href="/auth/login" style="color: blue; font-size: 20px;">Login.</a></p>
             </div>
         </form>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <script>
-        $(() => {
-            $('#nav').load('/private/navbar.html')
-        })
-    </script>
+    <script src="/private/src/Qauth.js"></script>
 </body>
 </html>

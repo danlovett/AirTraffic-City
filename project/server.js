@@ -17,6 +17,21 @@ app.get('/auth/login', (req, res) => {
     res.sendFile(__dirname + '/private/auth/login.html')
 })
 
+app.get('/auth/loginRequest', (req, res) => {
+    let resSQL = `SELECT id FROM users WHERE username == "${req.query.username}";`
+    const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
+        if(err) throw err;
+        db.all(resSQL, [], (err, rows) => { // if not work add rows back to args in arrow func
+            // error? throw it mate
+            if(err) {
+                throw err // deal with this later where there may be another entry under same name
+            } else {
+                res.redirect(302, `/library`)
+            }
+        })
+    })
+})
+
 app.get('/auth/signup', (req, res) => {
     res.sendFile(__dirname + '/private/auth/signup.html')
 })
@@ -30,12 +45,12 @@ app.get('/results', (req, res) => {
     let resSQL = `INSERT INTO "leaderboard" (name, date, score, errors) VALUES("${req.query.name}", DATE('now'), ${req.query.score}, ${req.query.errors});`
     const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
         if(err) throw err;
-        db.all(resSQL, [], err => { // if not work add rows back to args in arrow func
+        db.all(resSQL, [], err => {
             // error? throw it mate
-            if(err) throw err // deal with this later where there may be another entry under same name
+            if(err) throw err // future updates will include ability to remove the user's current entry and make new one (OUT_OF_SCOPE for now)
         })
     })
-    res.redirect(302, `/board?dest=leaderboard`)
+    res.redirect(308, `/board?dest=leaderboard`)
 })  
 
 app.get('/level', (req, res) => {
@@ -75,10 +90,10 @@ function getBoard(dest) {
         // sort based on score and error ratio
         entries.sort((a,b) => (b.score/b.errors) - (a.score/a.errors));
 
-        fs.writeFile(`./db/${dest}.json`, `{"entries": ${JSON.stringify(entries)}}`, (err, result) => {
+        fs.writeFile(`./db/${dest}.json`, `{"entries": ${JSON.stringify(entries)}}`, err => {
             if(err) throw err
         })
       })
     });
-  
 }
+

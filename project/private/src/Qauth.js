@@ -30,20 +30,20 @@ function validationError(error) {
 
 function formAnswer(type) {
     if(type == 'name') {
-        itemTextReponse = '^ Full name must contain a <strong>space</strong> ^'
+        itemTextReponse = '^ Must be full name'
     } else if(type == 'email') {
-        itemTextReponse = '^ Email must contain an <strong>"@" and "."</strong> ^'
+        itemTextReponse = '^ Include "@" and "."'
     } else if(type == 'nickname') {
         type = 'name';
-        itemTextReponse = '^ Are you sure that is not a <strong>nickname</strong>? ^'
+        itemTextReponse = '^ Thats a nickname'
     } else if(type == 'password') {
-        itemTextReponse = '^ Needs to be <strong>at least 6 characters long</strong> ^'
+        itemTextReponse = '^ Must be at least 6 characters'
     }
 
     if(type != 'success') {
         $("<p>", {
             text: `${itemTextReponse}`,
-            class: 'errorMessage'
+            class: 'error-message fs20 color-red text-center'
         }).appendTo(`#s-${type}`)
     } else {
         $('#signup-title').css('color', 'green')
@@ -52,6 +52,9 @@ function formAnswer(type) {
 
 
 $('#signup-form').on('submit', function(event) {
+    if($('.error-message')) {
+        $('.error-message').remove()
+    }
     event.preventDefault();
 
     let name = $('#signup-full-name').val()
@@ -93,7 +96,13 @@ $('#signup-form').on('submit', function(event) {
     } 
 
 
+
+
     document.getElementById('signup-full-name').value = '';
     document.getElementById('signup-email').value = '';
     document.getElementById('signup-password').value = '';
+})
+
+$('#login-form').on('submit', () => {
+    window.location.href = `${window.location.origin}/auth/loginRequest?username=${$('#username').val()}`
 })

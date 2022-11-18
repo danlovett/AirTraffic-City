@@ -1,9 +1,11 @@
 
 let details = window.location.href.split('?')[1] // get all details after the ?
-let time_taken = details.split('&')[0] // first value
-let total_score = details.split('&')[1] // second value
-let level_played = details.split('&')[2] // third value
+let time_taken = CryptoJS.AES.decrypt(details.split('&')[0], "time").toString(CryptoJS.enc.Utf8); // first value
+let total_score = CryptoJS.AES.decrypt(details.split('&')[1], "score").toString(CryptoJS.enc.Utf8); // second value
+let level_played = CryptoJS.AES.decrypt(details.split('&')[2], "level").toString(CryptoJS.enc.Utf8); // third value
 // let best_plane = details.split('&')[3] // fourth value
+
+console.log(CryptoJS.AES.decrypt(details.split('&')[1], "score").toString(CryptoJS.enc.Utf8))
 
 $.get('../../app.json', json => { // get the data from this file location, use json as variable
     // getting the image through cycling all level names in the json file
@@ -17,8 +19,8 @@ $.get('../../app.json', json => { // get the data from this file location, use j
 
 // setting text for each differernt id in the endgame.html file
 $('#level').text(`Game ended at ${level_played}`)
-$('#timetaken').text(`You took ${time_taken/60} minute${time_taken/60 != 1 ? 's' : ''}`)
-$('#score').text(`You gained ${total_score} point${total_score == 1 ? '' : 's'}`)
+$('#timetaken').text(`${Math.floor(time_taken/60)} minute${time_taken/60 >= 1 ? 's' : ''}`)
+$('#score').text(`${total_score} point${total_score == 1 ? '' : 's'}`)
 // $('#bestaircraft').text(`Best performing aircraft: ${best_plane}`)
 
 $('#submit-eog').click(() => {
