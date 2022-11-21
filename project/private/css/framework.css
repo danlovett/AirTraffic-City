@@ -129,3 +129,8 @@ body {
 .color-red {
     color: red;
 }
+
+.color-green {
+    color: green;
+    font-weight: 1000;
+}

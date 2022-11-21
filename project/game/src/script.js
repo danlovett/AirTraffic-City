@@ -65,7 +65,7 @@ function draw() {
     
         
         control_my_planes(control_planes) // control my planes
-        control_other_planes() // control other planes outside my AoC
+        // control_other_planes()
     
         // placed at end of block code to make result appear on top
         grid.render_selector_tool(grid_x, grid_y)
@@ -194,9 +194,9 @@ function control_my_planes(control_planes) {
     }
 }
 
-function control_other_planes() {
-    for (let i = 0; i < other_control.length; i++) {
-        other_control[i].spawn()
-        other_control[i].update_position()
-    }
-}
+// function control_other_planes() {
+// //     for (let i = 0; i < other_control.length; i++) {
+// //         other_control[i].spawn()
+// //         other_control[i].update_position()
+// //     }
+// // }

@@ -1,14 +1,12 @@
-const url_search = new URLSearchParams(window.location.search)
-const level = url_search.get('id')
-let type = url_search.get('type')
+const url_search = window.location.href.split('?')[1]
+const level = CryptoJS.AES.decrypt(url_search.split('&')[0], "level").toString(CryptoJS.enc.Utf8)
+let type = CryptoJS.AES.decrypt(url_search.split('&')[1], "status-message").toString(CryptoJS.enc.Utf8)
 
-if(type != null) {
-    if(type == "0") $('#level-desc').text('This is your best played level.')
-    if(type == "1") $('#level-desc').text('This is your last played level.')
-} else {
-    $('#level-desc').remove()
-}
+console.log(level)
 
+if(type == "0") $('#level-desc').text('This is your best played level.')
+if(type == "1") $('#level-desc').text('This is your last played level.')
+if(type == "2") $('#level-desc').remove()
 
 $('#level-name').text(level)
 $('#level-detail').css('background-image', `url(../private/images/levels/${level}.jpg)`)

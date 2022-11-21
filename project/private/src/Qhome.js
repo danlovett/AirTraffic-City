@@ -1,3 +1,24 @@
+let message
+try {
+    message = window.location.href.split('?')[1]
+} catch(err) {
+    throw err
+}
+
+// DEV ONLY reset DB results from server.js route
+if(message != undefined) $('<p>', {
+    text: 'Operation successful by admin. See console.',
+    class: 'text-center color-green m10 fs15',
+    id: 'message'
+}).prependTo('#library')
+
+setTimeout(() => {
+    $("#message").remove()
+}, 1500);
+
+$.get('../../db/leaderboard.json', data => {
+    console.log(data)
+})
 
 // read from .json file
 $.get('../../app.json', function(data) {
@@ -20,7 +41,7 @@ $.get('../../app.json', function(data) {
     }
 
     $('<h1>', {
-        class: 'fs30 m20 text-center',
+        class: 'fs30 text-center m20',
         text: 'Quick Play'
     }).prependTo('#quick-play-ui')
 
@@ -30,12 +51,11 @@ $.get('../../app.json', function(data) {
             $('<a>',{
                 id: `quick-play-${data_titles[data]}`,
                 class: 'quick-play-child',
-                href: `/level?id=${data_titles[data]}&type=${data == 0 ? '0' : '1'}`,
+                href: `/level?${CryptoJS.AES.encrypt(data_titles[data], "level")}&${CryptoJS.AES.encrypt(String(data), "status-message")}`,
             }).appendTo('#quick-play'); // add it to the levels id (over iterations levels will populate into list)
             // create new element to display title declaring text and class
             $('<h2>',{
-                text: data_titles[data],
-                class: "background-filter",
+                text: data_titles[data]
             }).appendTo(`#quick-play-${data_titles[data]}`)
     
             // set background image to level (unique for each)
@@ -51,7 +71,7 @@ $.get('../../app.json', function(data) {
         $('<a>',{
             id: `${lib.library.levels.titles[i]}`,
             class: 'child',
-            href: `/level?id=${lib.library.levels.titles[i]}`,
+            href: `/level?${CryptoJS.AES.encrypt(lib.library.levels.titles[i], "level")}&${CryptoJS.AES.encrypt("2", "status-message")}`,
         }).appendTo('#levels'); // add it to the levels id (over iterations levels will populate into list)
         // create new element to display title declaring text and class
         $('<h2>',{

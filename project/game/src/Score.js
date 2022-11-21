@@ -54,11 +54,9 @@ class Score {
             plane.score = plane.score - this.ctot_delete;
         }
 
-        console.log(plane, type)
 
-
-        // if(this.total_score <= -100) {
-        //     grid.gameplay_allowed = false
-        // }
+        if(this.total_score <= -100) {
+            grid.gameplay_allowed = false
+        }
     }
 }

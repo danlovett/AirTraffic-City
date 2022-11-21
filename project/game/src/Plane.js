@@ -305,7 +305,7 @@ class Plane {
         this.handover = true
 
         control_planes.splice(control_planes.indexOf(this), 1) // remove plane from user control
-        other_control.push(this) // add it to a different array which will act as AI access and movements
+        // other_control.push(this) // add it to a different array which will act as AI access and movements
 
         // scoring uses external functions that are called
         // if the aircraft posititon is the holding point destination, then add points
@@ -324,8 +324,6 @@ class Plane {
         } else {
             score.update_score('wrong_ctot', this) // remove points if wrong
         }
-
-        this.ai_movement()
     }
 
     remove_plane() {

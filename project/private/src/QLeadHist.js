@@ -3,7 +3,14 @@
 // ... sections of project
 function getEntries() {
     // what board is being used (extracted using Express(req.query.{queryItem}))
-    let type = window.location.href.split('=')[1]
+    let href = window.location.href.split('?')[1]
+    let type = href.split('&')[0].split('=')[1]
+    let err
+    try {
+        err = href.split('&')[1].split('=')[1]
+    } catch(err) {
+        err = false
+    }
 
     // create the section
     $('<section>', {
@@ -16,6 +23,19 @@ function getEntries() {
         id: 'header', 
         class: 'fs30' // adding framework
     }).appendTo(`#${type}`) // add to previously created section from id
+
+    if(err) {
+        $('<p>', {
+            class: 'text-center color-red fs20',
+            style: 'margin-bottom: 20px;',
+            text: 'Unable to add to leaderboard',
+            id: 'leaderboard-error'
+        }).appendTo(`#${type}`)
+
+        setTimeout(() => {
+            $("#leaderboard-error").remove()
+        }, 4000);
+    }
 
     // make seperator - visuals are compiled by css
     $('<div>', {class:'sep'}).appendTo(`#${type}`)
@@ -59,7 +79,6 @@ function getEntries() {
                 let obj = Object.values(entries[x]) // convert text to object
 
                 for(let value = 0; value < obj.length; value++) { // cycle through each key in object and get val
-                    console.log(value)
                     $('<th>',{ // new row part
                         class: "color-black fs20 m20",
                         id: `${id_types[value]}-${x + 1}`, // for future updates (TABLE FILTERS)
@@ -67,10 +86,9 @@ function getEntries() {
                     if(id_types[value] == 'name' || id_types[value] == 'level') {
                         $('<a>', {
                             text: obj[value],
-                            href: `${window.location.origin}/${id_types[value]}?id=${obj[value]}`
+                            href: `${window.location.origin}/level?${CryptoJS.AES.encrypt(obj[value], "level")}&${CryptoJS.AES.encrypt("2", "status-message")}`
                         }).appendTo(`#${id_types[value]}-${x + 1}`)
                     } else {
-                        // console.log(`${id_types[value]}-${x + 1}`)
                         $(`#${id_types[value]}-${x + 1}`).text(obj[value]).css('color', 'white')
                     }
                 }
