@@ -5,8 +5,6 @@ let total_score = CryptoJS.AES.decrypt(details.split('&')[1], "score").toString(
 let level_played = CryptoJS.AES.decrypt(details.split('&')[2], "level").toString(CryptoJS.enc.Utf8); // third value
 // let best_plane = details.split('&')[3] // fourth value
 
-console.log(CryptoJS.AES.decrypt(details.split('&')[1], "score").toString(CryptoJS.enc.Utf8))
-
 $.get('../../app.json', json => { // get the data from this file location, use json as variable
     // getting the image through cycling all level names in the json file
     for(let i = 0; i < json.library.levels.titles.length; i++) {
@@ -24,5 +22,7 @@ $('#score').text(`${total_score} point${total_score == 1 ? '' : 's'}`)
 // $('#bestaircraft').text(`Best performing aircraft: ${best_plane}`)
 
 $('#submit-eog').click(() => {
-    window.location.href = `${window.location.origin}/results?name=${$('#name').val()}&score=${total_score}&errors=0&level=${level_played}&redirect=leaderboard`
+    let name
+    $('#name').val().length <= 3 ? name = 'Unnamed Aviator' : name = $('#name').val()
+    window.location.href = `${window.location.origin}/results?name=${name}&score=${total_score}&errors=0&level=${level_played}&redirect=leaderboard`
 })

@@ -8,13 +8,13 @@ function getEntries() {
     // create the section
     $('<section>', {
         id: `${type}`, // set what sort of board it is (for css and jQuery usage)
-        class: 'board p20 color-black' // add framework css for visuals
+        class: 'board p20' // add framework css for visuals
     }).appendTo('body') // append to the main tag of page
 
     // make the header (dynamic)
     $('<h1>', {
         id: 'header', 
-        class: 'fs30 color-black' // adding framework
+        class: 'fs30' // adding framework
     }).appendTo(`#${type}`) // add to previously created section from id
 
     // make seperator - visuals are compiled by css
@@ -37,7 +37,7 @@ function getEntries() {
             
             // new table row
             $('<tr>', {
-                class: "color-black fs20 m20", // framework
+                class: "fs20 m20", // framework
                 id: 'table-header'
             }).appendTo(`#${type}-entries`) // add to correct table
             
@@ -46,7 +46,7 @@ function getEntries() {
                 $('<th>', { // new row entry
                     // making text capitalised using character seperation
                     text: `${id_types[i].charAt(0).toUpperCase() + id_types[i].slice(1)}`,
-                    class: "color-black fs20 m20"
+                    class: "fs20 m20"
                 }).appendTo('#table-header') // add it to the table heading
             }
             // adding table entries from JSON file
@@ -58,18 +58,27 @@ function getEntries() {
 
                 let obj = Object.values(entries[x]) // convert text to object
 
-                for(let value of obj) { // cycle through each key in object and get val
-                        $('<th>',{ // new row part
-                            class: "color-black fs20 m20",
-                            id: id_types[x], // for future updates (TABLE FILTERS)
-                            text: value, // set text to extracted value
-                        }).appendTo(`#entry${x + 1}`) // x is 0 based, add 1
+                for(let value = 0; value < obj.length; value++) { // cycle through each key in object and get val
+                    console.log(value)
+                    $('<th>',{ // new row part
+                        class: "color-black fs20 m20",
+                        id: `${id_types[value]}-${x + 1}`, // for future updates (TABLE FILTERS)
+                    }).appendTo(`#entry${x + 1}`) // x is 0 based, add 1
+                    if(id_types[value] == 'name' || id_types[value] == 'level') {
+                        $('<a>', {
+                            text: obj[value],
+                            href: `${window.location.origin}/${id_types[value]}?id=${obj[value]}`
+                        }).appendTo(`#${id_types[value]}-${x + 1}`)
+                    } else {
+                        // console.log(`${id_types[value]}-${x + 1}`)
+                        $(`#${id_types[value]}-${x + 1}`).text(obj[value]).css('color', 'white')
+                    }
                 }
             }
         } else { // there are no entries in the leaderboard table in database?
             $('<p>', { // new paragraph
                 text: 'Nothing to see here :(', // User feedback
-                class: 'color-black text-center fs20 m20'
+                class: 'text-center fs20 m20'
             }).appendTo(`#${type}`) // add to correct board
         }
         

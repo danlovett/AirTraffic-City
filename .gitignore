@@ -1,4 +1,7 @@
-.DS_Store
+project/db/leaderboard.json
 node_modules/
 .package.json
 .package-lock.json
+*.json
+.DS_Store
+lib/.DS_Store

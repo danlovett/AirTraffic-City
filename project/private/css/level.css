@@ -2,14 +2,16 @@
     position: absolute;
     height: 70%;
     top: 15%;
-    padding: 20px;
+    margin: 0px 3%;
+    border-radius: 35px;
 }
 
 .container {
     padding: 20px;
     text-align: center;
-    background-color: rgba(25, 25, 25, 0.4);
-    margin-bottom: 30px;
+    background-color: rgba(25, 25, 25, 0.8);
+    margin-bottom: 20px;
+    border-radius: 35px 35px 0px 0px;
 }
 
 .splitter {
@@ -20,14 +22,23 @@
 
 .level-play {
     position: absolute;
-    padding: 20px;
-    border-radius: 20px 20px 0 0;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(39, 39, 39, 0.8);
-    width: 89%;
-    }
+    padding: 10px;
+    background-color: rgba(25, 25, 25, 0.8);
+    color: white;
+    border-radius: 0px 0px 35px 35px;
+    transition: ease-in-out;
+    transition-duration: 2s;
+}
+.level-play:hover {
+    padding: 30px 0px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+    transition: ease-in-out;
+    transition-duration: 0.7s;
+}
 
 .content {
     margin-top: 30px;
@@ -45,4 +56,17 @@
     display: block;
     margin-left: 10px;
     margin-top: 0px;
+}
+
+#level-detail {
+    scale: 1;
+    transition: ease-in-out;
+    transition-duration: 3s;
+}
+
+
+#level-detail:hover {
+    scale: 1.06;
+    transition: ease-in-out;
+    transition-duration: 0.2s;
 }

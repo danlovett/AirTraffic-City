@@ -4,25 +4,44 @@ $.get('../../app.json', function(data) {
     // set the whole file to variable
     let lib = JSON.parse(data)
 
-    if(lib.library.best_played.title != "") {
-        // populate background image and title for best-played level
-        $('#best-played').css('background-image', `url(${lib.library.best_played.image}`)
-        $('#best-played-title').text(`${lib.library.best_played.title}`)
-    } else {
+    const data_titles = [lib.library.best_played.title, lib.library.last_played.title]
+    const data_images = [lib.library.best_played.image, lib.library.last_played.image]
 
+    $('<div>', {
+        id: 'quick-play-desc',
+    }).prependTo('#quick-play-ui')
+
+
+    for(let data = 0; data < 2; data++) {
+        $('<p>', {
+            class: 'text-center fs20',
+            text: `${data == 0 ? 'Best Played' : 'Last Played'}`
+        }).appendTo('#quick-play-desc')
     }
 
-    if(lib.library.last_played.title != "") {
-        // populate background image and title for last-played level
-        $('#last-played').css('background-image', `url(${lib.library.last_played.image}`)
-        $('#last-played-title').text(`${lib.library.last_played.title}`)
-    } else {
+    $('<h1>', {
+        class: 'fs30 m20 text-center',
+        text: 'Quick Play'
+    }).prependTo('#quick-play-ui')
 
-    }
+    for(let data = 0; data < data_titles.length; data++) {
+        // console.log(`Title #${data}: ${data_titles[data]}\nImage #${data}: ${data_images[data]}`)
+        if(data_titles[data] != "") {
+            $('<a>',{
+                id: `quick-play-${data_titles[data]}`,
+                class: 'quick-play-child',
+                href: `/level?id=${data_titles[data]}&type=${data == 0 ? '0' : '1'}`,
+            }).appendTo('#quick-play'); // add it to the levels id (over iterations levels will populate into list)
+            // create new element to display title declaring text and class
+            $('<h2>',{
+                text: data_titles[data],
+                class: "background-filter",
+            }).appendTo(`#quick-play-${data_titles[data]}`)
     
-    $('#link-best-played').attr('href', `/level?id=${lib.library.best_played.title}`)
-    $('#link-last-played').attr('href', `/level?id=${lib.library.last_played.title}`)
-
+            // set background image to level (unique for each)
+            $(`#quick-play-${data_titles[data]}`).css('background-image', `url(${data_images[data]}`)
+        }
+    }
 
 
     // populating the Library of levels
@@ -48,15 +67,6 @@ $.get('../../app.json', function(data) {
         //     console.log(i)
         // })
     }
-
-    // do something when the best-played <div> is clicked
-    $('#best-played').bind('click', () => {
-        loadLevelPane($('#best-played-title').text())
-    })
-    // do something when the last-played <div> is clicked
-    $('#last-played').bind('click', () => {
-        loadLevelPane($('#last-played-title').text())
-    })
 }, 'text'); // setting the reading type to text
 
 $('#link-library').bind('click', () => {

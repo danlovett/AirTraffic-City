@@ -1,18 +1,22 @@
-let urlQuery = window.location.href.split('=')[1]
+const url_search = new URLSearchParams(window.location.search)
+const level = url_search.get('id')
+let type = url_search.get('type')
 
-$.get('./app.json', json => {
+if(type != null) {
+    if(type == "0") $('#level-desc').text('This is your best played level.')
+    if(type == "1") $('#level-desc').text('This is your last played level.')
+} else {
+    $('#level-desc').remove()
+}
 
-    if(urlQuery == 'bestplayed') urlQuery = json.library.best_played.title
-    if(urlQuery == 'lastplayed') urlQuery = json.library.last_played.title
-    
-    $('#level-name').text(urlQuery)
-    $('#level-detail').css('background-image', `url(../private/images/levels/${urlQuery}.jpg)`)
-    $('#level-detail').css('background-size', 'cover')
-    $('<a>',{
-        text: `Play at ${urlQuery}`,
-        class: 'level-play',
-        href: `/game/index.html?${urlQuery}`,
-    }).appendTo('#level-detail');
 
-    $(document).prop('title', `Play @ ${urlQuery} | ATC`)
-})
+$('#level-name').text(level)
+$('#level-detail').css('background-image', `url(../private/images/levels/${level}.jpg)`)
+$('#level-detail').css('background-size', 'cover')
+$('<a>',{
+    text: `Play at ${level}`,
+    class: 'level-play',
+    href: `/game?${level}`,
+}).appendTo('#level-detail');
+
+$(document).prop('title', `Play @ ${level} | ATC`)

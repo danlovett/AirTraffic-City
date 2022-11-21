@@ -5,22 +5,36 @@
 }
 
 section {
-    margin-top: 20vh;
+    margin: 25% 5%;
     display: grid;
     padding: 40px;
     border-radius: 15px;
 }
 
-a {
+#eog {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 10px 40px;
+    text-align: center;
     text-decoration: none;
-    transition: ease-in-out;
+    display: inline-block;
+    font-size: 16px;
+    transition: cubic-bezier(.68,-0.55,.27,1.55);
     transition-duration: 1s;
+    width: 50%;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-a:hover {
-    color: blue;
-    transition: ease-in-out;
+#eog:hover {
+    background-color: rgb(216, 216, 216); /* Green */
+    color: black;
+    transition: cubic-bezier(.68,-0.55,.27,1.55);
     transition-duration: 1s;
+    border-radius: 90px;
+    width: 80%;
 }
 
 .flex {
@@ -66,28 +80,15 @@ a:hover {
     background-size: cover;
 }
 
-.container button{
-    background-color: black;
-    border: none;
-    color: white;
-    padding: 10px 40px;
-    text-align: center;
+.container a{
     text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    transition: cubic-bezier(.68,-0.55,.27,1.55);
+    transition: ease-in-out;
     transition-duration: 1s;
-    width: 70%;
-    border-radius: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    pointer-events: all;
 }
 
-.container button:hover {
-    background-color: rgb(216, 216, 216); /* Green */
-    color: black;
-    transition: cubic-bezier(.68,-0.55,.27,1.55);
+.container a:hover {
+    color: blue;
+    transition: ease-in-out;
     transition-duration: 1s;
-    border-radius: 50px;
-    width: 95%;
 }

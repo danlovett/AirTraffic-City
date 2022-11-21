@@ -3,12 +3,12 @@
 * {
     margin: auto;
     font-size: 46px;
-    font-family: 'Arial', Courier, monospace;
+    font-family: 'Poppins', sans-serif; 
     color: white;
 }
 
 body {
-	background: linear-gradient(-45deg, #e21919, #13de7c, #1198e7, #cfe90c);
+	background: linear-gradient(-45deg, #ffffff, #242424, #08197c, #28ff4c);
 	background-size: 400% 400%;
 	animation: gradient 20s ease infinite;
 	height: 60vh;
