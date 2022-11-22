@@ -13,3 +13,7 @@ $.get('../../app.json', function(data) {
     }
 
 }, 'text')
+
+$.get('../../db/currentUser.json', data => {
+    $('#pfp').attr('src', `${data.pfp}`)
+})

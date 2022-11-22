@@ -22,7 +22,5 @@ $('#score').text(`${total_score} point${total_score == 1 ? '' : 's'}`)
 // $('#bestaircraft').text(`Best performing aircraft: ${best_plane}`)
 
 $('#submit-eog').click(() => {
-    let name
-    $('#name').val().length <= 3 ? name = 'Unnamed Aviator' : name = $('#name').val()
-    window.location.href = `${window.location.origin}/results?name=${name}&score=${total_score}&errors=0&level=${level_played}&redirect=leaderboard`
+    window.location.href = `${window.location.origin}/results?score=${total_score}&errors=0&level=${level_played}&redirect=leaderboard`
 })

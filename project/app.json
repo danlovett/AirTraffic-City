@@ -1,6 +1,6 @@
 {   
     "about": {
-        "version": "Version 0.1.2.5",
+        "version": "Version 0.1.3",
         "author": "By Daniel Lovett"
     },
 
@@ -21,6 +21,5 @@
 
     "temp": {
         "auth": true
-        
     }
 }

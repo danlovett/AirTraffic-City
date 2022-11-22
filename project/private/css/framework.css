@@ -102,6 +102,10 @@ body {
     margin: 20px;
 }
 
+.mt30 {
+    margin-top: 30px;
+}
+
 .vw80 {
     width: 80vw;
 }
@@ -114,12 +118,20 @@ body {
     width: 50%;
 }
 
+.w85 {
+    width: 85%;
+}
+
 .w100 {
     width: 100%;
 }
 
 .h100 {
     height: 100%;
+}
+
+.pos-center {
+    top: 30%;
 }
 
 .color-black {

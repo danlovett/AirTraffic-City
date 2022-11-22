@@ -12,16 +12,13 @@
         </div> 
         <ul id="links">
             <div id="auth">
-                <li><a href="/library"><img src="/private/images/home.png" alt="Home"></a></li>
+                <li><a href="/library"><img src="/private/images/home.png" style="border-radius: 0px;" alt="Home"></a></li>
                 <li><a href="/board?dest=leaderboard">Leaderboard</a></li>
                 <li><a href="/board?dest=history">History</a></li>
-                <li><a href="/profile"><img src="/private/images/pfp_demo.png"></a></li>
+                <li><a href="/profile?id=current"><img id="pfp"></a></li>
+                <li><a href="/logout"><img src="/private/images/logout.png" style="border-radius: 0px;" alt=""></a></li>
             </div>
-            <div id="no-auth">
-                <li><a href="/auth/signup">Signup</a></li>
-                <li><a href="/auth/login">Login</a></li>
-            </ul>
-        </div>
+        </ul>
     </section>
     <script src="/private/src/Time.js"></script>
     <script src="/private/src/Qnav.js"></script>    

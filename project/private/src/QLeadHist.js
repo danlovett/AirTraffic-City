@@ -15,7 +15,7 @@ function getEntries() {
     // create the section
     $('<section>', {
         id: `${type}`, // set what sort of board it is (for css and jQuery usage)
-        class: 'board p20' // add framework css for visuals
+        class: 'board p20 w85' // add framework css for visuals
     }).appendTo('body') // append to the main tag of page
 
     // make the header (dynamic)

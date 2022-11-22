@@ -1,91 +1,105 @@
 const express = require('express');
+const app = express();
+
 const sqlite3 = require('sqlite3').verbose();
 const fs = require('fs'); 
-const CryptoJS = require('crypto-js');
 
-const app = express();
+const CryptoJS = require('crypto-js');
+const bcrypt = require('bcrypt')
+
+const passport = require('passport')
+
+const flash = require('express-flash')
+const session = require('express-session')
+
+const initPassport = require('./passport-config')
+initPassport(passport)
+
 app.use(express.static(__dirname))
+app.use(express.urlencoded({ extended: false }))
+app.use(flash())
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    cookie: { maxAge: 1000 * 60 * 60 * 12},
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.engine('html', require('ejs').renderFile);
+
+app.set('view engine', 'ejs');
+
+app.get('/login', checkNotAuthenticated, (req, res, next) => {
+    res.render('login');
+});
+let users = []
+
+app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
+        successRedirect: '/library',
+        failureRedirect: '/login',
+        failureFlash: true
+}));
+
+app.get('/register', checkNotAuthenticated, (req, res) => {
+    res.render('register');
+});
+
+app.post('/register', checkNotAuthenticated, async (req,res) => {
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        const sql = `INSERT INTO users(name, username, password) VALUES ("${req.body.name}", "${req.body.email}", "${hashedPassword}")`
+        const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
+            db.all(sql, [], err => { if(err) addlogging(err) } )
+        })
+        res.redirect('/login')
+    } catch {
+        res.redirect('/register')
+    }
+})
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html')
+    res.render('index');
 })
 
-app.get('/library', (req, res) => {
-    res.sendFile(__dirname + '/private/library.html')
+app.get('/library', checkAuthenticated, (req, res) => {
+    res.render('library', {pfp: req.user.pfp});
 })
 
-app.get('/auth/login', (req, res) => {
-    res.sendFile(__dirname + '/private/auth/login.html')
-})
-
-app.get('/auth/loginRequest', (req, res) => {
-    let resSQL = `SELECT id FROM users WHERE username == "${req.query.username}";`
-    const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
-        if(err) {
-            addlogging(err)
-            return false
-        }
-        db.all(resSQL, [], (err, rows) => { // if not work add rows back to args in arrow func
-            // error? throw it mate
-            if(err) {
-                addlogging(err)
-                return false // deal with this later where there may be another entry under same name
-            } else {
-                res.redirect(302, `/library`)
-            }
-        })
-    })
-})
-
-app.get('/auth/signup', (req, res) => {
-    res.sendFile(__dirname + '/private/auth/signup.html')
-})
-
-app.get('/board', (req, res) => {
+app.get('/board', checkAuthenticated, (req, res) => {
     getBoard(req.query.dest, null)
-    res.sendFile(__dirname + '/private/board.html')
+    res.render('board');
 })
 
-app.get('/results', (req, res) => {
-    let resSQL = `INSERT INTO "leaderboard" (name, date, score, errors, level) VALUES("${req.query.name}", DATE('now'), ${req.query.score}, ${req.query.errors}, '${req.query.level}');`
-    let returned_error
+app.get('/profile', checkAuthenticated, (req, res) => {
+    res.render('profile', {user: req.user})
+})
+
+app.get('/results', checkAuthenticated, (req, res) => {
+    let leaderboard_query = `INSERT INTO "leaderboard" (name, date, score, errors, level, personID) VALUES("${req.user.name}", DATE('now'), ${req.query.score}, ${req.query.errors}, '${req.query.level}, ${req.user.id}');`
+    let history_query = `INSERT INTO "history" (level_name, date, score, errors, personID) VALUES("${req.query.level}", DATE('now'), ${req.query.score}, ${req.query.errors}, ${req.user.id});`
     const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
-
-        db.all(resSQL, [], (err, result) => {
-            // error? throw it mate
-            if(err) {
-                fs.writeFile('./db/log.txt', `${err}`, err => {
-                    if(err) throw err
-                })
-
-                fs.readFile('./db/log.txt', 'utf-8', (err, result) => {
-                    returned_error = result.split(':')[3]
-                })
-                res.redirect(308, `/board?dest=${req.query.redirect}&err=${CryptoJS.AES.encrypt(returned_error, 'constraint-err')}`)
-            } else {
-                res.redirect(308, `/board?dest=${req.query.redirect}&result=${JSON.stringify(result)}`)
-            }
-        })
+        db.all(leaderboard_query, [], err => { if(err) throw err })
+        db.all(history_query, [], err => { if(err) throw err })
     })
+    res.redirect(308, `/board?dest=${req.query.redirect}`)
 })  
 
-app.get('/level', (req, res) => {
-    res.sendFile(__dirname + '/private/level.html')
+app.get('/level', checkAuthenticated, (req, res) => {
+    res.render('level');
 })
 
-app.get('/gameEnded', (req, res) => {
-    res.sendFile(__dirname + '/game/endgame.html')
+app.get('/gameEnded', checkAuthenticated, (req, res) => {
+    res.render('endgame', { name: req.user.name });
 })
 
-app.get('/game', (req, res) => {
-    res.sendFile(__dirname + '/game/index.html')
+app.get('/game', checkAuthenticated, (req, res) => {
+    res.render('game');
 })
 
-app.get('/?404', (req, res) => {
-    res.sendFile(__dirname + '/private/errorDoc.html')
-})
-
-app.get('/clear_db', (req, res) => {
+app.get('/clear_db', checkAuthenticated, (req, res) => {
     const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
         db.all(`DELETE FROM leaderboard;`, [], err => {
             // error? throw it mate
@@ -99,28 +113,22 @@ app.get('/clear_db', (req, res) => {
     })
 })
 
+app.get('/logout', (req, res) => {
+    req.session.destroy()
+    res.redirect(308, '/')
+})
 
-
-app.listen(4000);
-
-function getBoard(dest, user_id) {
+function getBoard(dest) {
     // declare array to push entries of each queried row using sqlite3
-    let sql;
-    let sql_query_selection
     let entries = []
-    
-    dest == 'history' ? sql_query_selection = `${dest} WHERE id = "${user_id}"` : sql_query_selection = 'leaderboard';
     
     // get the right database
     const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
       
         if(err)addlogging(err)
         
-        sql = `SELECT * FROM ${dest};`
-        
-        db.all(sql, [], (err, rows) => {
-            // error? throw it mate
-            if(err) addlogging(err)
+        db.all(`SELECT * FROM ${dest}`, [], (rows, err) => {
+            if(err) throw err
             rows.forEach(row => {
                 entries.push({name: row["name"], date: row["date"], 
                 score: row["score"], errors: row["errors"], level: row["level"]})
@@ -128,7 +136,6 @@ function getBoard(dest, user_id) {
 
             // sort based on score and error ratio
             entries.sort((a,b) => (b.score/b.errors) - (a.score/a.errors));
-            // console.log(entries)
 
             fs.writeFile(`./db/${dest}.json`, `{"entries": ${JSON.stringify(entries)}}`, err => {
                 if(err) addlogging(err)
@@ -140,8 +147,19 @@ function getBoard(dest, user_id) {
 
 }
 
-function addlogging(log) {
-    fs.appendFile(`./db/log.txt`, `${log}\n`, err => {
-        if(err) console.log(err)
-    })
+function checkAuthenticated(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next()
+    }
+
+    res.redirect(`/login?${CryptoJS.AES.encrypt("noAuth", 'authentication-error')}`)
 }
+
+function checkNotAuthenticated(req, res, next) {
+    if(req.isAuthenticated()) {
+        return res.redirect('/library')
+    }
+    next()
+}
+
+app.listen(4000);

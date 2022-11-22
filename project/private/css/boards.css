@@ -8,8 +8,6 @@
 .board {
     background-color: rgba(25, 25, 25, 0.8);
     border-radius: 36px;
-    width: 90%;
-    margin-top: 30px;
   }
 
 .sep {
@@ -18,6 +16,8 @@
     padding: 2px;
     border-radius: 30px;
     margin-bottom: 10px;
+    transition: cubic-bezier(.76,.05,.86,.06);
+    transition-duration: 2s;
 }
 
 .container {
@@ -26,6 +26,12 @@
     border-radius: 20px;
     display: grid;
     width: 70%;
+}
+
+form {
+    justify-content: center;
+    display: grid;
+    margin: 20px;
 }
 
 table {
@@ -122,8 +128,4 @@ button:hover {
     transition: cubic-bezier(.76,.05,.86,.06);
     transition-duration: 0.3s;
     border-radius: 50px;
-}
-
-input {
-    width: 80%;
 }

@@ -47,7 +47,7 @@ h1 {
 /* RIGHT */
 ul {
     display: flex;
-    background-color: #1118;
+    background-color: rgba(17, 17, 17, 0.7);
     padding: 12.5px;
     border-radius: 50px;
     margin-right: 0px;

@@ -5,6 +5,10 @@ try {
     throw err
 }
 
+let pfp = $('#pfp-ejs').text()
+
+$('#pfp').attr('src', `${pfp}`)
+
 // DEV ONLY reset DB results from server.js route
 if(message != undefined) $('<p>', {
     text: 'Operation successful by admin. See console.',

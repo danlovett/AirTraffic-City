@@ -12,6 +12,7 @@
 </head>
 <body>
     <div id="nav"></div>
+    <span style="display: none;" id="pfp-ejs"><%= pfp %></span>
     <section id="library" class="vw80">
         <div class="quick-actions">
             <a class="level-nav" href="#" id="link-quick-play">Quick Play</a>
@@ -31,31 +32,8 @@
     <script src="/private/src/Qhome.js"></script>
     <script>
         $(() => {
-            $('#nav').load('/private/navbar.html')
+            $('#nav').load('/views/navbar.ejs')
         })
-
-        // $(document).ready(() => {
-        //     $('#link-quick-play').hover(() => {
-        //         $(this).css("background-color", 'grey')
-        //     }, () => {
-        //         $(this).css("color", 'white')
-        //     }, () => {
-        //         $(this).css("transition", 'ease-in-out')
-        //     }, () => {
-        //         $(this).css("transition-duration", '1s')
-        //     })
-            
-        //     $('#link-library').hover(() => {
-        //         $(this).css("background-color", 'grey')
-        //     }, () => {
-        //         $(this).css("color", 'white')
-        //     }, () => {
-        //         $(this).css("transition", 'ease-in-out')
-        //     }, () => {
-        //         $(this).css("transition-duration", '1s')
-        //     })
-        // })
-
     </script>
 </body>
 </html>

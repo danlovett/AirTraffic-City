@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/private/css/framework.css">
+    <link rel="stylesheet" href="/private/css/boards.css">
+    <link rel="stylesheet" href="/private/css/profile.css">
+    <title><%= user.name.split(' ')[0] %>'s Profile | ATC</title>
+</head>
+<body>
+    <div id="nav">
+    </div>
+    <section id="profile" class="board p20 w85">
+        <div class="wrapper-top">
+            <div class="profile-container">
+                <img class="profile-img" src="<%= user.pfp %>" alt="Profile Picture">
+                <div class="user-details m10">
+                    <h1 class="text-center fs20 m-atuo"><%= user.name %></h1>
+                    <p class="text-center fs15 m10"><%= user.username %></p>
+                </div>
+                <div class="played-details" id="last">
+                    <h1 class="fs20">last Luton</h1>
+                </div>
+                <div class="played-details" id="best">
+                    <h1 class="fs20">best Heathrow</h1>
+                </div>  
+
+            </div>
+            <div class="profile-container"></div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="/private/src/Qprofile.js"></script>
+    <script>
+        $('#nav').load('/views/navbar.ejs')
+    </script>
+</body>
+</html>

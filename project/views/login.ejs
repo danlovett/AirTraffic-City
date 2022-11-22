@@ -10,29 +10,30 @@
     <title>Login | ATC</title>
 </head>
 <body>
-    <section id="login" class="board p20 vw75 m0 color-black" style="position: absolute;left: 10%;top: 25%;">
-        <h1 class="text-center color-black m10">Login</h1>
+    <section id="login" class="board p20 vw75 pos-center">
+        <h1 class="text-center m10">Login</h1>
         <div class="sep"></div>
         <div class="container">
-            <table id="signup-form">
+            <form id="signup-form" action="login" method="POST">
                 <tr>
-                    <th><label class="fs20 color-black">Username: </label></th>
-                    <th><input type="name" name="name" id="username" placeholder="username" autocomplete="on" class="color-black fs20 m10 item text-center"> </th>
+                    <th><label class="fs20">Username: </label></th>
+                    <th><input type="name" name="email" id="username" placeholder="username" autocomplete="on" class="color-black fs20 m10 item text-center"> </th>
                 </tr>
                 <tr>
-                    <th><label class="fs20 color-black">Password: </label></th>
+                    <th><label class="fs20">Password: </label></th>
                     <th> <input type="password" name="password" id="password" autocomplete="on" placeholder="password" class="color-black fs20 m10 item text-center"></th>
                 </tr>
-            </table>
-            <button class="fs20 text-center m10" type="submit">Login</button>
+                <button class="fs20 text-center m10" type="submit">Login</button>
+            </form>
             
             <div class="auth-link">
-                <p class="fs20 color-black text-center">Already have an account? <a class="fs20 color-black" href="/auth/signup">Signup</a>.</p>
+                <p class="fs20 text-center">Already have an account? <a class="fs20" href="/register">Register one</a>.</p>
             </div>
         </div>
     </section>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <script src="/private/src/Qauth.js"></script>
+    <script src="/private/src/auth.js"></script>
 </body>
 </html>

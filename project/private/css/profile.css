@@ -1,0 +1,26 @@
+.wrapper-top {
+    margin: 0px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.profile-container {
+    margin: 0px;
+    padding: 20px;
+    background-color: rgba(0, 255, 170, 0.698);
+    border-radius: 35px;
+    align-items: end;
+    display: grid;
+    justify-content: flex-start;
+    float: left;
+}
+
+.profile-container .user-details {
+    padding: 15px;
+    background-color: rgba(51, 51, 51, 0.488);
+}
+
+.profile-img {
+    height: 85px;
+}
+
