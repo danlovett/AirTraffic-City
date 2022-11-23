@@ -12,7 +12,7 @@ const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 
-const initPassport = require('./passport-config')
+const initPassport = require('./passport-config');
 initPassport(passport)
 
 app.use(express.static(__dirname))
@@ -69,7 +69,30 @@ app.get('/library', checkAuthenticated, (req, res) => {
 })
 
 app.get('/board', checkAuthenticated, (req, res) => {
-    getBoard(req.query.dest, null)
+    let entries = []
+    
+    // get the right database
+    const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
+      
+        if(err) throw err
+        
+        db.all(`SELECT * FROM ${req.query.destination}`, [], (rows, err) => {
+            if(rows != null) {
+                rows.forEach(row => {
+                    entries.push({name: row["name"], date: row["date"], 
+                    score: row["score"], errors: row["errors"], level: row["level"]})
+                })
+                entries.sort((a,b) => (b.score/b.errors) - (a.score/a.errors));
+            }
+            
+            fs.writeFile(`./db/${req.query.destination}.json`, `{"entries": ${JSON.stringify(entries)}}`, err => {
+                if(err) throw err
+            })
+
+        })
+
+    });
+
     res.render('board');
 })
 
@@ -84,7 +107,7 @@ app.get('/results', checkAuthenticated, (req, res) => {
         db.all(leaderboard_query, [], err => { if(err) throw err })
         db.all(history_query, [], err => { if(err) throw err })
     })
-    res.redirect(308, `/board?dest=${req.query.redirect}`)
+    res.redirect(308, `/board?destination=${req.query.redirect}`)
 })  
 
 app.get('/level', checkAuthenticated, (req, res) => {
@@ -113,34 +136,33 @@ app.get('/clear_db', checkAuthenticated, (req, res) => {
     })
 })
 
-app.get('/logout', (req, res) => {
-    req.session.destroy()
-    res.redirect(308, '/')
+app.get('/logout', (req, res, next) => {
+    req.logout((err) => {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
 })
 
-function getBoard(dest) {
+function getBoard(destination) {
     // declare array to push entries of each queried row using sqlite3
     let entries = []
     
     // get the right database
     const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
       
-        if(err)addlogging(err)
+        if(err) throw err
         
-        db.all(`SELECT * FROM ${dest}`, [], (rows, err) => {
+        db.all(`SELECT * FROM ${destination}`, [], (rows, err) => {
             if(err) throw err
             rows.forEach(row => {
                 entries.push({name: row["name"], date: row["date"], 
                 score: row["score"], errors: row["errors"], level: row["level"]})
             })
-
-            // sort based on score and error ratio
             entries.sort((a,b) => (b.score/b.errors) - (a.score/a.errors));
 
-            fs.writeFile(`./db/${dest}.json`, `{"entries": ${JSON.stringify(entries)}}`, err => {
-                if(err) addlogging(err)
+            fs.writeFile(`./db/${destination}.json`, `{"entries": ${JSON.stringify(entries)} }`, err => {
+                if(err) throw err
             })
-
         })
 
     });

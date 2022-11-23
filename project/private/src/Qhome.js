@@ -11,7 +11,7 @@ $('#pfp').attr('src', `${pfp}`)
 
 // DEV ONLY reset DB results from server.js route
 if(message != undefined) $('<p>', {
-    text: 'Operation successful by admin. See console.',
+    text: 'Operation successful by admin.',
     class: 'text-center color-green m10 fs15',
     id: 'message'
 }).prependTo('#library')
@@ -19,10 +19,6 @@ if(message != undefined) $('<p>', {
 setTimeout(() => {
     $("#message").remove()
 }, 1500);
-
-$.get('../../db/leaderboard.json', data => {
-    console.log(data)
-})
 
 // read from .json file
 $.get('../../app.json', function(data) {
@@ -50,7 +46,6 @@ $.get('../../app.json', function(data) {
     }).prependTo('#quick-play-ui')
 
     for(let data = 0; data < data_titles.length; data++) {
-        // console.log(`Title #${data}: ${data_titles[data]}\nImage #${data}: ${data_images[data]}`)
         if(data_titles[data] != "") {
             $('<a>',{
                 id: `quick-play-${data_titles[data]}`,
@@ -85,11 +80,6 @@ $.get('../../app.json', function(data) {
 
         // set background image to level (unique for each)
         $(`#${lib.library.levels.titles[i]}`).css('background-image', `url(${lib.library.levels.src[i]}`)
-
-        // // do something when <a> is clicked, extracting unique id
-        // $(`#${lib.library.levels.titles[i]}`).bind('click', () => { 
-        //     console.log(i)
-        // })
     }
 }, 'text'); // setting the reading type to text
 
