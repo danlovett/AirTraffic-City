@@ -76,19 +76,15 @@ app.get('/board', checkAuthenticated, (req, res) => {
       
         if(err) throw err
         
-        db.all(`SELECT * FROM ${req.query.destination}`, [], (rows, err) => {
+        db.all(`SELECT * FROM "${req.query.destination}";`, [], (err, rows) => {
             if(rows != null) {
-                rows.forEach(row => {
-                    entries.push({name: row["name"], date: row["date"], 
-                    score: row["score"], errors: row["errors"], level: row["level"]})
-                })
-                entries.sort((a,b) => (b.score/b.errors) - (a.score/a.errors));
+                rows.forEach(row => entries.push({name: row["name"], date: row["date"], score: row["score"], errors: row["errors"], level: row["level"], id: row["id"]}))
             }
+            entries.sort((a,b) => (b.score/b.errors) - (a.score/a.errors));
             
             fs.writeFile(`./db/${req.query.destination}.json`, `{"entries": ${JSON.stringify(entries)}}`, err => {
                 if(err) throw err
             })
-
         })
 
     });
@@ -101,13 +97,17 @@ app.get('/profile', checkAuthenticated, (req, res) => {
 })
 
 app.get('/results', checkAuthenticated, (req, res) => {
-    let leaderboard_query = `INSERT INTO "leaderboard" (name, date, score, errors, level, personID) VALUES("${req.user.name}", DATE('now'), ${req.query.score}, ${req.query.errors}, '${req.query.level}, ${req.user.id}');`
-    let history_query = `INSERT INTO "history" (level_name, date, score, errors, personID) VALUES("${req.query.level}", DATE('now'), ${req.query.score}, ${req.query.errors}, ${req.user.id});`
+    let leaderboard_query = `INSERT INTO "leaderboard" (name, score, errors, level, personID) VALUES("${req.user.name}", ${req.query.score}, ${req.query.errors}, "${req.query.level}", ${req.user.id});`
+    let history_query = `INSERT INTO "history" (level_name, date, score, errors, personID) VALUES("${req.query.level}", DATETIME('now'), ${req.query.score}, ${req.query.errors}, ${req.user.id});`
     const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
-        db.all(leaderboard_query, [], err => { if(err) throw err })
-        db.all(history_query, [], err => { if(err) throw err })
+        db.all(leaderboard_query, [], (err, rows) => { 
+            if(err) throw err
+        })
+        db.all(history_query, [], err => { 
+            if(err) throw err 
+            if(!err) res.redirect(308, `/board?destination=${req.query.redirect}`)
+        })
     })
-    res.redirect(308, `/board?destination=${req.query.redirect}`)
 })  
 
 app.get('/level', checkAuthenticated, (req, res) => {
@@ -142,32 +142,6 @@ app.get('/logout', (req, res, next) => {
         res.redirect('/');
     });
 })
-
-function getBoard(destination) {
-    // declare array to push entries of each queried row using sqlite3
-    let entries = []
-    
-    // get the right database
-    const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
-      
-        if(err) throw err
-        
-        db.all(`SELECT * FROM ${destination}`, [], (rows, err) => {
-            if(err) throw err
-            rows.forEach(row => {
-                entries.push({name: row["name"], date: row["date"], 
-                score: row["score"], errors: row["errors"], level: row["level"]})
-            })
-            entries.sort((a,b) => (b.score/b.errors) - (a.score/a.errors));
-
-            fs.writeFile(`./db/${destination}.json`, `{"entries": ${JSON.stringify(entries)} }`, err => {
-                if(err) throw err
-            })
-        })
-
-    });
-
-}
 
 function checkAuthenticated(req, res, next) {
     if(req.isAuthenticated()) {
