@@ -29,26 +29,22 @@
     background-color: rgba(25, 25, 25, 0.8);
     color: white;
     border-radius: 0px 0px 35px 35px;
-    transition: ease-in-out;
-    transition-duration: 1s;
 }
 .level-play:hover {
     padding: 30px 0px;
     background-color: rgba(255, 255, 255, 0.8);
     color: black;
-    transition: ease-in-out;
-    transition-duration: 0.5s;
 }
 
 #level-detail {
-    scale: 1;
-    transition: ease-in-out;
-    transition-duration: 3s;
+    scale: 0.9;
+    transition: cubic-bezier(.68,-0.55,.27,1.55);
+    transition-duration: 1s;
 }
 
 
 #level-detail:hover {
-    scale: 1.06;
-    transition: ease-in-out;
-    transition-duration: 0.2s;
+    scale: 1.04;
+    transition: cubic-bezier(.68,-0.55,.27,1.55);
+    transition-duration: 0.5s;
 }

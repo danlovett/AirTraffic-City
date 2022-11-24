@@ -131,7 +131,7 @@ body {
 }
 
 .pos-center {
-    top: 30%;
+    margin-top: 20vh;
 }
 
 .color-black {
@@ -145,4 +145,19 @@ body {
 .color-green {
     color: green;
     font-weight: 1000;
+}
+
+.overflow-scroll {
+    width: 4rem;
+    overflow-x: auto;
+}
+
+.animate-bounce {
+    transition: cubic-bezier(.68,-0.55,.27,1.55);
+    transition-duration: 1s;
+}
+
+.animate-bounce:hover {
+    transition: cubic-bezier(.68,-0.55,.27,1.55);
+    transition-duration: 0.3s;
 }

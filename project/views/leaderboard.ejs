@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/private/css/framework.css">
     <link rel="stylesheet" href="/private/css/boards.css">
+    <link rel="stylesheet" href="/private/css/level.css">
     <link rel="stylesheet" href="/private/css/navbar.css">
     <link rel="shortcut icon" href="/private/images/logo.png" type="image/x-icon">
     <title>Loading board...</title>
@@ -22,8 +23,6 @@
     <script>
         function getEntries() {
             // what board is being used (extracted using Express(req.query.{queryItem}))
-            let href = window.location.href.split('?')[1]
-            let type = href.split('&')[0].split('=')[1]
             let err
             try {
                 err = href.split('&')[1].split('=')[1]
@@ -33,23 +32,23 @@
 
             // create the section
             $('<section>', {
-                id: `${type}`, // set what sort of board it is (for css and jQuery usage)
-                class: 'board p20' // add framework css for visuals
+                id: `leaderboard`, // set what sort of board it is (for css and jQuery usage)
+                class: 'board w85' // add framework css for visuals
             }).appendTo('body') // append to the main tag of page
 
             // make the header (dynamic)
             $('<h1>', {
                 id: 'header', 
                 class: 'fs30' // adding framework
-            }).appendTo(`#${type}`) // add to previously created section from id
+            }).appendTo(`#leaderboard`) // add to previously created section from id
 
              // make seperator - visuals are compiled by css
-            $('<div>', {class:'sep'}).appendTo(`#${type}`)
+            $('<div>', {class:'sep'}).appendTo(`#leaderboard`)
             
             if(err) {
                 $('<p>', {
                     class: 'text-center color-red fs20',
-                    text: 'Unable to add to leaderboard',
+                    text: 'Entry already exists!',
                     id: 'leaderboard-error'
                 }).appendTo(`.sep`)
 
@@ -59,10 +58,10 @@
             }
 
             // read the file using jQuery and JSON
-            $.get(`../db/${type}.json`, json => {
+            $.get(`../db/leaderboard.json`, json => {
                 const entries = json.entries // set up what part of JSON to use
                 //table in board headers
-                const id_types = ['name', 'date', 'score', 'errors', 'level']
+                const id_types = ['name', 'date', 'score', 'level']
                 
                 // are there entries from JSON file?
                 if(entries.length > 0) {
@@ -70,14 +69,14 @@
                     $('<table>', {
                         // ensuring the correct table will be used
                         // ... when adding other values
-                        id: `${type}-entries`
-                    }).appendTo(`#${type}`)
+                        id: `leaderboard-entries`
+                    }).appendTo(`#leaderboard`)
                     
                     // new table row
                     $('<tr>', {
                         class: "fs20 m20", // framework
                         id: 'table-header'
-                    }).appendTo(`#${type}-entries`) // add to correct table
+                    }).appendTo(`#leaderboard-entries`) // add to correct table
                     
                     // add the headers of the table to table
                     for(let i = 0; i < id_types.length; i++) {
@@ -92,7 +91,7 @@
                         // same process as before, add new row 
                         $('<tr>',{
                             id: `entry${x + 1}`, // this time assign row id
-                        }).appendTo(`#${type}-entries`)
+                        }).appendTo(`#leaderboard-entries`)
 
                         let obj = Object.values(entries[x]) // convert text to object
 
@@ -115,13 +114,10 @@
                     $('<p>', { // new paragraph
                         text: 'Nothing to see here :(', // User feedback
                         class: 'text-center fs20 m20'
-                    }).appendTo(`#${type}`) // add to correct board
+                    }).appendTo(`#leaderboard`) // add to correct board
                 }
-                
-                // Set title to correct board type using Express({res.query.dest})
-                type = type.charAt(0).toUpperCase() + type.slice(1)
-                $(document).prop('title', `${type} | ATC`)
-                $('#header').text(type)
+                $(document).prop('title', `Leaderboard | ATC`)
+                $('#header').text('Leaderboard')
             })
         }
     </script>

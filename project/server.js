@@ -13,6 +13,7 @@ const flash = require('express-flash')
 const session = require('express-session')
 
 const initPassport = require('./passport-config');
+const { profile } = require('console');
 initPassport(passport)
 
 app.use(express.static(__dirname))
@@ -68,7 +69,7 @@ app.get('/library', checkAuthenticated, (req, res) => {
     res.render('library', {pfp: req.user.pfp});
 })
 
-app.get('/board', checkAuthenticated, (req, res) => {
+app.get('/leaderboard', checkAuthenticated, (req, res) => {
     let entries = []
     
     // get the right database
@@ -76,39 +77,82 @@ app.get('/board', checkAuthenticated, (req, res) => {
       
         if(err) throw err
         
-        db.all(`SELECT * FROM "${req.query.destination}";`, [], (err, rows) => {
+        db.all(`SELECT * FROM leaderboard;`, [], (err, rows) => {
             if(rows != null) {
-                rows.forEach(row => entries.push({name: row["name"], date: row["date"], score: row["score"], errors: row["errors"], level: row["level"], id: row["id"]}))
+                rows.forEach(row => entries.push({name: row["name"], date: row["date"], score: row["score"], level: row["level"], id: row["personID"]}))
             }
             entries.sort((a,b) => (b.score/b.errors) - (a.score/a.errors));
             
-            fs.writeFile(`./db/${req.query.destination}.json`, `{"entries": ${JSON.stringify(entries)}}`, err => {
+            fs.writeFile(`./db/leaderboard.json`, `{"entries": ${JSON.stringify(entries)}}`, err => {
                 if(err) throw err
             })
         })
-
     });
 
-    res.render('board');
+    res.render('leaderboard');
 })
 
+let entries = []
+let profile_onboarding = {}
 app.get('/profile', checkAuthenticated, (req, res) => {
-    res.render('profile', {user: req.user})
-})
+    if(req.query.id == 'current') req.query.id = req.user.id
 
-app.get('/results', checkAuthenticated, (req, res) => {
-    let leaderboard_query = `INSERT INTO "leaderboard" (name, score, errors, level, personID) VALUES("${req.user.name}", ${req.query.score}, ${req.query.errors}, "${req.query.level}", ${req.user.id});`
-    let history_query = `INSERT INTO "history" (level_name, date, score, errors, personID) VALUES("${req.query.level}", DATETIME('now'), ${req.query.score}, ${req.query.errors}, ${req.user.id});`
     const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
-        db.all(leaderboard_query, [], (err, rows) => { 
+        db.get(`SELECT * FROM users WHERE id = ${req.query.id}`, [], (err, user) => { 
+            db.get(`SELECT * FROM history LEFT JOIN users ON history.personID = users.id WHERE users.id = ${req.query.id}`, [], (err, joins) => { 
+                if(err) throw err
+                if(joins != null) {
+                    if(joins.length > 1) {
+                        joins.forEach(join => entries.push({level: join["level"], date: join["date"], score: join["score"], id: join["personID"]}))
+                    } else {
+                        entries.push({level: joins["level"], date: joins["date"], score: joins["score"], id: joins["personID"]})
+                    }
+                }
+                if(user != null) {
+                    profile_onboarding["id"] = user["id"]
+                    profile_onboarding["name"] = user["name"]
+                    profile_onboarding["username"] = user["username"]
+                    profile_onboarding["pfp"] = user["pfp"]
+                    fs.writeFile(`./db/history/${user["id"]}.json`, `{"entries": ${JSON.stringify(entries)}}`, err => {
+                        if(err) throw err
+                    })
+                    res.render('profile', { user: profile_onboarding, id: req.user.id })
+                } else {
+                    res.redirect(308, '/error?from=profile')
+                }
+            })
             if(err) throw err
         })
-        db.all(history_query, [], err => { 
-            if(err) throw err 
-            if(!err) res.redirect(308, `/board?destination=${req.query.redirect}`)
-        })
     })
-})  
+
+}) 
+
+app.get('/usr_leaderboard_submit', checkAuthenticated, (req, res) => {
+    const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
+        
+        let history_query = `INSERT INTO history (date, score, level, personID) VALUES('${formatTime()}', ${req.query.score}, '${req.query.level}', ${req.user.id});`
+        db.all(history_query, [], err => {
+            if(err) throw err
+        })
+
+        let leaderboard_query = `INSERT INTO leaderboard(name, date, score, level, personID) VALUES('${req.user.name}', '${formatTime()}', ${req.query.score}, '${req.query.level}', ${req.user.id});`
+        db.all(leaderboard_query, [], err => { 
+            if(err) res.redirect(308, `/board?destination=${req.query.redirect}&err=exists`)
+            if(!err) res.redirect(308, 'board?destination=leaderboard')
+        })
+        
+    })
+}) 
+
+app.get('/usr_history_submit', checkAuthenticated, (req, res) => {
+    let history_query = `INSERT INTO history (date, score, level, personID) VALUES('${formatTime()}', ${req.query.score}, '${req.query.level}', ${req.user.id});`
+    const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
+        db.all(history_query, [], err => {
+            if(err) throw err
+            if(!err) res.redirect(308, '/library')
+        })        
+    })
+})
 
 app.get('/level', checkAuthenticated, (req, res) => {
     res.render('level');
@@ -129,7 +173,6 @@ app.get('/clear_db', checkAuthenticated, (req, res) => {
             if(err) {
                 throw err
             } else {
-                getBoard(req.query.redirect, null)
                 res.redirect(308, '/library?success')
             }
         })
@@ -142,6 +185,19 @@ app.get('/logout', (req, res, next) => {
         res.redirect('/');
     });
 })
+
+app.get('/error', (req, res) => {
+    if(req.query.from == 'profile') res.render('errorDocument', { message: "User"})
+    if(req.query.from == 'notfound') res.render('errorDocument', { message: "Page" })
+})
+
+function formatTime() {
+    const date = new Date();
+    const day = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`
+    const hours = date.getHours()
+    const mins = date.getMinutes()
+    return `${day} ${hours}:${mins}`
+}
 
 function checkAuthenticated(req, res, next) {
     if(req.isAuthenticated()) {

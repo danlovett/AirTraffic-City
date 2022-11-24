@@ -37,6 +37,33 @@ section {
     width: 80%;
 }
 
+#eog-small {
+    background-color: rgba(30, 30, 30, 0.631);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: cubic-bezier(.68,-0.55,.27,1.55);
+    transition-duration: 1s;
+    width: 65%;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#eog-small:hover {
+    background-color: rgba(216, 216, 216, 0.67); /* Green */
+    color: rgb(0, 0, 0);
+    transition: cubic-bezier(.68,-0.55,.27,1.55);
+    transition-duration: 1s;
+    border-radius: 90px;
+    width: 70%;
+}
+
+
+
 .flex {
     display: flex;
     width: 100%;

@@ -12,8 +12,8 @@ function setup() {
     score = new Score()
 
     grid = new Grid()
-
-    level_name = window.location.href.split('?')[1]
+    
+    level_name = CryptoJS.AES.decrypt(window.location.href.split('?')[1], "level").toString(CryptoJS.enc.Utf8)
 
     $(document).prop('title', level_name);
 

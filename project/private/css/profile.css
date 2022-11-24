@@ -5,13 +5,11 @@
 }
 
 .profile-container {
-    margin: 0px;
+    margin: 10px;
     padding: 20px;
-    background-color: rgba(0, 255, 170, 0.698);
+    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 35px;
-    align-items: end;
     display: grid;
-    justify-content: flex-start;
     float: left;
 }
 

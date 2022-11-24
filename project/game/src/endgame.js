@@ -21,6 +21,10 @@ $('#timetaken').text(`${Math.floor(time_taken/60)} minute${time_taken/60 >= 1 ? 
 $('#score').text(`${total_score} point${total_score == 1 ? '' : 's'}`)
 // $('#bestaircraft').text(`Best performing aircraft: ${best_plane}`)
 
-$('#submit-eog').click(() => {
-    window.location.href = `${window.location.origin}/results?score=${total_score}&errors=0&level=${level_played}&redirect=leaderboard`
+$('#eog').click(() => {
+    window.location.href = `${window.location.origin}/usr_history_submit?score=${total_score}&level=${level_played}`
+})
+
+$('#eog-small').click(() => {
+    window.location.href = `${window.location.origin}/usr_leaderboard_submit?score=${total_score}&level=${level_played}`
 })
