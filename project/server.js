@@ -92,9 +92,9 @@ app.get('/leaderboard', checkAuthenticated, (req, res) => {
     res.render('leaderboard');
 })
 
-let entries = []
-let profile_onboarding = {}
 app.get('/profile', checkAuthenticated, (req, res) => {
+    let entries = []
+    let profile_onboarding = {}
     if(req.query.id == 'current') req.query.id = req.user.id
 
     const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
