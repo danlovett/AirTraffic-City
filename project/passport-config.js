@@ -35,7 +35,7 @@ function initPassport(passport) {
         const db = new sqlite3.Database('./db/data.db', sqlite3.OPEN_READWRITE, err => {
             db.get('SELECT * FROM users WHERE id = ?', id, (err, row) => {
                 if (!row) return done(null, false);
-                fs.writeFile('./db/currentUser.json', `{"pfp":${JSON.stringify(row["pfp"])}}`, err => {
+                fs.writeFile('./db/currentUser.json', `{"user":${JSON.stringify(row)}}`, err => {
                     if(err) throw err
                 })
                 return done(null, row);

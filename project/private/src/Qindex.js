@@ -1,7 +1,7 @@
 
-$.get('./app.json', function(data) {
+$.get('./db/contentController.json', function(data) {
     let index = JSON.parse(data)
 
-    $('#version').html(`${index.about.version}`)
-    $('#author').html(`${index.about.author}`)
+    $('#version').html(`Version ${index.version}`)
+    $('#author').html(`By ${index.author}`)
 }, 'text');

@@ -5,10 +5,6 @@ try {
     throw err
 }
 
-let pfp = $('#pfp-ejs').text()
-
-$('#pfp').attr('src', `${pfp}`)
-
 // DEV ONLY reset DB results from server.js route
 if(message != undefined) $('<p>', {
     text: 'Operation successful by admin.',
@@ -21,7 +17,7 @@ setTimeout(() => {
 }, 1500);
 
 // read from .json file
-$.get('../../app.json', function(data) {
+$.get('../db/contentController.json', function(data) {
     // set the whole file to variable
     let lib = JSON.parse(data)
 

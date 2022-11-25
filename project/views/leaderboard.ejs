@@ -58,7 +58,7 @@
             }
 
             // read the file using jQuery and JSON
-            $.get(`../db/leaderboard.json`, json => {
+            $.get(`../db/localStorage/leaderboard.json`, json => {
                 const entries = json.entries // set up what part of JSON to use
                 //table in board headers
                 const id_types = ['name', 'date', 'score', 'level']

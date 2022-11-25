@@ -5,7 +5,7 @@ let total_score = CryptoJS.AES.decrypt(details.split('&')[1], "score").toString(
 let level_played = CryptoJS.AES.decrypt(details.split('&')[2], "level").toString(CryptoJS.enc.Utf8); // third value
 // let best_plane = details.split('&')[3] // fourth value
 
-$.get('../../app.json', json => { // get the data from this file location, use json as variable
+$.get('../db/contentController.json', json => { // get the data from this file location, use json as variable
     // getting the image through cycling all level names in the json file
     for(let i = 0; i < json.library.levels.titles.length; i++) {
         if(json.library.levels.titles[i] == level_played) {
@@ -22,9 +22,9 @@ $('#score').text(`${total_score} point${total_score == 1 ? '' : 's'}`)
 // $('#bestaircraft').text(`Best performing aircraft: ${best_plane}`)
 
 $('#eog').click(() => {
-    window.location.href = `${window.location.origin}/usr_history_submit?score=${total_score}&level=${level_played}`
+    window.location.href = `/usr_history_submit?score=${total_score}&level=${level_played}`
 })
 
 $('#eog-small').click(() => {
-    window.location.href = `${window.location.origin}/usr_leaderboard_submit?score=${total_score}&level=${level_played}`
+    window.location.href = `/usr_leaderboard_submit?score=${total_score}&level=${level_played}`
 })

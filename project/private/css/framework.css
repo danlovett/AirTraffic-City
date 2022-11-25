@@ -45,6 +45,9 @@ body {
 .p20 {
     padding: 20px;
 }
+.p30 {
+    padding: 30px;
+}
 
 .pv5 {
     padding-top: 5px;
@@ -92,6 +95,10 @@ body {
 
 .m0 {
     margin: 0px;
+}
+
+.m5 {
+    margin: 5px;
 }
 
 .m10 {
@@ -160,4 +167,17 @@ body {
 .animate-bounce:hover {
     transition: cubic-bezier(.68,-0.55,.27,1.55);
     transition-duration: 0.3s;
+}
+
+.blur-background-80-black {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.grid {
+    display: grid;
+    width: 100%;
+}
+
+.flex {
+    display: flex;
 }

@@ -8,97 +8,128 @@
     <link rel="stylesheet" href="/private/css/boards.css">
     <link rel="stylesheet" href="/private/css/profile.css">
     <link rel="shortcut icon" href="/private/images/logo.png" type="image/x-icon">
-    <title><%= user["name"].split(' ')[0] %>'s Profile | ATC</title>
+    <title><%= load_user.name.split(' ')[0] %>'s Profile | ATC</title>
 </head>
 <body>
-    <span id="user-id" style="display: none;"><%= user["id"] %></span>
-    <div id="nav"></div>
-    <%_ if(user["id"] == id) { %>
-        <h1 class="text-center m20 fs30">Your Account</h1>
+    <span id="user-id" style="display: none;"><%= load_user.id %></span>
+    <%_ if(load_user.last_played != '') { %>
+        <span id="last-play" style="display: none;"><%= load_user.last_played %></span>
     <%_ } %>
-    <section id="profile" class="board p20 w85">
+    <%_ if (load_user.best_played != '') { %>
+        <span id="best-play" style="display: none;"><%= load_user.best_played %></span>
+    <%_ } %>
+    <div id="nav"></div>
+    <%_ if(load_user["id"] == current_user.id) { %>
+        <h1 class="text-center m10 fs30">Your Account</h1>
+    <%_ } %>
+    <section id="profile" class="board p20 w85 m20">
         <div class="wrapper-top">
             <div class="profile-container">
-                <img class="profile-img" src="<%= user["pfp"] %>" alt="Profile Picture">
+                <img class="profile-img" src="<%= load_user.pfp %>" alt="Profile Picture">
                 <div class="user-details m10">
-                    <h1 class="text-center fs20 m-atuo overflow-scroll"><%= user["name"] %></h1>
-                    <p class="text-center fs15 m10 overflow-scroll"><%= user["username"] %></p>
-                    <%_ if(user["id"] == id) { %>
-                        <button class="text-center fs15"><a href="/logout">Log out</a></button>
+                    <h1 class="text-center fs20 m-atuo overflow-scroll"><%= load_user.name %></h1>
+                    <p class="text-center fs15 m10 overflow-scroll"><%= load_user.username %></p>
+                    <%_ if(load_user["id"] == current_user.id) { %>
+                        <button class="text-center"><a href="/logout" class="fs15">Log out</a></button>
                     <%_ } %>
                 </div>
-                <div class="played-details" id="last">
-                    <h1 class="fs20">last Luton</h1>
+                <div class="played-details m10" id="profile-last-played" style="background-image: url('/private/images/logo.png');">
+                    <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-last-played-title">Played last will go here.</h1>
+                    <%_ if(load_user.last_played != '' && load_user["id"] == current_user.id) { %>
+                        <button class="text-center" id="btn-remove-last" style="display: none; margin: 20px 0px;"><a href="/remove_last_played" class="fs15 text-center">Remove</a></button>
+                    <%_ } %>
                 </div>
-                <div class="played-details" id="best">
-                    <h1 class="fs20">best Heathrow</h1>
-                </div>  
+                <div class="played-details m10" id="profile-best-played" style="background-image: url('/private/images/logo.png');">
+                    <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-best-played-title">Played best will go here.</h1>
+                    <%_ if(load_user.best_played != '' && load_user["id"] == current_user.id) { %>
+                        <button class="text-center" id="btn-remove-best" style="display: none; margin: 20px 0px;"><a href="/remove_best_played" class="fs15 text-center">Remove</a></button>
+                    <%_ } %>
+                </div>
 
             </div>
-            <div class="profile-container" id="user-history" style="width: 100%; height: 80%; align-content: baseline;">
-                <h1 class="m10 fs20 text-center"><%= user["name"].split(' ')[0] %>'s history</h1>
+            <div class="grid m5 text-center">
+                <%_ if(JSON.stringify(leaderboard_entry) != "[]") { %>
+                    <div class="leaderboard-entry text-center flex" style=" margin: 0px 0px 10px 0px;">
+                        <h1 class="fs15 text-center p20" id="leaderboard-profile-text">Leaderboard: <%= JSON.stringify(leaderboard_entry[0].level).replace(/['"]+/g, '') %> | Points: <%= JSON.stringify(leaderboard_entry[0].score) %></h1>
+                    </div>
+                    <span id="leaderboard-level" style="display: none;"><%= JSON.stringify(leaderboard_entry[0].level).replace(/['"]+/g, '').toLowerCase() %></span>
+                <%_ } %>
+                
+                <div class="profile-container" id="user-history">
+                    <%_ if(JSON.stringify(history) != "[]") { %>
+                        <h1 class="m10 fs20 text-center"><%= load_user.name.split(' ')[0] %>'s history</h1>
+                        <div class="sep"></div>
+                        <table id="entries">
+                            <tr class="fs20 m20" id="table-header">
+                                <%_ for(let index in id_types) { %>
+                                    <th class="fs20 m20"><%= `${id_types[index]}` %></th>
+                                <%_ } %>
+                            </tr>
+                            <%_ for(let x = 0; x < history.length; x++) { %>
+                                <tr class="fs20 m20" id="<%= `entry-${ x + 1 }` %>">
+                                    <th class="fs20 m20" id="<%= `level-${x + 1}` %>"><%= JSON.stringify(history[x].level).replace(/['"]+/g, '') %></th>
+                                    <th class="fs20 m20" id="<%= `date-${x + 1}` %>"><%= JSON.stringify(history[x].date).replace(/['"]+/g, '') %></th>
+                                    <th class="fs20 m20" id="<%= `score-${x + 1}` %>"><%= JSON.stringify(history[x].score).replace(/['"]+/g, '') %></th>
+                                </tr>
+                            <%_ } %>
+                        </table>
+                    <%_ } else { %>
+                        <%_ if(current_user.id == load_user["id"]) { %>
+                            <p class="fs20 m20">You have no history.</p>
+                        <%_ } else { %>
+                            <p class="fs20 m20"><%= load_user.name.split(' ')[0] %> has no history.</p>
+                        <%_ }  %>
+                    <%_ }  %>
+                </div>
             </div>
         </div>
+        <%_ if(load_user["id"] == current_user.id && (JSON.stringify(history) != "[]" || JSON.stringify(leaderboard_entry != "[]"))) { %>
+            <div class="flex">
+                <%_ if(JSON.stringify(history) != "[]") { %>
+                    <button class="text-center m10" id="delete-history"><a href="/delete_your_history" class="fs15 text-center color-red">Delete history</a></button>
+                <%_ } %>
+                <%_ if(JSON.stringify(leaderboard_entry) != "[]") { %>
+                    <button class="text-center m10" id="delete-history"><a href="/delete_leaderboard" class="fs15 text-center color-red">Delete Leaderboard</a></button>
+                <%_ } %>
+            </div>
+        <%_ } %>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script>
+
         $('#nav').load('/views/navbar.ejs')
+        
+        if( $('#last-play').text() != '' ){
+            $('#profile-last-played-title').text(`Played last: ${$('#last-play').text()}`)
+            $(`#profile-last-played`).css('background-image', `url(/private/images/levels/${$('#last-play').text().toLowerCase()}.jpg)`)
+        }
 
-        const id_types = ['level', 'date', 'score']
+        if( $('#best-play').text() != '' ){
+            $('#profile-best-played-title').text(`Played best: ${$('#best-play').text()}`)
+            $(`#profile-best-played`).css('background-image', `url(/private/images/levels/${$('#best-play').text().toLowerCase()}.jpg)`)
+        }
 
-        $.get(`../db/history/${$('#user-id').text()}.json`, json => {
-            const entries = json.entries
-
-            $('<div>', { class: 'sep' }).appendTo('#user-history')
-            $('<table>', {
-                id: `entries`
-            }).appendTo(`#user-history`)
-
-            if(entries.length > 0) {
-            
-                $('<tr>', {
-                    class: "fs20 m20", // framework
-                    id: 'table-header'
-                }).appendTo(`#entries`) // add to correct table
-                
-                // add the headers of the table to table
-                for(let i = 0; i < id_types.length; i++) {
-                    $('<th>', { // new row entry
-                        // making text capitalised using character seperation
-                        text: `${id_types[i].charAt(0).toUpperCase() + id_types[i].slice(1)}`,
-                        class: "fs20 m20"
-                    }).appendTo('#table-header') // add it to the table heading
+        if( $('#last-play').text() != '' ) {
+            $(document).mousemove(() => {
+                if($('#profile-last-played:hover').length != 0) {
+                    $('#profile-last-played-title').css('display', 'none')
+                    $('#btn-remove-last').css('display', 'block')
+                } else {
+                    $('#profile-last-played-title').css('display', 'block')
+                    $('#btn-remove-last').css('display', 'none')
                 }
-                // adding table entries from JSON file
-                for(let x = 0; x < entries.length; x++) {
-                    // same process as before, add new row 
-                    $('<tr>',{
-                        id: `entry${x + 1}`, // this time assign row id
-                    }).appendTo(`#entries`)
 
-                    let obj = Object.values(entries[x]) // convert text to object
-
-                    for(let value = 0; value < obj.length - 1; value++) { // cycle through each key in object and get val
-                        $('<th>',{ // new row part
-                            class: "color-black fs20 m20",
-                            id: `${id_types[value]}-${x + 1}`, // for future updates (TABLE FILTERS)
-                        }).appendTo(`#entry${x + 1}`) // x is 0 based, add 1
-                        if(id_types[value] == 'name' || id_types[value] == 'level') {
-                            $('<a>', {
-                                text: obj[value],
-                            }).appendTo(`#${id_types[value]}-${x + 1}`)
-                        } else {
-                            $(`#${id_types[value]}-${x + 1}`).text(obj[value]).css('color', 'white')
-                        }
-                    }
+                if($('#profile-best-played:hover').length != 0) {
+                    $('#profile-best-played-title').css('display', 'none')
+                    $('#btn-remove-best').css('display', 'block')
+                } else {
+                    $('#profile-best-played-title').css('display', 'block')
+                    $('#btn-remove-best').css('display', 'none')
                 }
-            } else {
-                $('<p>', { // new paragraph
-                    text: 'Nothing to see here :(', // User feedback
-                    class: 'text-center fs15 m-auto'
-                }).appendTo(`#user-history`)
-            }
-        })
+            })
+        }
+
+        $('.leaderboard-entry').css('background-image', `url(/private/images/levels/${ $('#leaderboard-level').text() }.jpg`)
     </script>
 </body>
 </html>

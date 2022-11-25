@@ -18,9 +18,12 @@
             </div>
         </ul>
     </section>
-    <script src="/private/src/Time.js"></script>
-    <script src="/private/src/Qnav.js"></script>    
+    <script src="/private/src/Time.js"></script> 
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script>
+        $.get('../db/currentUser.json', data => {
+            $('#pfp').attr('src', `${data.user.pfp}`)
+        })
     </script>
 </body>
 </html>
