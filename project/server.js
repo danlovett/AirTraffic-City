@@ -63,24 +63,21 @@ app.get('/', (req, res) => {
 })
 
 app.get('/library', checkAuthenticated, (req, res) => {
-    res.render('library', {user: req.user});
+    db.get(`SELECT best_played, last_played FROM users WHERE id = ${req.user.id}`, [], (err, plays) => {
+        res.render('library', {user: req.user, last_played: plays.last_played, best_played: plays.best_played});
+    })
 })
 
 app.get('/leaderboard', checkAuthenticated, (req, res) => {
-    let entries = []
-
-    db.all(`SELECT * FROM leaderboard ORDER BY score DESC LIMIT 10;`, [], (err, rows) => {
+    let encrypted_levels = []
+    db.all(`SELECT name, date, score, level, personID FROM leaderboard ORDER BY score DESC LIMIT 10;`, [], (err, rows) => {
+        rows.sort((a,b) => (b.score/b.errors) - (a.score/a.errors));
         if(rows != null) {
-            rows.forEach(row => entries.push({name: row["name"], date: row["date"], score: row["score"], level: row["level"], id: row["personID"]}))
+            rows.forEach(row => { encrypted_levels.push(`${CryptoJS.AES.encrypt(row.level, "level")}&${CryptoJS.AES.encrypt("2", "status-message")}`) })
         }
-        entries.sort((a,b) => (b.score/b.errors) - (a.score/a.errors));
-        
-        fs.writeFile(`./db/localStorage/leaderboard.json`, `{"entries": ${JSON.stringify(entries)}}`, err => {
-            if(err) throw err
-        })
+        res.render('leaderboard', { top_entries: rows, id_types: ['Name', 'Date', 'Score', 'Level'], encrypted_levels: encrypted_levels });
     })
 
-    res.render('leaderboard');
 })
 
 app.get('/profile', checkAuthenticated, (req, res) => {
@@ -215,5 +212,10 @@ function checkNotAuthenticated(req, res, next) {
     }
     next()
 }
+
+// let leaderboard_query = `INSERT INTO leaderboard(name, date, score, level, personID) VALUES('Daniel Lovett', 'some-value', 120, 'Manchester', 23);`
+// db.all(leaderboard_query, [], err => { 
+//     if(err) throw err
+// })
 
 app.listen(4000);

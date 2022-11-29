@@ -34,6 +34,21 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <script src="/private/src/Qauth.js"></script>
+    <script>
+        let reason = CryptoJS.AES.decrypt(window.location.href.split('?')[1], "authentication-error").toString(CryptoJS.enc.Utf8)
+
+        if(reason == 'noAuth') {
+            $('<p>', {
+                text: 'Please login.',
+                id: 'auth-error',
+                class: 'text-red color-black text-center m10 fs15'
+            }).appendTo('.sep')
+        }
+
+        setTimeout(() => {
+            $("#auth-error").hide('slow', () => { $target.remove() });
+        }, 3000);
+
+    </script>
 </body>
 </html>

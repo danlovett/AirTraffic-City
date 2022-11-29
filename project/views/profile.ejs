@@ -12,6 +12,7 @@
 </head>
 <body>
     <span id="user-id" style="display: none;"><%= load_user.id %></span>
+    <span id="current-id" style="display: none;"><%= current_user.id %></span>
     <%_ if(load_user.last_played != '') { %>
         <span id="last-play" style="display: none;"><%= load_user.last_played %></span>
     <%_ } %>
@@ -20,9 +21,9 @@
     <%_ } %>
     <div id="nav"></div>
     <%_ if(load_user["id"] == current_user.id) { %>
-        <h1 class="text-center m10 fs30">Your Account</h1>
+        <h1 class="text-center fs30">Your Account</h1>
     <%_ } %>
-    <section id="profile" class="board p20 w85 m20">
+    <section id="profile" class="board p20 w85" style="margin-top: 20px;">
         <div class="wrapper-top">
             <div class="profile-container">
                 <img class="profile-img" src="<%= load_user.pfp %>" alt="Profile Picture">
@@ -111,20 +112,22 @@
 
         if( $('#last-play').text() != '' ) {
             $(document).mousemove(() => {
-                if($('#profile-last-played:hover').length != 0) {
-                    $('#profile-last-played-title').css('display', 'none')
-                    $('#btn-remove-last').css('display', 'block')
-                } else {
-                    $('#profile-last-played-title').css('display', 'block')
-                    $('#btn-remove-last').css('display', 'none')
-                }
-
-                if($('#profile-best-played:hover').length != 0) {
-                    $('#profile-best-played-title').css('display', 'none')
-                    $('#btn-remove-best').css('display', 'block')
-                } else {
-                    $('#profile-best-played-title').css('display', 'block')
-                    $('#btn-remove-best').css('display', 'none')
+                if( $('#current-id').text() == $('#user-id').text()) {
+                    if($('#profile-last-played:hover').length != 0) {
+                        $('#profile-last-played-title').css('display', 'none')
+                        $('#btn-remove-last').css('display', 'block')
+                    } else {
+                        $('#profile-last-played-title').css('display', 'block')
+                        $('#btn-remove-last').css('display', 'none')
+                    }
+    
+                    if($('#profile-best-played:hover').length != 0) {
+                        $('#profile-best-played-title').css('display', 'none')
+                        $('#btn-remove-best').css('display', 'block')
+                    } else {
+                        $('#profile-best-played-title').css('display', 'block')
+                        $('#btn-remove-best').css('display', 'none')
+                    }
                 }
             })
         }

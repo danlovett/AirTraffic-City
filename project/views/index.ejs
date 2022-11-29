@@ -19,6 +19,13 @@
         <p id="author"></p>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <script src="/private/src/Qindex.js"></script>
+    <script>
+        $.get('./db/contentController.json', function(data) {
+            let index = JSON.parse(data)
+
+            $('#version').html(`Version ${index.version}`)
+            $('#author').html(`By ${index.author}`)
+        }, 'text');
+    </script>
 </body>
 </html>

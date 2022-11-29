@@ -41,6 +41,38 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="/game/src/endgame.js"></script>
+    <script>
+
+        let details = window.location.href.split('?')[1] // get all details after the ?
+        let time_taken = CryptoJS.AES.decrypt(details.split('&')[0], "time").toString(CryptoJS.enc.Utf8); // first value
+        let total_score = CryptoJS.AES.decrypt(details.split('&')[1], "score").toString(CryptoJS.enc.Utf8); // second value
+        let level_played = CryptoJS.AES.decrypt(details.split('&')[2], "level").toString(CryptoJS.enc.Utf8); // third value
+        // let best_plane = details.split('&')[3] // fourth value
+
+        $.get('../db/contentController.json', json => { // get the data from this file location, use json as variable
+            // getting the image through cycling all level names in the json file
+            for(let i = 0; i < json.library.levels.titles.length; i++) {
+                if(json.library.levels.titles[i] == level_played) {
+                    // set the background to correlated condition
+                    $('#endgame').css('background-image', `url(../../private/images/levels/${level_played}.jpg)`)
+                }
+            }
+        })
+
+        // setting text for each differernt id in the endgame.html file
+        $('#level').text(`Game ended at ${level_played}`)
+        $('#timetaken').text(`${Math.floor(time_taken/60)} minute${time_taken/60 >= 1 ? 's' : ''}`)
+        $('#score').text(`${total_score} point${total_score == 1 ? '' : 's'}`)
+        // $('#bestaircraft').text(`Best performing aircraft: ${best_plane}`)
+
+        $('#eog').click(() => {
+            window.location.href = `/usr_history_submit?score=${total_score}&level=${level_played}`
+        })
+
+        $('#eog-small').click(() => {
+            window.location.href = `/usr_leaderboard_submit?score=${total_score}&level=${level_played}`
+        })
+
+    </script>
 </body>
 </html>

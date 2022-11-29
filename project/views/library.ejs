@@ -11,15 +11,44 @@
     <link rel="shortcut icon" href="/private/images/logo.png" type="image/x-icon">
 </head>
 <body>
+    <span id="last-played-level" style="display: none;"><%= last_played %></span>
+    <span id="best-played-level" style="display: none;"><%= best_played %></span>
     <div id="nav"></div>
     <span style="display: none;" id="pfp-ejs"><%= user["pfp"] %></span>
     <section id="library" class="vw80">
         <div class="quick-actions">
-            <a class="level-nav" href="#" id="link-quick-play">Quick Play</a>
+            <%_ if(best_played != null || last_played != null) { %>
+                <a class="level-nav" href="#" id="link-quick-play">Quick Play</a>
+            <%_ } %>
             <a class="level-nav" href="#" id="link-library">Library</a>
         </div>
         <div class="container" id="quick-play-ui">
-            <div id="quick-play" class="levels m10"></div>
+            <%_ if(best_played != null || last_played != null) { %>
+                <h1 class="fs30 text-center m20">Quick Play</h1>
+                <div id="quick-play-desc">
+                    <%_ if(best_played != null) { %>
+                        <p class="text-center fs20">Best Played</p>
+                    <%_ } %>
+
+                    <%_ if(last_played != null) { %>
+                        <p class="text-center fs20">Last Played</p>
+                    <%_ } %>
+                </div>
+                <div id="quick-play" class="levels m10">
+                    <%_ if(best_played != null) { %>
+                        <a href="/" id="quick-play-best" class="quick-play-child">
+                            <h2><%= best_played %></h2>
+                            <!-- <p>Details on best played will go here</p> -->
+                        </a>
+                    <%_ } %>
+                    <%_ if(last_played != null) { %>
+                        <a href="/" id="quick-play-last" class="quick-play-child">
+                            <h2><%= last_played %></h2>
+                            <!-- <p>Details on last played will go here</p> -->
+                        </a>
+                    <%_ } %>
+                </div>
+                <%_ } %>
         </div>
         <div class="container" id="lib-ui" style="display: none;">
             <h1 class="fs30 m20 text-center">Library</h1>
@@ -29,11 +58,96 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <script src="/private/src/Qhome.js"></script>
     <script>
         $(() => {
             $('#nav').load('/views/navbar.ejs')
         })
+
+        let message
+        try {
+            message = window.location.href.split('?')[1]
+        } catch(err) {
+            throw err
+        }
+
+        // DEV ONLY reset DB results from server.js route
+        if(message != undefined) $('<p>', {
+            text: 'Operation successful by admin.',
+            class: 'text-center color-green m10 fs15',
+            id: 'message'
+        }).prependTo('#library')
+
+        setTimeout(() => {
+            $("#message").remove()
+        }, 1500);
+
+        $('#link-library').bind('click', () => {
+            $('#link-quick-play').css('background-color', 'black')
+
+            $('#link-quick-play').css('color', 'white')
+            $('#quick-play-ui').css('display', 'none')
+
+            $('#link-library').css('background-color', 'white')
+            $('#link-library').css('color', 'black')
+            $('#lib-ui').css('display', 'block')
+
+            $(document).prop('title', `Library | ATC`)
+        })
+
+        $('#link-quick-play').bind('click', () => {
+            $('#link-quick-play').css('background-color', 'white')
+            $('#link-quick-play').css('color', 'black')
+            $('#quick-play-ui').css('display', 'block')
+
+            $('#link-library').css('background-color', 'black')
+            $('#link-library').css('color', 'white')
+
+            $('#lib-ui').css('display', 'none')
+
+            $(document).prop('title', `Quick Play | ATC`)
+        })
+
+        if( $('#last-played-level').text() == '' && $('#best-played-level').text() == '') {
+            $('#quick-play-ui').css('display', 'none')
+            $('#lib-ui').css('display', 'block')
+        }
+
+        if( $('#quick-play').children().length < 2 ) {
+            $('#quick-play').css('grid-template-columns', '100%')
+        } else {
+            $('#quick-play').css('grid-template-columns', '50% 50%')
+        }
+
+        $(`#quick-play-best`).attr("href", `/level?${CryptoJS.AES.encrypt( $('#best-played-level').text() , "level")}&${CryptoJS.AES.encrypt("0", "status-message")}`)
+        $(`#quick-play-last`).attr("href", `/level?${CryptoJS.AES.encrypt( $('#last-played-level').text() , "level")}&${CryptoJS.AES.encrypt("1", "status-message")}`)
+
+        $(`#quick-play-best`).css('background-image', `url('/private/images/levels/${ $('#best-played-level').text() }.jpg')`)
+        $(`#quick-play-last`).css('background-image', `url('/private/images/levels/${ $('#last-played-level').text() }.jpg')`)
+
+        // read from .json file
+        $.get('../db/contentController.json', function(data) {
+            // set the whole file to variable
+            let lib = JSON.parse(data)
+
+            // populating the Library of levels
+            // initiate loop for how many levels there are, using length of array in .json file
+            for(let i = 0; i< lib.library.levels.titles.length; i++) {
+                // create new clickable element and declare id, class and href
+                $('<a>',{
+                    id: `${lib.library.levels.titles[i]}`,
+                    class: 'child',
+                    href: `/level?${CryptoJS.AES.encrypt(lib.library.levels.titles[i], "level")}&${CryptoJS.AES.encrypt("2", "status-message")}`,
+                }).appendTo('#levels'); // add it to the levels id (over iterations levels will populate into list)
+                // create new element to display title declaring text and class
+                $('<h2>',{
+                    text: lib.library.levels.titles[i],
+                    class: "background-filter",
+                }).appendTo(`#${lib.library.levels.titles[i]}`)
+
+                // set background image to level (unique for each)
+                $(`#${lib.library.levels.titles[i]}`).css('background-image', `url(${lib.library.levels.src[i]}`)
+            }
+        }, 'text'); // setting the reading type to text
     </script>
 </body>
 </html>

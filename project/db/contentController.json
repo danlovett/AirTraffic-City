@@ -1,0 +1,11 @@
+{
+    "version": "0.2.2",
+    "author": "Daniel Lovett",
+
+    "library": {
+        "levels": {
+           "titles": ["Manchester", "Stansted", "Gatwick", "Luton"],
+           "src": ["/private/images/levels/manchester.jpg", "../private/images/levels/stansted.jpg", "../private/images/levels/gatwick.jpg", "../private/images/levels/luton.jpg"]
+        }
+    }
+}
