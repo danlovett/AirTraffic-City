@@ -54,9 +54,13 @@
                         <h1 class="fs15 text-center p20" id="leaderboard-profile-text">Leaderboard: <%= JSON.stringify(leaderboard_entry[0].level).replace(/['"]+/g, '') %> | Points: <%= JSON.stringify(leaderboard_entry[0].score) %></h1>
                     </div>
                     <span id="leaderboard-level" style="display: none;"><%= JSON.stringify(leaderboard_entry[0].level).replace(/['"]+/g, '').toLowerCase() %></span>
+                <%_ } else { %>
+                    <div class="leaderboard-entry-none text-center flex" style=" margin: 0px 0px 10px 0px; background-image: url('/private/images/logo.png'); background-repeat: no-repeat; background-size: cover;">
+                        <h1 class="fs15 text-center p20" id="leaderboard-profile-text"><%= load_user.name.split(' ')[0] %> isn't on the leaderboard</h1>
+                    </div>
                 <%_ } %>
                 
-                <div class="profile-container" id="user-history">
+                <div class="profile-container" id="user-history" style="width: 92%;">
                     <%_ if(JSON.stringify(history) != "[]") { %>
                         <h1 class="m10 fs20 text-center"><%= load_user.name.split(' ')[0] %>'s history</h1>
                         <div class="sep"></div>
@@ -68,9 +72,9 @@
                             </tr>
                             <%_ for(let x = 0; x < history.length; x++) { %>
                                 <tr class="fs20 m20" id="<%= `entry-${ x + 1 }` %>">
-                                    <th class="fs20 m20" id="<%= `level-${x + 1}` %>"><%= JSON.stringify(history[x].level).replace(/['"]+/g, '') %></th>
-                                    <th class="fs20 m20" id="<%= `date-${x + 1}` %>"><%= JSON.stringify(history[x].date).replace(/['"]+/g, '') %></th>
-                                    <th class="fs20 m20" id="<%= `score-${x + 1}` %>"><%= JSON.stringify(history[x].score).replace(/['"]+/g, '') %></th>
+                                    <td class="fs20 m20" id="<%= `level` %>"><%= JSON.stringify(history[x].level).replace(/['"]+/g, '') %></td>
+                                    <td class="fs20 m20" id="<%= `date` %>"><%= JSON.stringify(history[x].date).replace(/['"]+/g, '') %></td>
+                                    <td class="fs20 m20" id="<%= `score` %>"><%= JSON.stringify(history[x].score).replace(/['"]+/g, '') %></td>
                                 </tr>
                             <%_ } %>
                         </table>
@@ -87,10 +91,10 @@
         <%_ if(load_user["id"] == current_user.id && (JSON.stringify(history) != "[]" || JSON.stringify(leaderboard_entry != "[]"))) { %>
             <div class="flex">
                 <%_ if(JSON.stringify(history) != "[]") { %>
-                    <button class="text-center m10" id="delete-history"><a href="/delete_your_history" class="fs15 text-center color-red">Delete history</a></button>
+                    <button class="text-center m10" id="delete-history"><a href="/delete_history" class="fs15 text-center color-red">Delete All History (re-login required)</a></button>
                 <%_ } %>
                 <%_ if(JSON.stringify(leaderboard_entry) != "[]") { %>
-                    <button class="text-center m10" id="delete-history"><a href="/delete_leaderboard" class="fs15 text-center color-red">Delete Leaderboard</a></button>
+                    <button class="text-center m10" id="delete-leaderboard"><a href="/delete_leaderboard?id=<%= leaderboard_entry["id"] %>" class="fs15 text-center color-red">Delete Leaderboard Entry (re-login required)</a></button>
                 <%_ } %>
             </div>
         <%_ } %>

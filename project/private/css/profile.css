@@ -27,14 +27,6 @@
     background-size: cover;
 }
 
-#user-history {
-    align-content: baseline;
-    margin: 0px; 
-    margin: 0px;
-    overflow: auto;
-    height: 350px;
-}
-
 #leaderboard-user-pane {
     background-color: rgba(0, 0, 0, 0.7);
     background-position: cover;
@@ -68,4 +60,21 @@
     border-radius: 90px;
     margin: 5px;
     width: 100%;
+}
+
+table tbody, table thead {
+    display: block;
+}
+
+table tbody {
+   overflow: auto;
+   height: 300px;
+   width: 100%;
+}
+
+td {
+    padding: 10px 50px;
+    border: 3px black solid;
+    text-align: center;
+    white-space: nowrap;
 }

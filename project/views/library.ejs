@@ -13,6 +13,8 @@
 <body>
     <span id="last-played-level" style="display: none;"><%= last_played %></span>
     <span id="best-played-level" style="display: none;"><%= best_played %></span>
+    <span id="level-names" style="display: none;"><%= level_names %></span>
+    <span id="level-backgrounds" style="display: none;"><%= level_backgrounds %></span>
     <div id="nav"></div>
     <span style="display: none;" id="pfp-ejs"><%= user["pfp"] %></span>
     <section id="library" class="vw80">
@@ -35,25 +37,39 @@
                     <%_ } %>
                 </div>
                 <div id="quick-play" class="levels m10">
-                    <%_ if(best_played != null) { %>
-                        <a href="/" id="quick-play-best" class="quick-play-child">
-                            <h2><%= best_played %></h2>
-                            <!-- <p>Details on best played will go here</p> -->
-                        </a>
-                    <%_ } %>
-                    <%_ if(last_played != null) { %>
-                        <a href="/" id="quick-play-last" class="quick-play-child">
-                            <h2><%= last_played %></h2>
-                            <!-- <p>Details on last played will go here</p> -->
-                        </a>
+                    <%_ for(let level = 0; level < levels.length; level++) { %>
+                        <%_ if(best_played != null && levels[level]["airport_name"] == best_played) { %>
+                            <div id="quick-play-best" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>');">
+                                <a href="/level?<%= encrypted_url[level] %>" id="best-played-link" class="quick-play-child">
+                                    <h2><%= best_played %></h2>
+                                    <!-- <p>Details on best played will go here</p> -->
+                                </a>
+                            </div>
+                        <%_ } %>
+                        <%_ if(last_played != null && levels[level]["airport_name"] == last_played) { %>
+                            <div id="quick-play-last" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>');">
+                                <a href="/level?<%= encrypted_url[level] %>" id="last-played-link" class="quick-play-child">
+                                    <h2><%= last_played %></h2>
+                                    <!-- <p>Details on last played will go here</p> -->
+                                </a>
+                            </div>
+                        <%_ } %>
                     <%_ } %>
                 </div>
                 <%_ } %>
         </div>
+        <%_ if(levels != null) { %>
         <div class="container" id="lib-ui" style="display: none;">
             <h1 class="fs30 m20 text-center">Library</h1>
-            <div id="levels" class="levels m10"></div>
+            <div id="levels" class="levels m10">
+                <%_ for(let level = 0; level < levels.length; level++) { %>
+                    <div class="level-wrapper" style="background-image: url('<%= level_backgrounds[level] %>');">
+                        <a href="/level?<%= encrypted_url[level] %>" class="child" id="<%= levels[level].airport_name %>"><h2 class="background-filter"><%= levels[level]["airport_name"] %></h2></a>
+                    </div>
+                <%_ } %>
+            </div>
         </div>
+        <%_ } %>
     </section>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -118,36 +134,8 @@
             $('#quick-play').css('grid-template-columns', '50% 50%')
         }
 
-        $(`#quick-play-best`).attr("href", `/level?${CryptoJS.AES.encrypt( $('#best-played-level').text() , "level")}&${CryptoJS.AES.encrypt("0", "status-message")}`)
-        $(`#quick-play-last`).attr("href", `/level?${CryptoJS.AES.encrypt( $('#last-played-level').text() , "level")}&${CryptoJS.AES.encrypt("1", "status-message")}`)
-
-        $(`#quick-play-best`).css('background-image', `url('/private/images/levels/${ $('#best-played-level').text() }.jpg')`)
-        $(`#quick-play-last`).css('background-image', `url('/private/images/levels/${ $('#last-played-level').text() }.jpg')`)
-
-        // read from .json file
-        $.get('../db/contentController.json', function(data) {
-            // set the whole file to variable
-            let lib = JSON.parse(data)
-
-            // populating the Library of levels
-            // initiate loop for how many levels there are, using length of array in .json file
-            for(let i = 0; i< lib.library.levels.titles.length; i++) {
-                // create new clickable element and declare id, class and href
-                $('<a>',{
-                    id: `${lib.library.levels.titles[i]}`,
-                    class: 'child',
-                    href: `/level?${CryptoJS.AES.encrypt(lib.library.levels.titles[i], "level")}&${CryptoJS.AES.encrypt("2", "status-message")}`,
-                }).appendTo('#levels'); // add it to the levels id (over iterations levels will populate into list)
-                // create new element to display title declaring text and class
-                $('<h2>',{
-                    text: lib.library.levels.titles[i],
-                    class: "background-filter",
-                }).appendTo(`#${lib.library.levels.titles[i]}`)
-
-                // set background image to level (unique for each)
-                $(`#${lib.library.levels.titles[i]}`).css('background-image', `url(${lib.library.levels.src[i]}`)
-            }
-        }, 'text'); // setting the reading type to text
+        // $(`#best-played-link`).attr("href", `/level?${CryptoJS.AES.encrypt( $('#best-played-level').text() , "level")}&${CryptoJS.AES.encrypt("0", "status-message")}`)
+        // $(`#last-played-link`).attr("href", `/level?${CryptoJS.AES.encrypt( $('#last-played-level').text() , "level")}&${CryptoJS.AES.encrypt("1", "status-message")}`)
     </script>
 </body>
 </html>
