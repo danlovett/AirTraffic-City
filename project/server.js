@@ -63,18 +63,19 @@ app.get('/', (req, res) => {
 })
 
 app.get('/library', checkAuthenticated, (req, res) => {
-    let levels_url = [], level_names = [], level_backgrounds = []
-    clientDB.get(`SELECT best_played, last_played FROM users WHERE id = ${req.user.id}`, [], (err, plays) => {
-        if(err) throw err
-        gameDB.all('SELECT * FROM levels', [], (err, levels) => {
-            levels.forEach(level => {
-                levels_url.push(`${CryptoJS.AES.encrypt(level.airport_name, "level")}&${CryptoJS.AES.encrypt("2", "status-message")}&${CryptoJS.AES.encrypt(level.image_reference, "level-image")}`) 
-                level_names.push(level.airport_name)
-                level_backgrounds.push(level.image_reference)
-            })
-            res.render('library', {user: req.user, last_played: plays.last_played, best_played: plays.best_played, levels: levels, encrypted_url: levels_url, level_names: level_names, level_backgrounds: level_backgrounds });
-        })
+    let levels_url = []
+    gameDB.all('SELECT * FROM levels', [], (err, levels) => {
+        levels.forEach(level => {levels_url.push(`${CryptoJS.AES.encrypt(level.airport_name, "level")}&${CryptoJS.AES.encrypt("2", "status-message")}&${CryptoJS.AES.encrypt(level.image_reference, "level-image")}`)})
+        res.render('library', {user: req.user, levels: levels, encrypted_url: levels_url });
     })
+})
+
+app.get('/create_layout', checkAuthenticated, (req, res) => {
+    res.render('createLayout')
+})
+
+app.get('/create_airframe', checkAuthenticated, (req, res) => {
+    res.render('/admin/creatorAirframe')
 })
 
 app.get('/leaderboard', checkAuthenticated, (req, res) => {
@@ -98,7 +99,7 @@ app.get('/profile', checkAuthenticated, (req, res) => {
             if(user != null) {      
                 clientDB.all(`SELECT * FROM leaderboard WHERE personID = ${user["id"]}`, [], (err, leaderboard) => {
                     leaderboard["id"] = CryptoJS.AES.encrypt(leaderboard["id"], "leaderboard-id")
-                    res.render('profile', { load_user: user, current_user: req.user, history: joins, last: joins.sort( (a,b) => a.date.split(' ')[1] - b.date.split(' ')[1] )[0], best: joins.sort( (a,b) => b.score - a.score )[0], leaderboard_entry: leaderboard, id_types: ['Level', 'Date', 'Score'] })
+                    res.render('profile', { load_user: user, current_user: req.user, history: joins, last: joins.sort( (a,b) => a.date.split(' ')[1] - b.date.split(' ')[1] )[0], best: joins.sort( (a,b) => b.score - a.score )[0], leaderboard_entry: leaderboard, id_types: ['Level', 'Date', 'Score'], error: req.query.error, success: req.query.success })
                 })
             } else {
                 res.redirect(308, '/error?from=profile')
@@ -106,6 +107,13 @@ app.get('/profile', checkAuthenticated, (req, res) => {
         })
     })
 }) 
+
+app.post('/change_pfp', checkAuthenticated, (req,res) => {
+    clientDB.run(`UPDATE users SET pfp = '${req.body.url}' WHERE id = ${req.user.id}`, [], (err, row) => {
+        if(err) throw err
+        if(!err) res.redirect('/profile?id=current&success=changed_profile_picture')
+    })
+})
 
 app.get('/usr_leaderboard_submit', checkAuthenticated, (req, res) => { 
     clientSQLExecutionBasic(`INSERT INTO history (date, score, level, personID) VALUES('${formatTime()}', ${req.query.score}, '${req.query.level}', ${req.user.id});`)
@@ -156,8 +164,10 @@ app.get('/gameEnded', checkAuthenticated, (req, res) => {
     res.render('endgame', { name: req.user.name });
 })
 
-app.get('/game', checkAuthenticated, (req, res) => {
-    res.render('game');
+app.get('/game/', checkAuthenticated, (req, res) => {
+    gameDB.get(`SELECT * from levels WHERE airport_name = '${req.query.level}';`, [], (err, row) => {
+        res.render('game', { data: row });
+    })
 })
 
 app.get('/clear_clientDB', checkAuthenticated, (req, res) => {

@@ -24,9 +24,28 @@
         <h1 class="text-center fs30">Your Account</h1>
     <%_ } %>
     <section id="profile" class="board p20 w85" style="margin-top: 20px;">
+        <%_ if(error) { %>
+            <h1 class="text-center color-red fs20"><%= error.replace('_', ' ') %></h1>
+        <%_ } %>
+        <%_ if(success) { %>
+            <h1 class="text-center color-green fs20"><%= success.replace('_', ' ') %></h1>
+        <%_ } %>
         <div class="wrapper-top">
             <div class="profile-container">
-                <img class="profile-img" src="<%= load_user.pfp %>" alt="Profile Picture">
+                <div class="pfp-container">
+                    <img src="<%= load_user.pfp %>" class="profile-img" alt="pfp">
+                </div>
+                <%_ if(load_user.id == current_user.id) { %>
+                    <div id="pfp-edit">
+                        <a href="#" id="link-change-pfp" class="fs15 text-center">Edit Picture</a>
+                        <div id="form-container-x" style="display: none;">
+                            <form action="change_pfp" method="POST" id="form-change-pfp" style="margin: 0px;">
+                                <input type="url" name="url" placeholder="Link" class="fs15 text-center color-black">
+                                <button type="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                <%_ } %>
                 <div class="user-details m10">
                     <h1 class="text-center fs20 m-atuo overflow-scroll"><%= load_user.name %></h1>
                     <p class="text-center fs15 m10 overflow-scroll"><%= load_user.username %></p>
@@ -36,13 +55,13 @@
                 </div>
                 <div class="played-details m10" id="profile-last-played" style="background-image: url('/private/images/logo.png');">
                     <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-last-played-title">Played last will go here.</h1>
-                    <%_ if(load_user.last_played != '' && load_user["id"] == current_user.id) { %>
+                    <%_ if(load_user.last_played != "undefined" && load_user["id"] == current_user.id) { %>
                         <button class="text-center" id="btn-remove-last" style="display: none; margin: 20px 0px;"><a href="/remove_last_played" class="fs15 text-center">Remove</a></button>
                     <%_ } %>
                 </div>
                 <div class="played-details m10" id="profile-best-played" style="background-image: url('/private/images/logo.png');">
                     <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-best-played-title">Played best will go here.</h1>
-                    <%_ if(load_user.best_played != '' && load_user["id"] == current_user.id) { %>
+                    <%_ if(load_user.best_played != "undefined" && load_user["id"] == current_user.id) { %>
                         <button class="text-center" id="btn-remove-best" style="display: none; margin: 20px 0px;"><a href="/remove_best_played" class="fs15 text-center">Remove</a></button>
                     <%_ } %>
                 </div>
@@ -129,12 +148,17 @@
                         $('#profile-best-played-title').css('display', 'none')
                         $('#btn-remove-best').css('display', 'block')
                     } else {
-                        $('#profile-best-played-title').css('display', 'block')
+                        $('#profile-best-played-title').css('display', 'flex')
                         $('#btn-remove-best').css('display', 'none')
                     }
                 }
             })
         }
+
+        $('#link-change-pfp').bind('click', () => {
+            $('#link-change-pfp').css('display', 'none')
+            $('#form-container-x').css('display', 'block')
+        })
 
         $('.leaderboard-entry').css('background-image', `url(/private/images/levels/${ $('#leaderboard-level').text() }.jpg`)
     </script>

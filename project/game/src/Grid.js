@@ -6,7 +6,7 @@ class Grid {
         this.total_grid_size = 12;
 
         //declare grid
-        this.grid;
+        this.grid = [];
         // declare areas
         this.grass_areas = [];
         this.moveable_areas = [];
@@ -47,12 +47,12 @@ class Grid {
 
     }
 
-    init(json_level) {
-        this.airport = json_level.airport
-        this.grid = json_level.grid;
-        this.callsign_prefixses = json_level.airlines
-        this.destinations = json_level.destinations
-        this.ac_types = json_level.aircraft_types
+    init(airport, grid) {
+        this.airport = airport
+        this.grid = grid;
+        this.callsign_prefixses = [["RYR"], ["EZY"], ["TUI"], ["LXR"], ["FDX"], ["BAW"], ["RAF"], ["EER"], ["FBE"]]
+        this.destinations = ["LFPG", "EHAM", "EGCC", "EDDW", "ELLX", "LFBO", "LEBL", "LMEA", "LEBF", "LFTY"]
+        this.ac_types = [["A320", "LM"], ["B738", "LM"], ["C152", "L"], ["A19N", "LM"]]
 
 
 

@@ -21,7 +21,7 @@
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script>
         $.get('../db/currentUser.json', data => {
-            $('#pfp').attr('src', `${data.user.pfp}`)
+            $('#pfp').attr('src', `${data}`)
         })
 
         function refreshTime() {

@@ -78,3 +78,17 @@ td {
     text-align: center;
     white-space: nowrap;
 }
+
+/* #pfp-edit {
+    position: absolute;
+    display: grid;
+    margin-left: 63px;
+    margin-top: 0px;
+    background-color: rgba(20,20,20,0.8);
+    padding: 3px 6px;
+    border-radius: 90px;
+}
+
+.pfp-container {
+    position: relative;
+} */

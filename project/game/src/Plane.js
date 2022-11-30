@@ -59,10 +59,7 @@ class Plane {
         // declare temp array for possible callsigns
         let prefix_array = [];
         for(let j = 0; j < grid.callsign_prefixses.length; j++) { 
-            for(let i = 1; i < grid.callsign_prefixses[j].length; i++) {
-                // if the callsign prefix has location which matches current airport, push to temp array
-                if(grid.callsign_prefixses[j][i] == grid.airport) prefix_array.push(grid.callsign_prefixses[j][0])
-            }
+            prefix_array.push(grid.callsign_prefixses[j])
         }
         
         let prefix = prefix_array[floor(random(prefix_array.length))] // get a random callsign from possible callsign array

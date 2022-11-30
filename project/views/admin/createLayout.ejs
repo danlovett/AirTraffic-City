@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create new level</title>
+    <link rel="shortcut icon" href="/private/images/logo.png" type="image/x-icon">
+    <style>
+        * {
+            margin: auto;
+            padding: 0px;
+        }
+    </style>
+</head>
+<body>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <!--  P5JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.min.js" integrity="sha512-NxocnqsXP3zm0Xb42zqVMvjQIktKEpTIbCXXyhBPxqGZHqhcOXHs4pXI/GoZ8lE+2NJONRifuBpi9DxC58L0Lw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        function setup() {
+            createCanvas(1300, windowHeight)
+            translate(30,30)
+            grid = new Grid(12, 12)
+        }
+
+        function draw() {
+            background('green')
+            grid_x = constrain(floor((mouseX/grid.grid_size)), 0, grid.total_grid_size )
+            grid_y = constrain(floor((mouseY/grid.grid_size)), 0, grid.total_grid_size )
+
+            grid.render()
+            grid.render_selector_tool(grid_x, grid_y)
+            grid.makeButtons()
+            grid.buttonPress()
+            // grid.makeButtons()
+        }
+
+        function mousePressed() {
+            grid.update(grid_x, grid_y)
+        }
+
+        function windowResized() {
+            resizeCanvas(windowWidth, windowHeight)
+        }
+
+        class Grid {
+            constructor(cols, rows) {
+                this.cols = cols;
+                this.rows = rows;
+                this.grid_size = windowWidth/19;
+                this.total_grid_size = 12
+
+                //declare grid
+                this.grid = [
+                    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+                    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+                    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+                    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+                    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+                    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+                    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+                    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+                    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+                    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+                    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+                    ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
+                ];
+
+                this.buttons = [createButton(`stand`), createButton(`terminal`), createButton(`taxiway`), createButton(`holdpoint`), createButton(`runway#`), createButton(`runway`), createButton(`control tower`),];
+                this.tools = ["1", "6", "2", "3", "5", "4", "7"]
+                this.tool;
+                this.color = color('green')
+                this.colors = [color('blue'), color('orange'), color('grey'), color('pink'), color('yellow'), color('black'), color('red')]
+
+            }
+
+            render() {
+                for(let row = 0; row < this.total_grid_size; row++) {
+                    for(let col = 0; col < this.total_grid_size; col++) {
+                        if(this.grid[row][col] == "1") fill(this.colors[0]) // stands
+                        if(this.grid[row][col] == "2") fill(this.colors[2]) // taxiway
+                        if(this.grid[row][col] == "3") fill(this.colors[3]) // holding points
+                        if(this.grid[row][col] == "4") fill(this.colors[5]) // runway || runway entry point
+                        if(this.grid[row][col] == "5") fill(this.colors[4]) // runway || runway entry point
+                        if(this.grid[row][col] == "6") fill(this.colors[1]) // terminal points
+                        if(this.grid[row][col] == "7") fill(this.colors[6]) // control tower points
+                        if(this.grid[row][col] == "0") noFill() // grass
+                        rect(row * this.grid_size, col * this.grid_size, this.grid_size, this.grid_size)
+
+                    }
+                }
+                for(let x = 0; x <= this.cols; x++) {
+                    for(let y = 0; y <= this.rows; y++) {
+                        noFill()
+                        strokeWeight(3)
+                        rect(x * this.grid_size, y * this.grid_size, this.grid_size, this.grid_size)
+
+                    }
+                }
+            }
+
+            render_selector_tool(grid_x, grid_y) {
+                stroke('yellow')
+                strokeWeight(3)
+                fill(this.color)
+                rect(grid_x * this.grid_size, grid_y * this.grid_size, this.grid_size, this.grid_size)
+                stroke('grey')
+                noFill()
+            }
+
+            makeButtons() {
+                let button_pos_x = 1
+                textSize(20)
+                strokeWeight(1)
+                stroke('black')
+                fill('black')
+                text('Tools:', 14 * this.grid_size, 0.5 * this.grid_size)
+                for(let i = 0; i < this.buttons.length; i++) {
+                    this.buttons[i].position(14 * this.grid_size, button_pos_x * this.grid_size)
+                    button_pos_x = button_pos_x + 1
+                }
+                stroke('grey')
+                noFill()
+            }
+
+            buttonPress() {
+                for(let i = 0; i < this.buttons.length; i++) {
+                    this.buttons[i].mousePressed(() => {
+                        this.tool = this.tools[i]
+                        this.color = this.colors[i]
+                    })
+                }
+
+                for(let index = 0; index < this.buttons.length; index++) {
+                    if(this.tools[index] == this.tool) {
+                        this.buttons[index].style('background-color', 'white')
+                        this.buttons[index].style('color', 'black')
+                    } else {
+                        this.buttons[index].style('background-color', 'black')
+                        this.buttons[index].style('color', 'white')
+                    }
+                }
+            }
+
+            update(x, y) {
+                this.grid[x][y] = this.tool
+            }
+        }
+    </script>
+</body>
+</html>

@@ -11,45 +11,40 @@
     <link rel="shortcut icon" href="/private/images/logo.png" type="image/x-icon">
 </head>
 <body>
-    <span id="last-played-level" style="display: none;"><%= last_played %></span>
-    <span id="best-played-level" style="display: none;"><%= best_played %></span>
-    <span id="level-names" style="display: none;"><%= level_names %></span>
-    <span id="level-backgrounds" style="display: none;"><%= level_backgrounds %></span>
     <div id="nav"></div>
     <span style="display: none;" id="pfp-ejs"><%= user["pfp"] %></span>
     <section id="library" class="vw80">
         <div class="quick-actions">
-            <%_ if(best_played != null || last_played != null) { %>
+            <a class="level-nav" href="#" id="link-library">Library</a>
+            <%_ if(user.best_played != null || user.last_played != null) { %>
                 <a class="level-nav" href="#" id="link-quick-play">Quick Play</a>
             <%_ } %>
-            <a class="level-nav" href="#" id="link-library">Library</a>
         </div>
         <div class="container" id="quick-play-ui">
-            <%_ if(best_played != null || last_played != null) { %>
+            <%_ if(user.best_played != null || user.last_played != null) { %>
                 <h1 class="fs30 text-center m20">Quick Play</h1>
                 <div id="quick-play-desc">
-                    <%_ if(best_played != null) { %>
+                    <%_ if(user.best_played != "undefined") { %>
                         <p class="text-center fs20">Best Played</p>
                     <%_ } %>
 
-                    <%_ if(last_played != null) { %>
+                    <%_ if(user.last_played != "undefined") { %>
                         <p class="text-center fs20">Last Played</p>
                     <%_ } %>
                 </div>
                 <div id="quick-play" class="levels m10">
                     <%_ for(let level = 0; level < levels.length; level++) { %>
-                        <%_ if(best_played != null && levels[level]["airport_name"] == best_played) { %>
+                        <%_ if(user.best_played != null && levels[level]["airport_name"] == user.best_played) { %>
                             <div id="quick-play-best" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>');">
                                 <a href="/level?<%= encrypted_url[level] %>" id="best-played-link" class="quick-play-child">
-                                    <h2><%= best_played %></h2>
-                                    <!-- <p>Details on best played will go here</p> -->
+                                    <h2><%= user.best_played %></h2>
                                 </a>
                             </div>
                         <%_ } %>
-                        <%_ if(last_played != null && levels[level]["airport_name"] == last_played) { %>
+                        <%_ if(user.last_played != null && levels[level]["airport_name"] == user.last_played) { %>
                             <div id="quick-play-last" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>');">
                                 <a href="/level?<%= encrypted_url[level] %>" id="last-played-link" class="quick-play-child">
-                                    <h2><%= last_played %></h2>
+                                    <h2><%= user.last_played %></h2>
                                     <!-- <p>Details on last played will go here</p> -->
                                 </a>
                             </div>
@@ -58,18 +53,22 @@
                 </div>
                 <%_ } %>
         </div>
-        <%_ if(levels != null) { %>
         <div class="container" id="lib-ui" style="display: none;">
             <h1 class="fs30 m20 text-center">Library</h1>
             <div id="levels" class="levels m10">
                 <%_ for(let level = 0; level < levels.length; level++) { %>
-                    <div class="level-wrapper" style="background-image: url('<%= level_backgrounds[level] %>');">
-                        <a href="/level?<%= encrypted_url[level] %>" class="child" id="<%= levels[level].airport_name %>"><h2 class="background-filter"><%= levels[level]["airport_name"] %></h2></a>
+                    <div class="level-wrapper" style="background-image: url('<%= levels[level]["image_reference"] %>');">
+                        <h2 class="fs15 text-center m10" style="background-color: rgba(20, 20, 20, 0.5); border-radius: 90px; padding: 0px;"> By <%= levels[level]["author"].split('|')[0] %></h2>
+                        <a href="/level?<%= encrypted_url[level] %>&<%= levels[level]["author"] %>" class="child" id="<%= levels[level]["airport_name"] %>"><h2 class="background-filter"><%= levels[level]["airport_name"] %></h2></a>
                     </div>
                 <%_ } %>
             </div>
         </div>
-        <%_ } %>
+        <!-- <div class="sep" style="width: 90%;"></div>
+        <div class="container">
+            <h1 class="fs23 m20 text-center">Extras</h1>
+            <a href="/create"><h2 class="m20 fs20 text-center">Make a new layout</h2></a>
+        </div> -->
     </section>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

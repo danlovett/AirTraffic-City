@@ -47,7 +47,7 @@
         $('<a>',{
             text: `Play at ${level_name}`,
             class: 'level-play',
-            href: `/game?${level}&${url_search.split('&')[2]}`,
+            href: `/game?level=${CryptoJS.AES.decrypt(level, "level").toString(CryptoJS.enc.Utf8)}`,
         }).appendTo('#level-detail');
 
         $(document).prop('title', `Play @ ${level_name} | ATC`)

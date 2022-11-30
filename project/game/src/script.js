@@ -12,30 +12,23 @@ function setup() {
     score = new Score()
 
     grid = new Grid()
-    
-    level_name = CryptoJS.AES.decrypt(window.location.href.split('?')[1], "level").toString(CryptoJS.enc.Utf8)
-
-    $(document).prop('title', level_name);
-
     // grid = new Grid(10, 10)
-    $.get(`/game/config/${level_name.toLowerCase()}.json`, (json_level) => {
-        grid.init(json_level)
-        for(let i = 0; i <= floor(random(4, 9)); i++) {
-            let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]
-            grid.spawn_areas.splice(grid.spawn_areas.indexOf(spawn_point), 1)
-            
-            control_planes.push(new Plane(spawn_point))
-            control_planes[i].add_plane_info('dep')
-            control_planes[i].ctot = control_planes[i].make_ctot(floor(random(20, 80)))
-
-            all_planes.push(control_planes[i])
-        }
+    grid.init($('#level_name').text(), JSON.parse($('#level_grid').text()))
+    for(let i = 0; i <= floor(random(4, 9)); i++) {
+        let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]
+        grid.spawn_areas.splice(grid.spawn_areas.indexOf(spawn_point), 1)
         
-        for(let i = 0; i < grid.holding_points.length; i++) {
-            grid.holding_points[i].push(`${char(i + 65)}1`)
-        }
-    })
-    // spawn_proto()
+        control_planes.push(new Plane(spawn_point))
+        control_planes[i].add_plane_info('dep')
+        control_planes[i].ctot = control_planes[i].make_ctot(floor(random(20, 80)))
+
+        all_planes.push(control_planes[i])
+    }
+    
+    for(let i = 0; i < grid.holding_points.length; i++) {
+        grid.holding_points[i].push(`${char(i + 65)}1`)
+    }
+    spawn_proto()
 
     // remove context menu to allow right clicks in browser
 	for (let element of document.getElementsByClassName("p5Canvas")) {
