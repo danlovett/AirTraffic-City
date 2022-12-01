@@ -6,6 +6,7 @@
     padding: 10px 0px;
     width: inherit;
     margin: 0px;
+    white-space: nowrap;
 }
 
 .static-left {

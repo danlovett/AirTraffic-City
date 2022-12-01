@@ -12,10 +12,18 @@
     <title>Leaderboard | ATC</title>
 </head>
 <body>
-    <div id="nav"></div>
+    <%- include('navbar.ejs') -%>
     <section class="board w85" id="leaderboard">
         <h1 class="fs30" id="header">Leaderboard</h1>
         <div class="sep">
+            <%_ if(message == 'name_constrain') { %>
+                <h2 class="fs15 color-red text-center">You're already on the leaderboard</h2>
+                <p class="fs15 color-black text-center">Your entry is stored temporarily, so you can still add it later once this entry has been removed.</p>
+            <%_ } %>
+            <%_ if(message == 'oor') { %>
+                <h2 class="fs15 color-red text-center" id="error">Not added to leaderboard</h2>
+                <p class="fs15 color-black text-center" id="reason">Reason: you didn't score high enough for minimum criteria</p>
+            <%_ } %>
         </div>
         <%_ if(top_entries.length > 0) { %>
             <table id="leaderboard-entries">
@@ -30,9 +38,9 @@
                             <th class="fs20 m20 text-center">
                                 <%_ if(x != 'personID') { %>
                                     <%_ if(x == 'level') { %>
-                                        <a href="<%= `/level?${encrypted_levels[entry]}`%>"><%= top_entries[entry][x] %></a>
+                                        <a href="/level?name=<%= top_entries[entry][x] %>"><%= top_entries[entry][x] %></a>
                                     <%_ } else if (x == 'name') { %>
-                                        <a href="<%= `/profile?id=${top_entries[entry].personID}` %>"><%= top_entries[entry][x] %></a>
+                                        <a href="/profile?id=<%=top_entries[entry].personID %>"><%= top_entries[entry][x] %></a>
                                     <%_ } else { %>
                                         <%= top_entries[entry][x] %>
                                     <%_ } %>
@@ -48,11 +56,5 @@
 
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <script>
-        $(() => {
-            $('#nav').load('/views/navbar.ejs')
-        })
-    </script>
 </body>
 </html>

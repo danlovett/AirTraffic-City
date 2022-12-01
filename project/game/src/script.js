@@ -13,7 +13,8 @@ function setup() {
 
     grid = new Grid()
     // grid = new Grid(10, 10)
-    grid.init($('#level_name').text(), JSON.parse($('#level_grid').text()))
+    grid.init($('#level_name').text(), JSON.parse($('#level_grid').text()), JSON.parse($('#planes').text()), $('#destinations').text())
+
     for(let i = 0; i <= floor(random(4, 9)); i++) {
         let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]
         grid.spawn_areas.splice(grid.spawn_areas.indexOf(spawn_point), 1)
@@ -64,7 +65,7 @@ function draw() {
         grid.render_selector_tool(grid_x, grid_y)
     } else { // if grid.gameplay_allowed is false
         // redirect user to this page with set values
-        window.location.href = `${window.location.origin}/gameEnded?${CryptoJS.AES.encrypt(`${grid.ellapsed_time_seconds}`, "time")}&${CryptoJS.AES.encrypt(`${score.total_score}`, "score")}&${CryptoJS.AES.encrypt(`${level_name}`, "level")}&${window.location.href.split('&')[1]}`
+        window.location.href = `${window.location.origin}/gameEnded?level=${$('#level_name').text()}&time=${CryptoJS.AES.encrypt(`${grid.ellapsed_time_seconds}`, "time")}&score=${score.total_score}`
     }
 }
 

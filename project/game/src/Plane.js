@@ -56,23 +56,16 @@ class Plane {
         if(type == 'dep') this.fpln_type = 'out'
         if(type == 'arr') this.fpln_type = 'in'
         
-        // declare temp array for possible callsigns
-        let prefix_array = [];
-        for(let j = 0; j < grid.callsign_prefixses.length; j++) { 
-            prefix_array.push(grid.callsign_prefixses[j])
-        }
-        
-        let prefix = prefix_array[floor(random(prefix_array.length))] // get a random callsign from possible callsign array
+        let index = floor(random(grid.plane_data.length))
+        let prefix = grid.plane_data[index]["callsign_prefix"] // get a random callsign from possible callsign array
         let numbers = `${floor(random(9))}${floor(random(9))}` // randomly generate numbers for callsign
-        this.callsign = `${prefix}${numbers}` // finalise callsign and assign it
-        
-        let index = floor(random(grid.ac_types.length)) // set up for type and wake cat
-        
-        this.type = grid.ac_types[index][0]
-        this.wake_cat = grid.ac_types[index][1]
-        
+        let letters = (Math.random() + 1).toString(36).substring(5).toUpperCase().slice(0,2);
+        this.callsign = `${prefix}${numbers}${letters}` // finalise callsign and assign it
+
+        this.type = grid.plane_data[index]["airframe"]
+        this.wake_cat = grid.plane_data[index]["wake_category"]
         // get a random destination for aicraft to fly to from destinations array in grid class
-        this.destination = grid.destinations[floor(random(grid.destinations.length))]
+        // this.destination = grid.destinations[floor(random(grid.destinations.length))]
         
         // for now, random_hp_destination gets a random hp for aircraft to taxi to
         let random_hp_destination = floor(random(grid.holding_points.length)) // update later to get set hp for dep runway
@@ -86,7 +79,7 @@ class Plane {
         rect(this.current_x * grid.grid_size, this.current_y * grid.grid_size, grid.grid_size, grid.grid_size) // show the aircraft using grid size and positioning
         noStroke() // reset default stroke
         fill(this.ac_text)
-        textSize(13)
+        textSize(11)
         text(this.callsign, this.current_x * grid.grid_size + (grid.grid_size-55), this.current_y * grid.grid_size + (grid.grid_size-45)) // callsign text to user
         textSize(10)
         text(`${this.type} ${this.wake_cat}`, this.current_x * grid.grid_size + (grid.grid_size-55), this.current_y * grid.grid_size + (grid.grid_size - 30)) // type text to user

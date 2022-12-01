@@ -18,7 +18,6 @@ class Grid {
         this.control_tower = [];
         // declare specifics
         this.runway_numbers = ['18 R', '36 L', '18 L', '36 R']
-        this.callsign_prefixses;
         this.destinations;
         this.airport;
         
@@ -47,12 +46,11 @@ class Grid {
 
     }
 
-    init(airport, grid) {
+    init(airport, grid, planes, destinations) {
         this.airport = airport
         this.grid = grid;
-        this.callsign_prefixses = [["RYR"], ["EZY"], ["TUI"], ["LXR"], ["FDX"], ["BAW"], ["RAF"], ["EER"], ["FBE"]]
-        this.destinations = ["LFPG", "EHAM", "EGCC", "EDDW", "ELLX", "LFBO", "LEBL", "LMEA", "LEBF", "LFTY"]
-        this.ac_types = [["A320", "LM"], ["B738", "LM"], ["C152", "L"], ["A19N", "LM"]]
+        this.plane_data = planes;
+        this.destinations = destinations;
 
 
 
@@ -238,20 +236,13 @@ class Grid {
     buttons_text() {
         fill('black')
         textSize(20)
-        text(`${this.airport}`, 0.2 * this.grid_size, (this.total_grid_size + 0.5) * this.grid_size)
+        text(`Airport: ${this.airport}`, (this.total_grid_size + 1.5) * this.grid_size, 0.5 * this.grid_size)
         text(`Score: ${score.total_score}\nTime: ${this.format_time(this.time)}`, (this.total_grid_size + 1.5) * this.grid_size, 1 * this.grid_size)
 
         text('In your AoC:', (this.total_grid_size + 1.5) * this.grid_size, 4 * this.grid_size)
         textSize(17)
         for(let i = 0; i < control_planes.length; i++) {
             text(`${control_planes[i].callsign}: ${control_planes[i].current_status}`, (this.total_grid_size + 1.5) * this.grid_size, (4.5 + (i/2)) * this.grid_size)
-        }
-
-        textSize(20)
-        text('Other planes:', 0.2 * this.grid_size, (this.total_grid_size + 1) * this.grid_size)
-        textSize(17)
-        for(let i = 0; i < other_control.length; i++) {
-            text(`${other_control[i].callsign}: ${other_control[i].current_status}`, 0.2 * this.grid_size, (this.total_grid_size + 1.5 + (i/2)) * this.grid_size)
         }
 
         this.play_pause_button.position((this.total_grid_size + 1.5) * this.grid_size, 1.7 * this.grid_size)

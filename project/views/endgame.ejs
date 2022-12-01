@@ -10,19 +10,19 @@
     <link rel="stylesheet" href="/game/style.css">
 </head>
 <body>
-    <div id="nav"></div>
-    <section id="endgame">
+    <%- include('navbar.ejs') -%>
+    <section id="endgame" style="background-image: url('<%= level["image_reference"] %>'); background-size: cover;">
         <div class="container">
-            <h1 id="level" class="text-center"></h1>
-            <p class="pdetail">Details on your performance:</p>
+            <h1 id="level" class="text-center fs30">Game ended at <%= level["airport_name"] %></h1>
+            <p class="pdetail p20">Details on your performance:</p>
             <table>
                 <tr>
                     <th class="text-center fs20">Name: </th>
-                    <th class="text-center fs20"><%= name %></th>
+                    <th class="text-center fs20"><%= username %></th>
                 </tr>
                 <tr>
                     <th class="text-center fs20">Time: </th>
-                    <th id="timetaken" class="point fs20"></th>
+                    <th id="timetaken" class="point fs20"><%= Math.floor(time/60) %> minute<%_ time/60 >= 1 ? 's' : '' %></th>
                 </tr>
                 <!-- <tr>
                     <th class="text-center fs20">Best Performing Aircraft: </th>
@@ -30,46 +30,13 @@
                 </tr> -->
                 <tr>
                     <th class="text-center fs20">Score: </th>
-                    <th id="score" class="point fs20"></th>
+                    <th id="score" class="point fs20"><%= score %> point<%_ score == 1 ? '' : 's' %></th>
                 </tr>
             </table>
-            <button id="eog" class="fs15">Back to home</button>
-            <button class="fs15" id="eog-small">or add to leaderboard</button>
+            <button id="eog" class="fs15"><a href="/usr_history_submit?score=<%= score %>&level=<%= level["airport_name"] %>" class="fs15">Back to home</a></button>
+            <button class="fs15" id="eog-small"> <a href="/usr_leaderboard_submit?score=<%= score %>&level=<%= level["airport_name"] %>" class="fs15">or add to leaderboard</a></button>
 
         </div>
     </section>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-
-        $(() => {
-            $('#nav').load('/views/navbar.ejs')
-        })
-
-        const details = window.location.href.split('?')[1] // get all details after the ?
-        const time_taken = CryptoJS.AES.decrypt(details.split('&')[0], "time").toString(CryptoJS.enc.Utf8); // first value
-        const total_score = CryptoJS.AES.decrypt(details.split('&')[1], "score").toString(CryptoJS.enc.Utf8); // second value
-        const level_played = CryptoJS.AES.decrypt(details.split('&')[2], "level").toString(CryptoJS.enc.Utf8); // third value
-        const background_image = CryptoJS.AES.decrypt(details.split('&')[3], "level-image").toString(CryptoJS.enc.Utf8); // third value
-        // let best_plane = details.split('&')[3] // fourth value
-
-        $('#endgame').css('background-image', `url(${background_image})`)
-
-        // setting text for each differernt id in the endgame.html file
-        $('#level').text(`Game ended at ${level_played}`)
-        $('#timetaken').text(`${Math.floor(time_taken/60)} minute${time_taken/60 >= 1 ? 's' : ''}`)
-        $('#score').text(`${total_score} point${total_score == 1 ? '' : 's'}`)
-        // $('#bestaircraft').text(`Best performing aircraft: ${best_plane}`)
-
-        $('#eog').click(() => {
-            window.location.href = `/usr_history_submit?score=${total_score}&level=${level_played}`
-        })
-
-        $('#eog-small').click(() => {
-            window.location.href = `/usr_leaderboard_submit?score=${total_score}&level=${level_played}`
-        })
-
-    </script>
 </body>
 </html>

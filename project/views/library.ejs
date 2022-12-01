@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="/private/images/logo.png" type="image/x-icon">
 </head>
 <body>
-    <div id="nav"></div>
+    <%- include('navbar.ejs') -%>
     <span style="display: none;" id="pfp-ejs"><%= user["pfp"] %></span>
     <section id="library" class="vw80">
         <div class="quick-actions">
@@ -35,17 +35,16 @@
                 <div id="quick-play" class="levels m10">
                     <%_ for(let level = 0; level < levels.length; level++) { %>
                         <%_ if(user.best_played != null && levels[level]["airport_name"] == user.best_played) { %>
-                            <div id="quick-play-best" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>');">
-                                <a href="/level?<%= encrypted_url[level] %>" id="best-played-link" class="quick-play-child">
+                            <div id="quick-play-best" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>'); background-position: cover;">
+                                <a href="/level?name=<%= levels[level]["airport_name"] %>" id="best-played-link" class="quick-play-child">
                                     <h2><%= user.best_played %></h2>
                                 </a>
                             </div>
                         <%_ } %>
                         <%_ if(user.last_played != null && levels[level]["airport_name"] == user.last_played) { %>
-                            <div id="quick-play-last" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>');">
-                                <a href="/level?<%= encrypted_url[level] %>" id="last-played-link" class="quick-play-child">
+                            <div id="quick-play-last" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>'); background-position: cover;">
+                                <a href="/level?name=<%= levels[level]["airport_name"] %>" id="last-played-link" class="quick-play-child">
                                     <h2><%= user.last_played %></h2>
-                                    <!-- <p>Details on last played will go here</p> -->
                                 </a>
                             </div>
                         <%_ } %>
@@ -58,8 +57,7 @@
             <div id="levels" class="levels m10">
                 <%_ for(let level = 0; level < levels.length; level++) { %>
                     <div class="level-wrapper" style="background-image: url('<%= levels[level]["image_reference"] %>');">
-                        <h2 class="fs15 text-center m10" style="background-color: rgba(20, 20, 20, 0.5); border-radius: 90px; padding: 0px;"> By <%= levels[level]["author"].split('|')[0] %></h2>
-                        <a href="/level?<%= encrypted_url[level] %>&<%= levels[level]["author"] %>" class="child" id="<%= levels[level]["airport_name"] %>"><h2 class="background-filter"><%= levels[level]["airport_name"] %></h2></a>
+                        <a href="/level?name=<%= levels[level]["airport_name"] %>" class="child" style="width:100%;" id="<%= levels[level]["airport_name"] %>"><h2 class="background-filter"><%= levels[level]["airport_name"] %></h2></a>
                     </div>
                 <%_ } %>
             </div>
@@ -74,10 +72,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script>
-        $(() => {
-            $('#nav').load('/views/navbar.ejs')
-        })
-
         let message
         try {
             message = window.location.href.split('?')[1]

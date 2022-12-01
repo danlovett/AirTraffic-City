@@ -9,48 +9,23 @@
     <link rel="stylesheet" href="/private/css/navbar.css">
     <link rel="shortcut icon" href="/private/images/logo.png" type="image/x-icon">
 
-    <title>Level</title>
+    <title>Play at <%= data["airport_name"] %></title>
 </head>
 <body>
+    <%- include('navbar.ejs') -%>
     <div id="nav"></div>
-    <section id="level-detail" class="level-detail animate-bounce">
+    <section id="level-detail" class="level-detail animate-bounce" style="background-image: url('<%= data["image_reference"] %>'); background-size: cover;">
         <div class="container">
-            <h2 id="level-name"></h2>
+            <h2 id="level-name"><%= data["airport_name"] %></h2>
             <p id="level-desc" class="text-center fs15 m10"></p>
         </div>
         <div class="splitter">
             <p id="level-desc" class="fs20 w50 m0 text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae, commodi.</p>
             <p id="level-instr" class="fs20 w50 m0 text-center">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ad laborum labore, quisquam enim magnam deleniti repellendus rerum explicabo pariatur facilis.</p>
         </div>
+        <a href="/game?level=<%= data["airport_name"] %>" class="level-play">Play at <%= data["airport_name"] %></a>
     </section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <script>
-        $(() => {
-            $('#nav').load('/views/navbar.ejs')
-        })
-
-        const url_search = window.location.href.split('?')[1]
-        const level = url_search.split('&')[0]
-        const level_name = CryptoJS.AES.decrypt(url_search.split('&')[0], "level").toString(CryptoJS.enc.Utf8)
-        const type = CryptoJS.AES.decrypt(url_search.split('&')[1], "status-message").toString(CryptoJS.enc.Utf8)
-        const background_image = CryptoJS.AES.decrypt(url_search.split('&')[2], "level-image").toString(CryptoJS.enc.Utf8)
-
-        if(type == "0") $('#level-desc').text('This is your best played level.')
-        if(type == "1") $('#level-desc').text('This is your last played level.')
-        if(type == "2") $('#level-desc').remove()
-
-        $('#level-name').text(level_name)
-        $('#level-detail').css('background-image', `url(${background_image})`)
-        $('#level-detail').css('background-size', 'cover')
-        $('<a>',{
-            text: `Play at ${level_name}`,
-            class: 'level-play',
-            href: `/game?level=${CryptoJS.AES.decrypt(level, "level").toString(CryptoJS.enc.Utf8)}`,
-        }).appendTo('#level-detail');
-
-        $(document).prop('title', `Play @ ${level_name} | ATC`)
-    </script>
 </body>
 </html>
