@@ -20,6 +20,7 @@ class Grid {
         this.runway_numbers = ['18 R', '36 L', '18 L', '36 R']
         this.destinations;
         this.airport;
+        this.icao;
         
         this.gameplay_allowed = true
         this.gameplay_play = true
@@ -46,11 +47,12 @@ class Grid {
 
     }
 
-    init(airport, grid, planes, destinations) {
+    init(airport, icao, grid, planes, destinations) {
         this.airport = airport
         this.grid = grid;
         this.plane_data = planes;
         this.destinations = destinations;
+        this.icao = icao;
 
 
 
@@ -234,22 +236,32 @@ class Grid {
     }
 
     buttons_text() {
-        fill('black')
-        textSize(20)
-        text(`Airport: ${this.airport}`, (this.total_grid_size + 1.5) * this.grid_size, 0.5 * this.grid_size)
-        text(`Score: ${score.total_score}\nTime: ${this.format_time(this.time)}`, (this.total_grid_size + 1.5) * this.grid_size, 1 * this.grid_size)
+        // background ui
+        fill(color(50, 50, 50))
+        rect(0, (this.total_grid_size + 0.5) * this.grid_size, windowWidth, windowHeight)
 
-        text('In your AoC:', (this.total_grid_size + 1.5) * this.grid_size, 4 * this.grid_size)
+        // airport info name and icao with border
+        fill(color(100,100,100))
+        rect(0.2 * this.grid_size, (this.total_grid_size + 0.7) * this.grid_size, 1.7 * this.grid_size, 1.95 * this.grid_size)
+        fill('white')
+        textSize(20)
+        image(logo, 0.2 * this.grid_size, (this.total_grid_size + 0.5) * this.grid_size)
+        logo.resize(100, 100)
+        text(this.airport, 0.5 * this.grid_size, (this.total_grid_size + 2.1) * this.grid_size)
+        text(this.icao, 0.4 * this.grid_size, (this.total_grid_size + 2.5) * this.grid_size)
+        textStyle(BOLD)
+        text(this.format_time(this.time), 2 * this.grid_size, (this.total_grid_size + 1) * this.grid_size)
+        text(`${score.total_score} points`, 2.5 * this.grid_size, (this.total_grid_size + 2.2) * this.grid_size)
         textSize(17)
         for(let i = 0; i < control_planes.length; i++) {
-            text(`${control_planes[i].callsign}: ${control_planes[i].current_status}`, (this.total_grid_size + 1.5) * this.grid_size, (4.5 + (i/2)) * this.grid_size)
+            text(`${control_planes[i].callsign}: ${control_planes[i].current_status}`, 5 * this.grid_size, (this.total_grid_size + 1 + (i/2)) * this.grid_size)
         }
 
-        this.play_pause_button.position((this.total_grid_size + 1.5) * this.grid_size, 1.7 * this.grid_size)
+        this.play_pause_button.position(3.5 * this.grid_size, (this.total_grid_size + 0.7) * this.grid_size)
 
-        let button_pos_y = 1.5
+        let button_pos_y = 2
         for(let i = 0; i < this.speed_buttons.length; i++) {
-            this.speed_buttons[i].position((this.total_grid_size + button_pos_y) * this.grid_size, 2.2 * this.grid_size)
+            this.speed_buttons[i].position(button_pos_y * this.grid_size, (this.total_grid_size + 1.2) * this.grid_size)
             button_pos_y = button_pos_y + 0.7
         }
         

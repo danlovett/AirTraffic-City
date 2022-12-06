@@ -69,12 +69,22 @@
             <div class="grid m5 text-center">
                 <%_ if(JSON.stringify(leaderboard_entry) != "[]") { %>
                     <div class="leaderboard-entry text-center flex" style=" margin: 0px 0px 10px 0px;">
-                        <h1 class="fs15 text-center p20" id="leaderboard-profile-text">Leaderboard: <%= JSON.stringify(leaderboard_entry[0].level).replace(/['"]+/g, '') %> | Points: <%= JSON.stringify(leaderboard_entry[0].score) %></h1>
+                        <h1 class="fs15 text-center p20" id="leaderboard-profile-text">Leaderboard: 
+                            <%= JSON.stringify(leaderboard_entry[0].level).replace(/['"]+/g, '') %> 
+                            | Points: 
+                            <%= JSON.stringify(leaderboard_entry[0].score) %></h1>
                     </div>
                     <span id="leaderboard-level" style="display: none;"><%= JSON.stringify(leaderboard_entry[0].level).replace(/['"]+/g, '').toLowerCase() %></span>
                 <%_ } else { %>
                     <div class="leaderboard-entry-none text-center flex" style=" margin: 0px 0px 10px 0px; background-image: url('/private/images/logo.png'); background-repeat: no-repeat; background-size: cover;">
-                        <h1 class="fs15 text-center p20" id="leaderboard-profile-text"><%= load_user.name.split(' ')[0] %> isn't on the leaderboard</h1>
+                        <h1 class="fs15 text-center p20" id="leaderboard-profile-text">
+                            <%_ if(current_user.id == load_user["id"]) { %>
+                                You aren't
+                            <%_ } else { %>
+                                <%= load_user.name.split(' ')[0] %> isn't
+                            <%_ } %>
+                            on the leaderboard
+                        </h1>
                     </div>
                 <%_ } %>
                 
@@ -109,10 +119,18 @@
         <%_ if(load_user["id"] == current_user.id && (JSON.stringify(history) != "[]" || JSON.stringify(leaderboard_entry != "[]"))) { %>
             <div class="flex">
                 <%_ if(JSON.stringify(history) != "[]") { %>
-                    <button class="text-center m10" id="delete-history"><a href="/delete_history" class="fs15 text-center color-red">Delete All History (re-login required)</a></button>
+                    <button class="text-center m10" id="delete-history">
+                        <a href="/delete_history" class="fs15 text-center color-red">
+                            Delete All History (re-login required)
+                        </a>
+                    </button>
                 <%_ } %>
                 <%_ if(JSON.stringify(leaderboard_entry) != "[]") { %>
-                    <button class="text-center m10" id="delete-leaderboard"><a href="/delete_leaderboard?id=<%= leaderboard_entry["id"] %>" class="fs15 text-center color-red">Delete Leaderboard Entry (re-login required)</a></button>
+                    <button class="text-center m10" id="delete-leaderboard">
+                        <a href="/delete_leaderboard?id=<%= leaderboard_entry["id"] %>" class="fs15 text-center color-red">
+                        Delete Leaderboard Entry (re-login required)
+                        </a>
+                    </button>
                 <%_ } %>
             </div>
         <%_ } %>
@@ -147,7 +165,7 @@
                         $('#profile-best-played-title').css('display', 'none')
                         $('#btn-remove-best').css('display', 'block')
                     } else {
-                        $('#profile-best-played-title').css('display', 'flex')
+                        $('#profile-best-played-title').css('display', 'block')
                         $('#btn-remove-best').css('display', 'none')
                     }
                 }

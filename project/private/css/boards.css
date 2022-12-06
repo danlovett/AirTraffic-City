@@ -62,10 +62,11 @@ a {
     text-decoration: none;
     transition: ease-in-out;
     transition-duration: 1s;
+    color: rgb(171, 171, 171);
 }
 
 a:hover {
-    color: blue;
+    color: rgb(255, 255, 255);
     transition: ease-in-out;
     transition-duration: 1s;
 }
@@ -116,14 +117,14 @@ a:hover {
 button{
     background-color: rgb(0, 0, 0);
     border: none;
-    color: white;
+    color: rgb(0, 0, 0);
     padding: 10px 40px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     transition: cubic-bezier(.68,-0.55,.27,1.55);
-    transition-duration: 3s;
+    transition-duration: 0.5s;
     width: 100%;
     border-radius: 20px;
     margin-top: 10px;
@@ -131,9 +132,9 @@ button{
 }
 
 button:hover {
-    background-color: rgb(255, 255, 255); /* Green */
+    background-color: rgb(215, 41, 181); /* Green */
     color: black;
     transition: cubic-bezier(.76,.05,.86,.06);
-    transition-duration: 0.3s;
+    transition-duration: 0.5s;
     border-radius: 50px;
 }

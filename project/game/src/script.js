@@ -6,6 +6,11 @@ let all_planes = []
 let can_spawn_now = true
 let grid
 
+function preload() {
+    logo = loadImage('/private/images/logo.png');
+    logo.resize(50, 50)
+}
+
 function setup() {
     createCanvas(windowWidth, windowHeight)
     
@@ -13,7 +18,7 @@ function setup() {
 
     grid = new Grid()
     // grid = new Grid(10, 10)
-    grid.init($('#level_name').text(), JSON.parse($('#level_grid').text()), JSON.parse($('#planes').text()), $('#destinations').text())
+    grid.init($('#level_name').text(), $('#icao').text() , JSON.parse($('#level_grid').text()), JSON.parse($('#planes').text()), $('#destinations').text())
 
     for(let i = 0; i <= floor(random(4, 9)); i++) {
         let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]

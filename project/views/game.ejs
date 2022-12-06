@@ -9,7 +9,8 @@
     <link rel="shortcut icon" href="/private/images/logo.png" type="image/x-icon">
 </head>
 <body>
-    <span id="level_name" style="display: none;"><%= data.airport_name %></span>
+    <span id="level_name" style="display: none;"><%= data["airport_name"] %></span>
+    <span id="icao" style="display: none;"><%= data["airport_icao"] %></span>
     <span id="level_grid" style="display: none;"><%= data["layout"]%></span>
     <span id="destinations" style="display: none;"><%= data["destinations"]%></span>
     <span id="planes" style="display: none;"><%= JSON.stringify(plane_data) %></span>

@@ -24,6 +24,9 @@
                 <h2 class="fs15 color-red text-center" id="error">Not added to leaderboard</h2>
                 <p class="fs15 color-black text-center" id="reason">Reason: you didn't score high enough for minimum criteria</p>
             <%_ } %>
+            <%_ if(message == 'success') { %>
+                <h2 class="fs15 color-green text-center" id="error">Added to leaderboard!</h2>
+            <%_ } %>
         </div>
         <%_ if(top_entries.length > 0) { %>
             <table id="leaderboard-entries">
