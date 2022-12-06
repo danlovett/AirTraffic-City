@@ -10,13 +10,15 @@
     <link rel="shortcut icon" href="/private/images/logo.png" type="image/x-icon">
 </head>
 <body>
-    <section class="welcome">
-        <p id="version"></p>
-        <div class="user-content">
-            <a href="/library"><img src="/private/images/logo.png" alt=""></a>
-            <h1 id="logo"> <a href="/login">Login to ATC</a></h1>
+    <section class="container p20">
+        <div class="flex">
+            <p class="fs15 text-center m20" id="author"></p>
+            <p class="fs15 text-center m20" id="version"></p>
         </div>
-        <p id="author"></p>
+        <div class="inner-container text-center grid">
+            <a href="/login"><img src="/private/images/logo.png" alt=""></a>
+            <h1 class="fs15"><a href="/login" class="fs20">Login to ATC</a></h1>
+        </div>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script>

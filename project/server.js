@@ -55,7 +55,6 @@ app.post('/register', checkNotAuthenticated, async (req,res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10)
         const sql = `INSERT INTO users(name, username, password) VALUES ("${req.body.name}", "${req.body.email}", "${hashedPassword}")`
         clientDB.all(sql, [], err => { if(err) throw err } )
-        console.log(`Added user: {"id": 1, "name": "${req.body.name}", "username": "${req.body.email}", "password": "${hashedPassword}"}`)
         res.redirect('/login')
     } catch {
         res.redirect('/register')

@@ -14,10 +14,10 @@
 <body>
     <%- include('navbar.ejs') -%>
     <div id="nav"></div>
-    <section id="level-detail" class="level-detail animate-bounce" style="background-image: url('<%= data["image_reference"] %>'); background-size: cover;">
-        <div class="container">
+    <section id="level-detail" class="level-detail container" style="background-image: url('<%= data["image_reference"] %>'); background-size: cover;">
+        <div class="inner-container">
             <h2 id="level-name"><%= data["airport_name"] %></h2>
-            <p id="level-desc" class="text-center fs15 m10"></p>
+            <p id="level-desc" class="text-center fs15 m10"> By <%= data["author"] %></p>
         </div>
         <div class="splitter">
             <p id="level-desc" class="fs20 w50 m0 text-center"><%= data["text_waffle"] %></p>

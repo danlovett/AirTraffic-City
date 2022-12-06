@@ -1,37 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="../private/css/navbar.css">
-    <link rel="stylesheet" href="../private/css/framework.css">
-</head>
-<body>
-    <section class="navbar">
-        <div class="static-left">
-            <a href="#"><img src="/private/images/logo.png" alt="" onclick="javascript:window.history.back(-1);return false;"></a>
-            <span id="time" class="fs30"><div class="time-loading"></div></span>
-        </div> 
-        <ul id="links">
-            <div id="auth">
-                <li><a href="/library"><img src="/private/images/home.png" style="border-radius: 0px;" alt="Home"></a></li>
-                <li><a href="/leaderboard">Leaderboard</a></li>
-                <li><a href="https://github.com/danlovett/AirTraffic-City#readme" target="_blank">How to play</a></li>
-                <li><a href="/profile?id=current"><img id="pfp"></a></li>
-            </div>
-        </ul>
-    </section>
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-    <script>
-        $.get('../db/currentUser.json', data => {
-            $('#pfp').attr('src', `${data}`)
-        })
+<link rel="stylesheet" href="/private/css/navbar.css">
+<section class="navbar">
+    <div class="static-left">
+        <a href="#"><img src="/private/images/logo.png" alt="" onclick="javascript:window.history.back(-1);return false;"></a>
+        <span id="time" class="fs30"><div class="time-loading"></div></span>
+    </div> 
+    <ul id="links">
+        <div id="auth">
+            <li><a href="/library"><img src="/private/images/home.png" style="border-radius: 0px;" alt="Home"></a></li>
+            <li><a href="/leaderboard">Leaderboard</a></li>
+            <li><a href="https://github.com/danlovett/AirTraffic-City#readme" target="_blank">How to play</a></li>
+            <li><a href="/profile?id=current"><img id="pfp"></a></li>
+        </div>
+    </ul>
+</section>
+<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+<script>
+    $.get('../db/currentUser.json', data => {
+        $('#pfp').attr('src', `${data}`)
+    })
 
-        function refreshTime() {
-            $('#time').text(new Date().toLocaleTimeString())
+    function refreshTime() {
+        $('#time').text(new Date().toLocaleTimeString())
 
-        } setInterval(refreshTime, 300)== time;
-    </script>
-</body>
-</html>
+    } setInterval(refreshTime, 300)== time;
+</script>
 
 
 

@@ -12,6 +12,7 @@ class Plane {
         this.current_y = this.spawn_point[1];
         this.current_status;
         this.cs_raw;
+        this.show_points = false;
 
         this.time_off_stand = [];
         this.ctot = [];
@@ -132,6 +133,17 @@ class Plane {
             return true
         } else {
             return false // don't add point and return false
+        }
+    }
+
+    show_travel_points() {
+        if(this.show_points == true) {
+            fill(this.color)
+            for(let i = 0; i < this.path_to_destination.length; i++) {
+                rect(this.path_to_destination[i][0] * grid.grid_size + 10, this.path_to_destination[i][1] * grid.grid_size + 10, grid.grid_size - 20, grid.grid_size - 20)
+                
+            }
+            noFill()
         }
     }
 

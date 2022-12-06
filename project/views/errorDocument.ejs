@@ -10,9 +10,9 @@
 </head>
 <body>
     <div class="nav"></div>
-    <section id="section" class="board m20 text-center" style="display: flex;">
-        <img src="/private/images/err.png" alt="" style="height: 150px; transform: rotate(45deg);">
-        <div class="container">
+    <section id="section" class="board m20 text-center" style="display: flex; justify-content: center;">
+        <img src="/private/images/error-pages/<%= Math.floor(Math.random() * 33) %>.png" alt="" style="height: 500px; position: relative;">
+        <div class="container" style="position: absolute; margin-top: 20%; background-color: rgba(20,20,20,0.8);">
             <h1 class="fs30 text-center m20"> <%= message %> couldn't be found.</h1>
             <p class="fs15 text-center m20"><a onclick="javascript:window.history.back(-3);return false;"> < Go back</a></p>
         </div>

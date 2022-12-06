@@ -20,15 +20,15 @@
         <span id="best-play" style="display: none;"><%= load_user.best_played %></span>
     <%_ } %>
     <%- include('navbar.ejs') -%>
-    <%_ if(load_user["id"] == current_user.id) { %>
-        <h1 class="text-center fs30">Your Account</h1>
-    <%_ } %>
     <%_ if(message == 'success') { %>
         <h2 class="fs15 color-green text-center">Your request was a success!</h2>
     <%_ } else if(message == 'fail') { %>
             <h2 class="fs15 color-red text-center">Your request failed. Try again.</h2>
     <%_ } %>
-    <section id="profile" class="board p20 w85" style="margin-top: 20px;">
+    <%_ if(load_user["id"] == current_user.id) { %>
+        <h1 class="text-center fs30 m20">Your Account</h1>
+    <%_ } %>
+    <section id="profile" class="container p20 w85" style="margin-top: 20px;">
         <div class="wrapper-top">
             <div class="profile-container">
                 <div class="pfp-container">

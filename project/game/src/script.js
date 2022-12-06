@@ -61,6 +61,9 @@ function draw() {
         // show time, score, buttons to control speed and play/pause, 
         // ... and any aicraft in their AoC
         grid.buttons_text()
+        for(let i = 0; i < control_planes.length; i++) {
+            control_planes[i].show_travel_points()
+        }
     
         
         control_my_planes(control_planes) // control my planes
@@ -86,7 +89,7 @@ function keyPressed() {
                         && grid_y == grid.holding_points[j][1]
                         && key == 'h'
                         && control_planes[i].handover == false) {
-                        const button_handover = createButton('handover').style('background-color', 'yellow')
+                        const button_handover = createButton(`Handover to ${grid.airport} Tower`).style('background-color', 'yellow')
                         button_handover.position(mouseX, mouseY)
                         button_handover.mousePressed(() => {
                             control_planes[i].handover_plane()
@@ -124,13 +127,26 @@ function mousePressed() {
                     control_planes[i].update_travel_points([grid_x, grid_y])
                     control_planes[i].permit_path = true
                 }
+                if(control_planes[i].show_points == true) {
+                    for(let point = 0; point < control_planes[i].path_to_destination.length; point++) {
+                        if(grid_x == control_planes[i].path_to_destination[point][0] && grid_y == control_planes[i].path_to_destination[point][1]) {
+                            control_planes[i].path_to_destination.splice(control_planes[i].path_to_destination.indexOf(control_planes[i].path_to_destination[point]) + 1, control_planes[i].path_to_destination.length)
+                            control_planes[i].show_points = false
+                        }
+                    }
+                }
+                if (grid_x == control_planes[i].current_x && grid_y == control_planes[i].current_y && control_planes[i].enable_moving == true) {
+                    control_planes[i].show_points = true
+                }
             }
             
             if (mouseButton == RIGHT ) {
                 if(control_planes[i].permit_path == true) {
                     control_planes[i].permit_path = false
                     control_planes[i].enable_moving = true
-
+                }
+                if (grid_x == control_planes[i].current_x && grid_y == control_planes[i].current_y && control_planes[i].show_points == true) {
+                    control_planes[i].show_points = false
                 }
             }
         }

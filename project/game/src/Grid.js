@@ -91,7 +91,7 @@ class Grid {
     }
 
     render_selector_tool(grid_x, grid_y) {
-        stroke('blue')
+        stroke('yellow')
         strokeWeight(3)
         noFill()
         rect(grid_x * this.grid_size, grid_y * this.grid_size, this.grid_size, this.grid_size)
@@ -116,7 +116,7 @@ class Grid {
         }
         // stands
         for(let i = 0; i < this.stands.length; i++) {
-            text(i + 1, this.stands[i][0] * this.grid_size + (this.grid_size-35), this.stands[i][1] * this.grid_size + (this.grid_size-35))
+            text(`Stand\n   ${i + 1}`, this.stands[i][0] * this.grid_size + (this.grid_size-43), this.stands[i][1] * this.grid_size + (this.grid_size-35))
         }
 
         // text setup for numbers runway

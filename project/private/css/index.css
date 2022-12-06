@@ -7,41 +7,6 @@ body {
 	height: 100vh;
 }
 
-h1 {
-    font-size: 30px;
-    color: white;
-    position: absolute;
-}
-
-p {
-    font-size: 15px;
-}
-
 img {
     height: 200px;
-}
-
-a {
-    text-decoration: none;
-    color: white;
-}
-
-.welcome {
-    display: flex;
-    justify-content: center;
-    position: relative;
-    top: 40%;
-}
-
-.user-content {
-    display: flex;
-    justify-content: center;
-
-}
-
-.user-content h1 {
-    background-color: rgba(47, 47, 47, 0.5);
-    margin: 200px 0px;
-    padding: 10px 20px;
-    border-radius: 35px;
 }

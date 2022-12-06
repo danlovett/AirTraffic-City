@@ -10,14 +10,14 @@
     <title>Login | ATC</title>
 </head>
 <body>
-    <section id="login" class="board p20 vw75 pos-center">
+    <section id="login" class="container p20 vw75 pos-center">
         <h1 class="text-center m10">Login</h1>
         <div class="sep">
             <%_ if(message == 'repeat') { %>
                 <p class="color-red text-center m10 fs15">Please login again.</p>
             <%_ } %>
         </div>
-        <div class="container">
+        <div class="inner-container">
             <form id="signup-form" action="login" method="POST">
                 <tr>
                     <th><label class="fs20">Username: </label></th>
@@ -27,7 +27,7 @@
                     <th><label class="fs20">Password: </label></th>
                     <th> <input type="password" name="password" id="password" autocomplete="on" placeholder="password" class="color-black fs20 m10 item text-center"></th>
                 </tr>
-                <button class="fs20 text-center m10" type="submit">Login</button>
+                <button class="fs20 text-center" type="submit">Login</button>
             </form>
             
             <div class="auth-link">

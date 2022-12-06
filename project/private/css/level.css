@@ -16,8 +16,9 @@
 
 .splitter {
     display: flex;
-    width: 100%;
     background-color: rgba(39, 39, 39, 0.8);
+    padding: 30px;
+    border-radius: 35px;
 }
 
 .level-play {
@@ -37,14 +38,13 @@
 }
 
 #level-detail {
-    scale: 0.9;
     transition: cubic-bezier(.68,-0.55,.27,1.55);
     transition-duration: 1s;
 }
 
 
 #level-detail:hover {
-    scale: 1.04;
+    scale: 1.01;
     transition: cubic-bezier(.68,-0.55,.27,1.55);
     transition-duration: 0.5s;
 }
