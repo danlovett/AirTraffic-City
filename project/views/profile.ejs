@@ -13,6 +13,7 @@
 <body>
     <span id="user-id" style="display: none;"><%= load_user.id %></span>
     <span id="current-id" style="display: none;"><%= current_user.id %></span>
+
     <%_ if(load_user.last_played != '') { %>
         <span id="last-play" style="display: none;"><%= load_user.last_played %></span>
     <%_ } %>
@@ -178,6 +179,7 @@
         })
 
         $('.leaderboard-entry').css('background-image', `url(/private/images/levels/${ $('#leaderboard-level').text() }.jpg`)
+        $('#progress-bar').css('width', `${ $('#current-progress').text() }`)
     </script>
 </body>
 </html>

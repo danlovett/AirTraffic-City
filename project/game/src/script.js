@@ -17,8 +17,9 @@ function setup() {
     score = new Score()
 
     grid = new Grid()
+    console.log($('#level_runways').text())
     // grid = new Grid(10, 10)
-    grid.init($('#level_name').text(), $('#icao').text() , JSON.parse($('#level_grid').text()), JSON.parse($('#planes').text()), $('#destinations').text())
+    grid.init($('#level_name').text(), $('#icao').text(), JSON.parse($('#level_runways').text()), JSON.parse($('#level_grid').text()), JSON.parse($('#planes').text()), $('#destinations').text())
 
     for(let i = 0; i <= floor(random(4, 9)); i++) {
         let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]
@@ -73,7 +74,7 @@ function draw() {
         grid.render_selector_tool(grid_x, grid_y)
     } else { // if grid.gameplay_allowed is false
         // redirect user to this page with set values
-        window.location.href = `${window.location.origin}/gameEnded?level=${$('#level_name').text()}&time=${CryptoJS.AES.encrypt(`${grid.ellapsed_time_seconds}`, "time")}&score=${score.total_score}`
+        window.location.href = `${window.location.origin}/gameEnded?level=${$('#level_name').text()}&time=${CryptoJS.AES.encrypt(`${grid.ellapsed_time_seconds}`, "time")}&score=${score.total_score}&reason=${grid.message}`
     }
 }
 
@@ -177,10 +178,11 @@ function spawn_proto() {
 
 function control_my_planes(control_planes) {
     for(let i = 0; i < control_planes.length; i++) {
+        control_planes[i].show_history()
         control_planes[i].spawn()
         if(grid.gameplay_play == true) { // all gameplay actions
             for(let j = 0; j < control_planes.length; j++) {
-                if(control_planes[i].intersects(control_planes[j]) && j!=i) grid.gameplay_allowed = false
+                if(control_planes[i].intersects(control_planes[j]) && j!=i) grid.endgame('collision')
                 if(control_planes[i].near_miss(control_planes[j]) && j!=i) score.update_score('near_miss', control_planes[i])
             }
             

@@ -11,9 +11,13 @@
 </head>
 <body>
     <%- include('navbar.ejs') -%>
+    <%_ if(reason == 'level_finished') reason = 'You finished the game!' %>
+    <%_ if(reason == 'collision') reason = 'Ended because two aircraft collided!' %>
+    <%_ if(reason == 'max_aircraft_deleted') reason = 'Ended because too many aicraft missed their departure time!' %>
     <section id="endgame" style="background-image: url('<%= level["image_reference"] %>'); background-size: cover;">
         <div class="container">
             <h1 id="level" class="text-center fs30">Game ended at <%= level["airport_name"] %></h1>
+            <h1 class="text-center fs20 m10 <%_ if(reason != 'You finished the game!') { %> color-red <%_ } else { %> color-green <%_ } %>"><%= reason %></h1>
             <p class="pdetail p20">Details on your performance:</p>
             <table>
                 <tr>

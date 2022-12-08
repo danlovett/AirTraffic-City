@@ -192,7 +192,7 @@ app.get('/level', checkAuthenticated, (req, res) => {
 
 app.get('/gameEnded', checkAuthenticated, (req, res) => {
     gameDB.get(`SELECT * FROM levels WHERE airport_name = '${req.query.level}'`, [], (err, row) => {
-        res.render('endgame', { username: req.user.name, level: row, score: req.query.score, time: CryptoJS.AES.decrypt(req.query.time, "time").toString(CryptoJS.enc.Utf8) });
+        res.render('endgame', { username: req.user.name, level: row, score: req.query.score, time: CryptoJS.AES.decrypt(req.query.time, "time").toString(CryptoJS.enc.Utf8), reason: req.query.reason });
     })
 })
 
@@ -257,9 +257,7 @@ function isImage(url) {
 }
 
 function removeLeaderboardAttempt(id) {
-    clientDB.all('UPDATE users SET leaderboard_attempt = null WHERE id = ?', id, err => {
-        if(err) throw err
-    })
+    clientDB.all('UPDATE users SET leaderboard_attempt = null WHERE id = ?', id, err => { if(err) throw err })
 }
 
 function resetPlays(id) {

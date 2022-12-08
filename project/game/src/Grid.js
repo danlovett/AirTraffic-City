@@ -3,10 +3,10 @@ class Grid {
         this.cols = cols;
         this.rows = rows;
         this.grid_size = 60;
-        this.total_grid_size = 12;
-
+        
         //declare grid
         this.grid = [];
+        this.total_grid_size;
         // declare areas
         this.grass_areas = [];
         this.moveable_areas = [];
@@ -17,7 +17,7 @@ class Grid {
         this.runway_entry = [];
         this.control_tower = [];
         // declare specifics
-        this.runway_numbers = ['18 R', '36 L', '18 L', '36 R']
+        this.runway_numbers = [];
         this.destinations;
         this.airport;
         this.icao;
@@ -47,14 +47,15 @@ class Grid {
 
     }
 
-    init(airport, icao, grid, planes, destinations) {
+    init(airport, icao, runways, grid, planes, destinations) {
         this.airport = airport
         this.grid = grid;
         this.plane_data = planes;
         this.destinations = destinations;
         this.icao = icao;
+        this.total_grid_size = grid.length;
 
-
+        this.runway_numbers = runways;
 
         for(let col = 0; col < this.total_grid_size; col++) {
             for(let row = 0; row < this.total_grid_size; row++) {
@@ -111,7 +112,6 @@ class Grid {
                 if(this.grid[row][col] == "0") fill(this.color_grass) // grass
                 rect(row * this.grid_size, col * this.grid_size, this.grid_size, this.grid_size)
                 fill('white')
-
             }
         }
         // stands
@@ -167,7 +167,7 @@ class Grid {
 
         if(this.time[1] % 40 == 0 && this.time[2] % 60 == 0 && can_spawn_now) spawn_proto()
         if(this.time[1] == 30) can_spawn_now = true
-        if(this.time_to_mins == this.finish_time_to_mins) this.gameplay_allowed = false
+        if(this.time_to_mins == this.finish_time_to_mins) grid.endgame('level_finished')
     }
 
     format_time(time) {
@@ -292,5 +292,10 @@ class Grid {
                 this.speed_buttons[index].style('color', 'white')
             }
         }
+    }
+
+    endgame(reason) {
+        this.gameplay_allowed = false
+        this.message = reason
     }
 }

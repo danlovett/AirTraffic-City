@@ -4,6 +4,7 @@ class Score {
         this.ctot_score = 50;
         this.hp_score = 20;
         this.near_miss = 2;
+        this.aircraft_deleted = 0;
 
         this.ctot_delete = 40
 
@@ -33,30 +34,28 @@ class Score {
         // negative results
         if(type == "wrong_runway") {
             this.total_score = this.total_score - (this.runway_score / 2);
-            plane.score = plane.score - (this.runway_score / 2);
+            plane.score = plane.score + (this.runway_score / 2);
         }
         if(type == "wrong_ctot") {
             this.total_score = this.total_score - (this.ctot_score / 2);
-            plane.score = plane.score - (this.ctot_score / 2);
+            plane.score = plane.score + (this.ctot_score / 2);
         }
         if(type == 'wrong_hp') {
             this.total_score = this.total_score - (this.hp_score / 2);
-            plane.score = plane.score - (this.hp_score / 2);
+            plane.score = plane.score + (this.hp_score / 2);
         }
 
         if(type == 'near_miss') {
             this.total_score = this.total_score + this.near_miss;
-            plane.score = plane.score + this.near_miss;
+            plane.score = plane.score + (this.near_miss / 2);
         }
 
         if(type == 'remove_ac_ctot') {
             this.total_score = this.total_score - this.ctot_delete;
-            plane.score = plane.score - this.ctot_delete;
+            plane.score = plane.score + (this.ctot_delete / 4);
+            this.aircraft_deleted++
         }
 
-
-        if(this.total_score <= -100) {
-            grid.gameplay_allowed = false
-        }
+        if(this.aircraft_deleted == 5) grid.endgame('max_aircraft_deleted')
     }
 }

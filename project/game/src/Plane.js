@@ -46,7 +46,7 @@ class Plane {
         }
 
         this.ac_text = 'black'
-        this.color = color(random(100, 150), random(200, 250), random(80, 150))
+        this.color = color(random(100, 250), random(100, 250), random(80, 200))
         this.action_color = [color(135,206,250), color(255,127,80), color(128,0,32), color('red')]
         this.good_hp_color = color('green')
         this.bad_hp_color = color('red')
@@ -100,11 +100,13 @@ class Plane {
                 this.spawn()
                 this.current_x = this.path_to_destination[0][0] // update x pos
                 this.current_y = this.path_to_destination[0][1] // update y pos
+                this.path_history.unshift(this.path_to_destination[0]) // add this array in path history array
                 this.path_to_destination.splice(this.path_to_destination[0], 1) // remove this array in path array
-                this.path_history.push(this.path_to_destination[0]) // add this array in path history array
+                if(this.path_history.length > 4) this.path_history.pop()
             } else {
                 this.enable_moving = false // set to false if path is finished
                 this.permit_path = true
+                this.removeHistoryIteratively()
             }
             // getting time off stand, detecting when it left spawn area
             if(this.current_x != this.spawn_point[0] && this.current_y != this.spawn_point[1]) {
@@ -190,6 +192,24 @@ class Plane {
                 if(control_planes[i].current_x == control_planes[j].current_x && control_planes[i].current_y == control_planes[j].current_y && i!=j) control_planes[i].current_status = `Crashed with ${control_planes[j].callsign}` 
             }
         }
+    }
+
+    removeHistoryIteratively() {
+        if(frameCount % this.speed(this.type) == 0) {
+            this.path_history.pop()
+        }
+    }
+
+    show_history() {
+        let width_percent = 10
+        this.color.setAlpha(200)
+        fill(this.color)
+        for(let i = 0; i < this.path_history.length; i++) {
+            rect(this.path_history[i][0] * grid.grid_size + width_percent, this.path_history[i][1] * grid.grid_size + width_percent, grid.grid_size - (width_percent*2), grid.grid_size - (width_percent*2))
+            width_percent = width_percent + 5
+        }
+        this.color.setAlpha(1000)
+        noFill()
     }
 
     // create/get temporary value of/modify ctot
