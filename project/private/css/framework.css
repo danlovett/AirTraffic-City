@@ -33,7 +33,6 @@ form {
 }
 
 table {
-    width: 100%;
     text-align: left;
 }
 
@@ -232,9 +231,16 @@ button:hover {
 }
 
 .container {
-    background-color: rgba(25, 25, 25, 0.8);
-    transition: cubic-bezier(.68,-0.55,.27,1.55);
-    transition-duration: 1s;
+    background-color: rgba(20, 20, 20, 0.8);
+    border-radius: 35px;
+    transition: ease-in-out;
+    transition-duration: 2s;
+}
+
+.container:hover {
+    border-radius: 30px;
+    transition: ease-in-out;
+    transition-duration: 0.2s;
 }
 
 .container:hover {

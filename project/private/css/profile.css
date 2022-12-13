@@ -5,16 +5,22 @@
 }
 
 .profile-container {
+    margin: 5px;
     padding: 20px;
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 35px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 0px 0px 35px 35px;
     display: grid;
-    float: left;
+}
+
+.profile-details {
+    width: 100%;
+    height: 100%;
 }
 
 .profile-container .user-details {
     padding: 15px;
-    background-color: rgba(51, 51, 51, 0.488);
+    border-radius: 35px;
+    background-color: rgba(51, 51, 51, 0.8);
 }
 
 .profile-img {
@@ -28,16 +34,14 @@
 }
 
 #leaderboard-user-pane {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8);
     background-position: cover;
     width: 98%;
-    border-radius: 90px;
 }
 
 #leaderboard-text-info {
     background-color: rgba(0,0,0, 0.8);
     width: 100%;
-    border-radius: 90px;
     margin-left: 5px;
     text-align: center;
 }
@@ -50,14 +54,9 @@
 
 }
 
-.leaderboard-entry {
-    border-radius: 90px;
-    width: 100%;
-}
-
 #leaderboard-profile-text {
     background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 90px;
+    border-radius: 35px 35px 0px 0px;
     margin: 5px;
     width: 100%;
 }
@@ -68,8 +67,7 @@ table tbody, table thead {
 
 table tbody {
    overflow: auto;
-   height: 300px;
-   width: 100%;
+   /* width: 100%; */
 }
 
 td {

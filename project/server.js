@@ -89,15 +89,25 @@ app.get('/leaderboard', checkAuthenticated, (req, res) => {
 
 app.get('/profile', checkAuthenticated, (req, res) => {
     if(req.query.id == 'current') req.query.id = req.session.passport.user
-    clientDB.get(`SELECT * FROM users WHERE id = ${req.query.id}`, [], (err, user) => { 
-        clientDB.all(`SELECT * FROM history LEFT JOIN users ON history.personID = users.id WHERE users.id = ${req.query.id} ORDER BY history.date DESC`, [], (err, joins) => { 
-            if(user != null) {      
+    clientDB.get(`SELECT id, name, username, pfp FROM users WHERE id = ${req.query.id}`, [], (err, user) => { 
+        clientDB.all(`SELECT history.id, history.level, history.date, history.score FROM history LEFT JOIN users ON history.personID = users.id WHERE users.id = ${req.query.id} ORDER BY history.date DESC`, [], (err, joins) => { 
+            if(user != null) {
                 clientDB.all(`SELECT * FROM leaderboard WHERE personID = ${user["id"]}`, [], (err, leaderboard) => {
-                    leaderboard["id"] = CryptoJS.AES.encrypt(leaderboard["id"], "leaderboard-id")
-                    let lastDB = joins.sort( (a,b) => a.date.split(' ')[1] - b.date.split(' ')[1] )[0]
-                    let bestDB = joins.sort( (a,b) => b.score - a.score )[0]
-                    res.render('profile', { load_user: user, current_user: req.user, history: joins, last: lastDB, best: bestDB, leaderboard_entry: leaderboard, 
-                        id_types: ['Level', 'Date', 'Score'], error: req.query.error, message: req.query.message })
+                    gameDB.all('SELECT airport_name, image_reference FROM levels', [], (err, levels) => {
+                        let lastDB = joins.sort( (a,b) => a.date.split(' ')[1] - b.date.split(' ')[1] )[0]
+                        let bestDB = joins.sort( (a,b) => b.score - a.score )[0]
+                        levels.forEach(level => {
+                            try {
+                                if(level["airport_name"] == lastDB.level) lastDB["image_reference"] = level["image_reference"]
+                                if(level["airport_name"] == bestDB.level) bestDB["image_reference"] = level["image_reference"]
+                                if(level["airport_name"] == leaderboard[0]["level"]) leaderboard[0]["image_reference"] = level["image_reference"]
+                            } catch { 
+                                
+                            }
+                        })
+                        res.render('profile', { load_user: user, current_user: req.user, history: joins, last: lastDB, best: bestDB, leaderboard_entry: leaderboard,
+                            id_types: ['Level', 'Date', 'Score'], error: req.query.error, message: req.query.message, levels: levels })
+                    })
                 })
             } else {
                 res.redirect(308, '/error?from=profile')

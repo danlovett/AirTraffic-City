@@ -48,21 +48,12 @@
 
 /* Levels */
 
-.container {
-    background-color: rgba(20, 20, 20, 0.8);
-    margin: 20px 50px;
-    border-radius: 20px;
-    padding: 10px 30px;
-    transition: ease-in-out;
-    transition-duration: 2s;
+#library .container {
+    padding: 20px;
 }
 
-.container:hover {
-    margin: 20px 0px;
-    border-radius: 30px;
-    padding: 10px 30px;
-    transition: ease-in-out;
-    transition-duration: 0.2s;
+.container {
+    margin: 20px 50px;
 }
 
 .levels {

@@ -29,3 +29,7 @@
 #endgame {
     background-size: cover;
 }
+
+#leaderboard-entries {
+    width: 100%;
+}

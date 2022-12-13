@@ -7,20 +7,34 @@
     <link rel="stylesheet" href="/private/css/framework.css">
     <link rel="stylesheet" href="/private/css/boards.css">
     <link rel="stylesheet" href="/private/css/profile.css">
+    <link rel="stylesheet" href="/private/css/library.css">
     <link rel="shortcut icon" href="/private/images/logo.png" type="image/x-icon">
     <title><%= load_user.name.split(' ')[0] %>'s Profile | ATC</title>
 </head>
 <body>
     <span id="user-id" style="display: none;"><%= load_user.id %></span>
     <span id="current-id" style="display: none;"><%= current_user.id %></span>
+    <span id="title-prop" style="display: none;"><%= load_user.name.split(' ')[0] %></span>
+    <span id="prfile-pic" style="display: none;"><%= load_user.pfp %></span>
 
-    <%_ if(load_user.last_played != '') { %>
+    <%_ if(load_user.last_played != '' ) { %>
         <span id="last-play" style="display: none;"><%= load_user.last_played %></span>
+    <%_ } %>
+    <%_ if(last != undefined ) { %>
+        <span id="last-play-img" style="display: none;"><%= last.image_reference %></span> 
+    <%_ } %>
+    <%_ if(best != undefined ) { %>
+        <span id="best-play-img" style="display: none;"><%= best.image_reference %></span> 
     <%_ } %>
     <%_ if (load_user.best_played != '') { %>
         <span id="best-play" style="display: none;"><%= load_user.best_played %></span>
     <%_ } %>
+    <%_ if(JSON.stringify(leaderboard_entry) != "[]") { %>
+        <span id="leaderboard-img" style="display: none;"> <%= leaderboard_entry[0].image_reference %> </span>
+    <%_ } %>
+
     <%- include('navbar.ejs') -%>
+
     <%_ if(message == 'success') { %>
         <h2 class="fs15 color-green text-center">Your request was a success!</h2>
     <%_ } else if(message == 'fail') { %>
@@ -29,47 +43,17 @@
     <%_ if(load_user["id"] == current_user.id) { %>
         <h1 class="text-center fs30 m20">Your Account</h1>
     <%_ } %>
-    <section id="profile" class="container p20 w85" style="margin-top: 20px;">
-        <div class="wrapper-top">
-            <div class="profile-container">
-                <div class="pfp-container">
-                    <img src="<%= load_user.pfp %>" class="profile-img" alt="pfp">
-                </div>
-                <%_ if(load_user.id == current_user.id) { %>
-                    <div id="pfp-edit">
-                        <a href="#" id="link-change-pfp" class="fs15 text-center">Edit Picture</a>
-                        <div id="form-container-x" style="display: none;">
-                            <form action="change_pfp" method="POST" id="form-change-pfp" style="margin: 0px;">
-                                <input type="url" name="url" placeholder="Link" class="fs15 text-center color-black">
-                                <button type="submit">Submit</button>
-                            </form>
-                        </div>
-                    </div>
-                <%_ } %>
-                <div class="user-details m10">
-                    <h1 class="text-center fs20 m-atuo overflow-scroll"><%= load_user.name %></h1>
-                    <p class="text-center fs15 m10 overflow-scroll"><%= load_user.username %></p>
-                    <%_ if(load_user["id"] == current_user.id) { %>
-                        <button class="text-center"><a href="/logout" class="fs15">Log out</a></button>
-                    <%_ } %>
-                </div>
-                <div class="played-details m10" id="profile-last-played" style="background-image: url('/private/images/logo.png');">
-                    <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-last-played-title">Played last will go here.</h1>
-                    <%_ if(load_user.last_played != "undefined" && load_user["id"] == current_user.id) { %>
-                        <button class="text-center" id="btn-remove-last" style="display: none; margin: 20px 0px;"><a href="/remove_last_played" class="fs15 text-center">Remove</a></button>
-                    <%_ } %>
-                </div>
-                <div class="played-details m10" id="profile-best-played" style="background-image: url('/private/images/logo.png');">
-                    <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-best-played-title">Played best will go here.</h1>
-                    <%_ if(load_user.best_played != "undefined" && load_user["id"] == current_user.id) { %>
-                        <button class="text-center" id="btn-remove-best" style="display: none; margin: 20px 0px;"><a href="/remove_best_played" class="fs15 text-center">Remove</a></button>
-                    <%_ } %>
-                </div>
-
-            </div>
-            <div class="grid m5 text-center">
+    <div class="quick-actions" style="margin-top: 20px;">
+        <a class="level-nav" href="#" id="link-profile">Profile</a>
+        <%_ if(JSON.stringify(history) != "[]") { %>
+            <a class="level-nav" href="#" id="link-history">History</a>
+        <%_ } %>
+    </div>
+    <section id="profile" class="container w85" style="margin: 20px auto auto auto; padding: 0px;">
+        <div style="background-image: url('<%= load_user.pfp %>'); background-size: 100%; background-repeat: no-repeat; width: 100%; padding: 0px;">
+            <div style="background-color: rgba(20,20,20,0.4);">
                 <%_ if(JSON.stringify(leaderboard_entry) != "[]") { %>
-                    <div class="leaderboard-entry text-center flex" style=" margin: 0px 0px 10px 0px;">
+                    <div class="leaderboard-entry text-center flex">
                         <h1 class="fs15 text-center p20" id="leaderboard-profile-text">Leaderboard: 
                             <%= JSON.stringify(leaderboard_entry[0].level).replace(/['"]+/g, '') %> 
                             | Points: 
@@ -77,7 +61,7 @@
                     </div>
                     <span id="leaderboard-level" style="display: none;"><%= JSON.stringify(leaderboard_entry[0].level).replace(/['"]+/g, '').toLowerCase() %></span>
                 <%_ } else { %>
-                    <div class="leaderboard-entry-none text-center flex" style=" margin: 0px 0px 10px 0px; background-image: url('/private/images/logo.png'); background-repeat: no-repeat; background-size: cover;">
+                    <div class="leaderboard-entry-none text-center flex" style="background-image: url('/private/images/logo.png'); background-repeat: no-repeat; background-size: cover;">
                         <h1 class="fs15 text-center p20" id="leaderboard-profile-text">
                             <%_ if(current_user.id == load_user["id"]) { %>
                                 You aren't
@@ -88,98 +72,145 @@
                         </h1>
                     </div>
                 <%_ } %>
-                
-                <div class="profile-container" id="user-history" style="width: 92%;">
-                    <%_ if(JSON.stringify(history) != "[]") { %>
-                        <h1 class="m10 fs20 text-center"><%= load_user.name.split(' ')[0] %>'s history</h1>
-                        <div class="sep"></div>
-                        <table id="entries">
-                            <tr class="fs20 m20" id="table-header">
-                                <%_ for(let index in id_types) { %>
-                                    <th class="fs20 m20"><%= `${id_types[index]}` %></th>
-                                <%_ } %>
-                            </tr>
-                            <%_ for(let x = 0; x < history.length; x++) { %>
-                                <tr class="fs20 m20" id="<%= `entry-${ x + 1 }` %>">
-                                    <td class="fs20 m20" id="<%= `level` %>"><%= JSON.stringify(history[x].level).replace(/['"]+/g, '') %></td>
-                                    <td class="fs20 m20" id="<%= `date` %>"><%= JSON.stringify(history[x].date).replace(/['"]+/g, '') %></td>
-                                    <td class="fs20 m20" id="<%= `score` %>"><%= JSON.stringify(history[x].score).replace(/['"]+/g, '') %></td>
-                                </tr>
+                <div id="profile-details">
+                    <div class="wrapper-top">
+                        <div class="profile-container profile-details">
+                            <div class="pfp-container">
+                                <img src="<%= load_user.pfp %>" class="profile-img" alt="pfp">
+                            </div>
+                            <%_ if(load_user.id == current_user.id) { %>
+                                <div id="pfp-edit">
+                                    <a href="#" id="link-change-pfp" class="fs15 text-center">Edit Picture</a>
+                                    <div id="form-container-x" style="display: none;">
+                                        <form action="change_pfp" method="POST" id="form-change-pfp" style="margin: 0px;">
+                                            <input type="url" name="url" placeholder="Link" class="fs15 text-center color-black">
+                                            <button type="submit">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
                             <%_ } %>
-                        </table>
-                    <%_ } else { %>
-                        <%_ if(current_user.id == load_user["id"]) { %>
-                            <p class="fs20 m20">You have no history.</p>
+                            <div class="user-details m10">
+                                <h1 class="text-center fs20 m-atuo overflow-scroll"><%= load_user.name %></h1>
+                                <p class="text-center fs15 m-auto overflow-scroll"><%= load_user.username %></p>
+                                <%_ if(load_user["id"] == current_user.id) { %>
+                                    <button class="text-center"><a href="/logout" class="fs15">Log out</a></button>
+                                <%_ } %>
+                            </div>
+                        </div>
+                        <div class="profile-container profile-details">
+                            <div class="played-details m10" id="profile-last-played" style="background-image: url('/private/images/logo.png');">
+                                <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-last-played-title">Played last will go here.</h1>
+                            </div>
+                            <div class="played-details m10" id="profile-best-played" style="background-image: url('/private/images/logo.png');">
+                                <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-best-played-title">Played best will go here.</h1>
+                            </div>
+                            <div class="flex">
+                                <%_ if(load_user.best_played != undefined && load_user["id"] == current_user.id) { %>
+                                    <button class="text-center m10" id="btn-remove-best"><a href="/remove_best_played" class="fs15 text-center">Remove Best Played</a></button>
+                                <%_ } %>
+                                <%_ if(load_user.last_played != undefined && load_user["id"] == current_user.id) { %>
+                                    <button class="text-center m10" id="btn-remove-last"><a href="/remove_last_played" class="fs15 text-center">Remove Last Played</a></button>
+                                <%_ } %>
+                            </div>
+                        </div>
+                    </div>
+                    <%_ if(load_user["id"] == current_user.id && (JSON.stringify(history) != "[]" || JSON.stringify(leaderboard_entry != "[]"))) { %>
+                        <div class="flex">
+                            <%_ if(JSON.stringify(history) != "[]") { %>
+                                <button class="text-center m10" id="delete-history">
+                                    <a href="/delete_history" class="fs15 text-center color-red">
+                                        Delete All History (re-login required)
+                                    </a>
+                                </button>
+                            <%_ } %>
+                            <%_ if(JSON.stringify(leaderboard_entry) != "[]") { %>
+                                <button class="text-center m10" id="delete-leaderboard">
+                                    <a href="/delete_leaderboard?id=<%= leaderboard_entry["id"] %>" class="fs15 text-center color-red">
+                                    Delete Leaderboard Entry (re-login required)
+                                    </a>
+                                </button>
+                            <%_ } %>
+                        </div>
+                    <%_ } %>
+                    <%_ if(load_user["id"] == current_user["id"] && current_user["leaderboard_attempt"] != undefined && JSON.stringify(leaderboard_entry) == "[]") { %>
+                        <button><a href="/add_temp_leaderboard" class="fs15 text-center color-green" style="white-space: nowrap; width: 95%;">Add your last leaderboard entry here </a></button>
+                    <%_ } %>
+                </div>
+                <div class="grid text-center" id="profile-history" style="display: none;">                
+                    <div class="profile-container" id="user-history">
+                        <%_ if(JSON.stringify(history) != "[]") { %>
+                            <h1 class="m10 fs20 text-center"><%= load_user.name.split(' ')[0] %>'s history</h1>
+                            <div class="sep"></div>
+                            <table id="entries">
+                                <tr class="fs20 m20" id="table-header">
+                                    <%_ for(let index in id_types) { %>
+                                        <th class="fs20 m20"><%= `${id_types[index]}` %></th>
+                                    <%_ } %>
+                                </tr>
+                                <%_ for(let x = 0; x < history.length; x++) { %>
+                                    <tr class="fs20 m20" id="<%= `entry-${ x + 1 }` %>">
+                                        <td class="fs20 m20" id="<%= `level` %>"><%= JSON.stringify(history[x].level).replace(/['"]+/g, '') %></td>
+                                        <td class="fs20 m20" id="<%= `date` %>"><%= JSON.stringify(history[x].date).replace(/['"]+/g, '') %></td>
+                                        <td class="fs20 m20" id="<%= `score` %>"><%= JSON.stringify(history[x].score).replace(/['"]+/g, '') %></td>
+                                    </tr>
+                                <%_ } %>
+                            </table>
                         <%_ } else { %>
-                            <p class="fs20 m20"><%= load_user.name.split(' ')[0] %> has no history.</p>
+                            <%_ if(current_user.id == load_user["id"]) { %>
+                                <p class="fs20 m20">You have no history.</p>
+                            <%_ } else { %>
+                                <p class="fs20 m20"><%= load_user.name.split(' ')[0] %> has no history.</p>
+                            <%_ }  %>
                         <%_ }  %>
-                    <%_ }  %>
+                    </div>
                 </div>
             </div>
         </div>
-        <%_ if(load_user["id"] == current_user.id && (JSON.stringify(history) != "[]" || JSON.stringify(leaderboard_entry != "[]"))) { %>
-            <div class="flex">
-                <%_ if(JSON.stringify(history) != "[]") { %>
-                    <button class="text-center m10" id="delete-history">
-                        <a href="/delete_history" class="fs15 text-center color-red">
-                            Delete All History (re-login required)
-                        </a>
-                    </button>
-                <%_ } %>
-                <%_ if(JSON.stringify(leaderboard_entry) != "[]") { %>
-                    <button class="text-center m10" id="delete-leaderboard">
-                        <a href="/delete_leaderboard?id=<%= leaderboard_entry["id"] %>" class="fs15 text-center color-red">
-                        Delete Leaderboard Entry (re-login required)
-                        </a>
-                    </button>
-                <%_ } %>
-            </div>
-        <%_ } %>
-        <%_ if(load_user["id"] == current_user["id"] && current_user["leaderboard_attempt"] != undefined && JSON.stringify(leaderboard_entry) == "[]") { %>
-            <button><a href="/add_temp_leaderboard" class="fs15 text-center color-green" style="white-space: nowrap; width: 95%;">Add your last leaderboard entry here </a></button>
-        <%_ } %>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script>
         if( $('#last-play').text() != '' ){
             $('#profile-last-played-title').text(`Played last: ${$('#last-play').text()}`)
-            $(`#profile-last-played`).css('background-image', `url(/private/images/levels/${$('#last-play').text().toLowerCase()}.jpg)`)
+            $(`#profile-last-played`).css('background-image', `url(${ $('#last-play-img').text() })`)
         }
 
         if( $('#best-play').text() != '' ){
             $('#profile-best-played-title').text(`Played best: ${$('#best-play').text()}`)
-            $(`#profile-best-played`).css('background-image', `url(/private/images/levels/${$('#best-play').text().toLowerCase()}.jpg)`)
+            $(`#profile-best-played`).css('background-image', `url(${ $('#best-play-img').text() })`)
         }
 
-        if( $('#last-play').text() != '' ) {
-            $(document).mousemove(() => {
-                if( $('#current-id').text() == $('#user-id').text()) {
-                    if($('#profile-last-played:hover').length != 0) {
-                        $('#profile-last-played-title').css('display', 'none')
-                        $('#btn-remove-last').css('display', 'block')
-                    } else {
-                        $('#profile-last-played-title').css('display', 'block')
-                        $('#btn-remove-last').css('display', 'none')
-                    }
-    
-                    if($('#profile-best-played:hover').length != 0) {
-                        $('#profile-best-played-title').css('display', 'none')
-                        $('#btn-remove-best').css('display', 'block')
-                    } else {
-                        $('#profile-best-played-title').css('display', 'block')
-                        $('#btn-remove-best').css('display', 'none')
-                    }
-                }
-            })
-        }
+        $('.leaderboard-entry').css('background-image', `url(${ $('#leaderboard-img').text() })`)
+
+        $('#link-profile').bind('click', () => {
+            $('#link-history').css('background-color', 'black')
+            $('#link-history').css('color', 'white')
+
+            $('#profile-history').css('display', 'none')
+
+            $('#link-profile').css('background-color', 'white')
+            $('#link-profile').css('color', 'black')
+            $('#profile-details').css('display', 'block')
+
+            $(document).prop('title', `${ $('#itle-prop').text() }'s Profile | ATC`)
+        })
+
+        $('#link-history').bind('click', () => {
+            $('#link-history').css('background-color', 'white')
+            $('#link-history').css('color', 'black')
+            $('#profile-history').css('display', 'grid')
+
+            $('#link-profile').css('background-color', 'black')
+            $('#link-profile').css('color', 'white')
+
+            $('#profile-details').css('display', 'none')
+
+            $(document).prop('title', `${ $('#title-prop').text() }'s History | ATC`)
+        })
 
         $('#link-change-pfp').bind('click', () => {
             $('#link-change-pfp').css('display', 'none')
             $('#form-container-x').css('display', 'block')
         })
-
-        $('.leaderboard-entry').css('background-image', `url(/private/images/levels/${ $('#leaderboard-level').text() }.jpg`)
-        $('#progress-bar').css('width', `${ $('#current-progress').text() }`)
     </script>
 </body>
 </html>
