@@ -84,8 +84,7 @@ class Plane {
         text(this.callsign, this.current_x * grid.grid_size + (grid.grid_size-55), this.current_y * grid.grid_size + (grid.grid_size-45)) // callsign text to user
         textSize(10)
         text(`${this.type} ${this.wake_cat}`, this.current_x * grid.grid_size + (grid.grid_size-55), this.current_y * grid.grid_size + (grid.grid_size - 30)) // type text to user
-        // grid.format_time translates array into mins with added '0''s and colons, more appealing to user
-        text(`${grid.format_time(this.ctot)}`, this.current_x * grid.grid_size + (grid.grid_size-55), this.current_y * grid.grid_size + (grid.grid_size - 18)) // ctot time text to user
+        text(grid.format_time(this.ctot), this.current_x * grid.grid_size + (grid.grid_size-55), this.current_y * grid.grid_size + (grid.grid_size - 18)) // ctot time text to user
         text(this.destination, this.current_x * grid.grid_size + (grid.grid_size - 33), this.current_y * grid.grid_size + (grid.grid_size - 5)) // destination text to user
         text(this.hp_destination[2], this.current_x * grid.grid_size + (grid.grid_size - 55), this.current_y * grid.grid_size + (grid.grid_size - 5)) // where they are taxying to
         fill('white')

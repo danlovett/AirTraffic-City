@@ -69,7 +69,31 @@ app.get('/library', checkAuthenticated, (req, res) => {
     gameDB.all('SELECT * FROM levels', [], (err, levels) => {
         res.render('library', {user: req.user, levels: levels, message: req.query.message });
     })
+})
 
+app.post('/search', checkAuthenticated, (req, res) => {
+    if(req.body.query.includes('?') || req.body.query.includes('=')) {
+        res.redirect('/search?message=fail')
+    } else { 
+        res.redirect(`/search?q=${req.body.query}&group=${req.query.group}`)
+    }
+})
+
+app.get('/search', checkAuthenticated, (req, res) => {
+    let query
+    try { query = req.query.q } catch { query = '' }
+    if(req.query.group == 'people') {
+        clientDB.all('SELECT id, name, username, pfp FROM users WHERE username = ? OR name = ?', req.query.q, req.query.q, (err, users) => {
+            res.render('search.ejs', { query: query, foundUsers: users, group: req.query.group })
+        })
+    }
+
+    if(req.query.group == 'levels') {
+        gameDB.all('SELECT airport_name, image_reference FROM levels WHERE airport_name = ?', req.query.q, (err, levels) => {
+
+            res.render('search.ejs', { query: query, foundLevels: levels, group: req.query.group })
+        })
+    }
 })
 
 app.get('/create_layout', checkAuthenticated, (req, res) => {

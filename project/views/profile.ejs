@@ -38,7 +38,7 @@
     <%_ if(message == 'success') { %>
         <h2 class="fs15 color-green text-center">Your request was a success!</h2>
     <%_ } else if(message == 'fail') { %>
-            <h2 class="fs15 color-red text-center">Your request failed. Try again.</h2>
+        <h2 class="fs15 color-red text-center">Your request failed. Try again.</h2>
     <%_ } %>
     <%_ if(load_user["id"] == current_user.id) { %>
         <h1 class="text-center fs30 m20">Your Account</h1>
@@ -47,6 +47,8 @@
         <a class="level-nav" href="#" id="link-profile">Profile</a>
         <%_ if(JSON.stringify(history) != "[]") { %>
             <a class="level-nav" href="#" id="link-history">History</a>
+        <%_ } else { %>
+            <a class="level-nav" href="#?message=fail" style="background-color: rgb(0, 0, 0); color: rgb(159, 4, 4); cursor: not-allowed;" title="<%= load_user.name.split(' ')[0] %> has no history">History</a>
         <%_ } %>
     </div>
     <section id="profile" class="container w85" style="margin: 20px auto auto auto; padding: 0px;">
@@ -191,7 +193,7 @@
             $('#link-profile').css('color', 'black')
             $('#profile-details').css('display', 'block')
 
-            $(document).prop('title', `${ $('#itle-prop').text() }'s Profile | ATC`)
+            $(document).prop('title', `${ $('#title-prop').text() }'s Profile | ATC`)
         })
 
         $('#link-history').bind('click', () => {

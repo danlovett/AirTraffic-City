@@ -17,7 +17,6 @@ function setup() {
     score = new Score()
 
     grid = new Grid()
-    console.log($('#level_runways').text())
     // grid = new Grid(10, 10)
     grid.init($('#level_name').text(), $('#icao').text(), JSON.parse($('#level_runways').text()), JSON.parse($('#level_grid').text()), JSON.parse($('#planes').text()), $('#destinations').text())
 
@@ -62,13 +61,13 @@ function draw() {
         // show time, score, buttons to control speed and play/pause, 
         // ... and any aicraft in their AoC
         grid.buttons_text()
-        for(let i = 0; i < control_planes.length; i++) {
-            control_planes[i].show_travel_points()
-        }
-    
+        
         
         control_my_planes(control_planes) // control my planes
         // control_other_planes()
+        for(let i = 0; i < control_planes.length; i++) {
+            control_planes[i].show_travel_points()
+        }
     
         // placed at end of block code to make result appear on top
         grid.render_selector_tool(grid_x, grid_y)
