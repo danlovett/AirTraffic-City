@@ -17,8 +17,10 @@ function setup() {
     score = new Score()
 
     grid = new Grid()
-    // grid = new Grid(10, 10)
-    grid.init($('#level_name').text(), $('#icao').text(), JSON.parse($('#level_runways').text()), JSON.parse($('#level_grid').text()), JSON.parse($('#planes').text()), $('#destinations').text())
+    
+    // initiate the grid using these values from the ejs file.
+    grid.init($('#level_name').text(), $('#icao').text(), JSON.parse($('#level_runways').text()), 
+    JSON.parse($('#level_grid').text()), JSON.parse($('#planes').text()), $('#destinations').text())
 
     for(let i = 0; i <= floor(random(4, 9)); i++) {
         let spawn_point = grid.spawn_areas[floor(random(grid.spawn_areas.length))]

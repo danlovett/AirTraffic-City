@@ -8,7 +8,7 @@
 }
 
 body {
-	background: linear-gradient(-45deg, #ffffff, #242424, #08197c, #28ff4c);
+	background: linear-gradient(-45deg, #00ff1e, #ff0000, #0db735, #ff2828);
 	background-size: 400% 400%;
 	animation: gradient 20s ease infinite;
 	height: 60vh;
@@ -210,6 +210,10 @@ button:hover {
 .color-green {
     color: green;
     font-weight: 1000;
+}
+
+.color-grey {
+    color: grey;
 }
 
 .overflow-scroll {

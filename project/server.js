@@ -83,16 +83,28 @@ app.get('/search', checkAuthenticated, (req, res) => {
     let query
     try { query = req.query.q } catch { query = '' }
     if(req.query.group == 'people') {
-        clientDB.all('SELECT id, name, username, pfp FROM users WHERE username = ? OR name = ?', req.query.q, req.query.q, (err, users) => {
-            res.render('search.ejs', { query: query, foundUsers: users, group: req.query.group })
-        })
+        if(req.query.q == 'all') {
+            clientDB.all('SELECT id, name, username, pfp FROM users', [], (err, users) => {
+                res.render('search.ejs', { query: query, foundUsers: users, group: req.query.group })
+            }) 
+        } else {
+            clientDB.all('SELECT id, name, username, pfp FROM users WHERE username = ? OR name = ?', req.query.q, req.query.q, (err, users) => {
+                res.render('search.ejs', { query: query, foundUsers: users, group: req.query.group })
+            })
+        }
     }
 
     if(req.query.group == 'levels') {
-        gameDB.all('SELECT airport_name, image_reference FROM levels WHERE airport_name = ?', req.query.q, (err, levels) => {
+        if(req.query.q == 'all') {
+            gameDB.all('SELECT airport_name, image_reference FROM levels', [], (err, levels) => {
+                res.render('search.ejs', { query: query, foundLevels: levels, group: req.query.group })
+            })
 
-            res.render('search.ejs', { query: query, foundLevels: levels, group: req.query.group })
-        })
+        } else {
+            gameDB.all('SELECT airport_name, image_reference FROM levels WHERE airport_name = ?', req.query.q, (err, levels) => {
+                res.render('search.ejs', { query: query, foundLevels: levels, group: req.query.group })
+            })
+        }
     }
 })
 

@@ -1,0 +1,41 @@
+.quick-actions {
+    display: flex;
+    justify-content: center;
+}
+.quick-actions a {
+    background-color: black;
+    color: white;
+    padding: 5px 20px;
+    border-radius: 35px;
+    margin: 0px 10px;
+    transition: ease-in-out;
+    transition-duration: 1s;
+}
+.quick-actions a:hover {
+    transition: ease-in-out;
+    transition-duration: 1s;
+    background-color: white;
+    color: black;
+}
+
+.inner-container {
+    padding: 0px;
+    background-color: rgba(25, 25, 25, 0.8);
+    border-radius: 20px;
+    display: grid;
+    width: 100%;
+}
+
+.form-search {
+    margin: 0px 20px;
+    padding: 0px;
+    display: grid;
+    grid-template-columns: 80% 20%;
+}
+
+.user-search-container {
+    width: 100%;
+    padding: 20px;
+    border-radius: 35px;
+    margin: 20px;
+}
