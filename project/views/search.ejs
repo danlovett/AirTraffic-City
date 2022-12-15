@@ -70,14 +70,14 @@
                 </div>
                 <%_ for(let i in foundLevels) { %>
                     <div class="form-search">
-                        <a href="/level?name=<%= foundLevels[i]["airport_name"] %>" style="width: 100%;">
+                        <a href="/level?name=<%= foundLevels[i]["airport_name"] %>&type=detailed" style="width: 100%;">
                             <div class="user-search-container" style="background-image: url('<%= foundLevels[i]["image_reference"] %>'); background-size: cover;">
                                 <div class="background-fade">
                                     <h1 class="fs20 text-center"><%= foundLevels[i]["airport_name"] %></h1>
                                 </div>
                             </div>
                         </a>
-                        <a href="/game?level=<%= foundLevels[i]["airport_name"] %>"><img src="/private/images/logo.png" alt="" style="height: 50px;"></a>
+                        <a href="/level?name=<%= foundLevels[i]["airport_name"] %>&type=quickplay"><img src="/private/images/logo.png" alt="" style="height: 50px;"></a>
                     </div>
                 <%_ } %>
             <%_ } %>

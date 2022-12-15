@@ -35,14 +35,14 @@
                     <%_ for(let level = 0; level < levels.length; level++) { %>
                         <%_ if(user.best_played != null && levels[level]["airport_name"] == user.best_played) { %>
                             <div id="quick-play-best" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>'); background-position: cover;">
-                                <a href="/level?name=<%= levels[level]["airport_name"] %>" id="best-played-link" class="quick-play-child">
+                                <a href="/level?name=<%= levels[level]["airport_name"] %>&type=detailed" id="best-played-link" class="quick-play-child">
                                     <h2><%= user.best_played %></h2>
                                 </a>
                             </div>
                         <%_ } %>
                         <%_ if(user.last_played != null && levels[level]["airport_name"] == user.last_played) { %>
                             <div id="quick-play-last" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>'); background-position: cover;">
-                                <a href="/level?name=<%= levels[level]["airport_name"] %>" id="last-played-link" class="quick-play-child">
+                                <a href="/level?name=<%= levels[level]["airport_name"] %>&type=detailed" id="last-played-link" class="quick-play-child">
                                     <h2><%= user.last_played %></h2>
                                 </a>
                             </div>
@@ -56,7 +56,7 @@
             <div id="levels" class="levels m10">
                 <%_ for(let level = 0; level < levels.length; level++) { %>
                     <div class="level-wrapper" style="background-image: url('<%= levels[level]["image_reference"] %>');">
-                        <a href="/level?name=<%= levels[level]["airport_name"] %>" class="child" style="width:100%;" id="<%= levels[level]["airport_name"] %>"><h2 class="background-filter"><%= levels[level]["airport_name"] %></h2></a>
+                        <a href="/level?name=<%= levels[level]["airport_name"] %>&type=detailed" class="child" style="width:100%;" id="<%= levels[level]["airport_name"] %>"><h2 class="background-filter"><%= levels[level]["airport_name"] %></h2></a>
                     </div>
                 <%_ } %>
             </div>

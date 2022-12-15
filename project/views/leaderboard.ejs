@@ -39,7 +39,7 @@
                             <th class="fs20 m20 text-center">
                                 <%_ if(x != 'personID') { %>
                                     <%_ if(x == 'level') { %>
-                                        <a href="/level?name=<%= top_entries[entry][x] %>"><%= top_entries[entry][x] %></a>
+                                        <a href="/level?name=<%= top_entries[entry][x] %>&type=detailed"><%= top_entries[entry][x] %></a>
                                     <%_ } else if (x == 'name') { %>
                                         <a href="/profile?id=<%=top_entries[entry].personID %>"><%= top_entries[entry][x] %></a>
                                     <%_ } else { %>

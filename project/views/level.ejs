@@ -19,13 +19,19 @@
             <h2 id="level-name"><%= data["airport_name"] %></h2>
             <p id="level-desc" class="text-center fs15 m10"> By <%= data["author"] %></p>
         </div>
-        <div class="splitter">
-            <p id="level-desc" class="fs20 w50 m0 text-center"><%= data["text_waffle"] %></p>
-            <p id="level-instr" class="fs20 w50 m0 text-center"><%= data["text_instructions"] %></p>
-        </div>
+        <%_ if(displayType != 'quickplay') { %>
+            <div class="splitter">
+                <p id="level-desc" class="fs20 w50 m0 text-center"><%= data["text_waffle"] %></p>
+                <p id="level-instr" class="fs20 w50 m0 text-center"><%= data["text_instructions"] %></p>
+            </div>
+        <%_ } else { %>
+            <div class="inner-container">
+                <h1 class="fs20 text-center m20">Ready to Play?</h1>
+                <p class="fs15 text-center m10">The game will play as soon as you press 'Play at <%= data["airport_name"] %>'</p>
+                <a class="fs15 text-center" href="/level?name=<%= data["airport_name"] %>&type=detailed">Learn more</a>
+            </div>
+        <%_ } %>
         <a href="/game?level=<%= data["airport_name"] %>" class="level-play">Play at <%= data["airport_name"] %></a>
     </section>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 </html>

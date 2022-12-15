@@ -61,18 +61,18 @@
     width: 100%;
 }
 
-table tbody, table thead {
-    display: block;
+table {
+    width: 100%;
 }
 
 table tbody {
    overflow: auto;
-   /* width: 100%; */
 }
 
 td {
     padding: 10px 50px;
-    border: 3px black solid;
+    border-radius: 10px;
+    background-color: rgba(50,50,50,0.9);
     text-align: center;
     white-space: nowrap;
 }

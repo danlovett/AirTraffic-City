@@ -17,7 +17,7 @@
 .splitter {
     display: flex;
     background-color: rgba(39, 39, 39, 0.8);
-    padding: 30px;
+    padding: 20px;
     border-radius: 35px;
 }
 
@@ -41,6 +41,7 @@
 #level-detail {
     transition: cubic-bezier(.68,-0.55,.27,1.55);
     transition-duration: 1s;
+    width: 90%;
 }
 
 
