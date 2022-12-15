@@ -75,7 +75,12 @@ app.post('/search', checkAuthenticated, (req, res) => {
     if(req.body.query.includes('?') || req.body.query.includes('=')) {
         res.redirect('/search?message=fail')
     } else { 
-        res.redirect(`/search?q=${req.body.query}&group=${req.query.group}`)
+        let words
+        try { words = req.body.query.split(' ') } catch { words = req.body.query }
+        for (let i = 0; i < words.length; i++) {
+            words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+        }
+        res.redirect(`/search?q=${words.toString().replace(',', ' ')}&group=${req.query.group}`)
     }
 })
 
@@ -88,7 +93,7 @@ app.get('/search', checkAuthenticated, (req, res) => {
                 res.render('search.ejs', { query: query, foundUsers: users, group: req.query.group })
             }) 
         } else {
-            clientDB.all('SELECT id, name, username, pfp FROM users WHERE username = ? OR name = ?', req.query.q, req.query.q, (err, users) => {
+            clientDB.all(`SELECT id, name, username, pfp FROM users WHERE username LIKE '%${req.query.q}%' OR name LIKE '%${req.query.q}%'`, [], (err, users) => {
                 res.render('search.ejs', { query: query, foundUsers: users, group: req.query.group })
             })
         }
@@ -101,7 +106,7 @@ app.get('/search', checkAuthenticated, (req, res) => {
             })
 
         } else {
-            gameDB.all('SELECT airport_name, image_reference FROM levels WHERE airport_name = ?', req.query.q, (err, levels) => {
+            gameDB.all(`SELECT airport_name, image_reference FROM levels WHERE airport_name LIKE '%${req.query.q}%'`, [], (err, levels) => {
                 res.render('search.ejs', { query: query, foundLevels: levels, group: req.query.group })
             })
         }

@@ -35,7 +35,20 @@
 
 .user-search-container {
     width: 100%;
-    padding: 20px;
+    padding: 0px;
     border-radius: 35px;
     margin: 20px;
+}
+
+.background-fade {
+    background-color: rgba(50,50,50,0.6);
+    padding: 20px;
+    border-radius: inherit;
+    margin: 0px;
+}
+
+form input {
+    border-radius: 35px;
+    padding: 10px;
+    background-color: rgba(159, 159, 159, 0.2);
 }
