@@ -119,6 +119,10 @@ function keyPressed() {
         if(key == '3') grid.gameplay_speed = 2
         if(key == '4') grid.gameplay_speed = 0.5
     }
+    if(key === "Escape") {
+        let leave = confirm("Are you sure you want to exit the game?\nYou'll lose your progress.")
+        if(leave) window.location.href = 'http://localhost:4000/library'
+    }
 }
 
 function mousePressed() {

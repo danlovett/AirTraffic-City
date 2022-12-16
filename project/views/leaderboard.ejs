@@ -27,8 +27,8 @@
             <%_ } %>
         </div>
         <%_ if(top_entries.length > 0) { %>
-            <table id="leaderboard-entries">
-                <tr class="fs20 m20" id="table-header">
+            <table>
+                <tr class="fs20 m20">
                     <%_ for(let index in id_types) { %>
                         <th class="fs20 m20"><%= id_types[index] %></th>
                     <%_ } %>
@@ -36,8 +36,8 @@
                 <%_ for(let entry = 0; entry < top_entries.length; entry++) { %>
                     <tr id="entry<%= `${entry + 1}` %>">
                         <%_ for(let x in top_entries[entry]) { %>
-                            <th class="fs20 m20 text-center">
-                                <%_ if(x != 'personID') { %>
+                            <%_ if(x != 'personID') { %>
+                                <td class="fs20 m20 text-center">
                                     <%_ if(x == 'level') { %>
                                         <a href="/level?name=<%= top_entries[entry][x] %>&type=detailed"><%= top_entries[entry][x] %></a>
                                     <%_ } else if (x == 'name') { %>
@@ -45,8 +45,8 @@
                                     <%_ } else { %>
                                         <%= top_entries[entry][x] %>
                                     <%_ } %>
-                                <%_ } %>
-                            </th>
+                                </td>
+                            <%_ } %>
                             <%_ } %>
                         </tr>
                         <%_ } %>

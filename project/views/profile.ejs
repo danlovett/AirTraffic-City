@@ -101,12 +101,30 @@
                             </div>
                         </div>
                         <div class="profile-container profile-details">
-                            <div class="played-details m10" id="profile-last-played" style="background-image: url('/private/images/logo.png');">
-                                <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-last-played-title">Played last will go here.</h1>
-                            </div>
-                            <div class="played-details m10" id="profile-best-played" style="background-image: url('/private/images/logo.png');">
-                                <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-best-played-title">Played best will go here.</h1>
-                            </div>
+                            <%_ if(best.level == last.level && (last != null || best != null)) { %>
+                                <div class="played-details m10" id="profile-last-played" style="background-image: url('<%= best.image_reference %>');">
+                                    <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-last-played-title">Best & Last Played: <%= best.level %></h1>
+                                </div>
+                            <%_ } else { %>
+                                <%_ if(last != null) {%>
+                                    <div class="played-details m10" id="profile-last-played" style="background-image: url('<%= last.image_reference %>');">
+                                        <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-last-played-title">Last Played: <%= last.level %></h1>
+                                    </div>
+                                <%_ } else { %>
+                                    <div class="played-details m10" id="profile-last-played" style="background-image: url('/private/images/logo.png');">
+                                        <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-last-played-title">Played last will go here.</h1>
+                                    </div>
+                                <%_ } %>
+                                <%_ if(best != null) {%>
+                                    <div class="played-details m10" id="profile-last-played" style="background-image: url('<%= best.image_reference %>');">
+                                        <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-last-played-title">Best Played: <%= best.level %></h1>
+                                    </div>
+                                <%_ } else { %>
+                                    <div class="played-details m10" id="profile-best-played" style="background-image: url('/private/images/logo.png');">
+                                        <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-best-played-title">Played best will go here.</h1>
+                                    </div>
+                                <%_ } %>
+                            <%_ } %>
                             <div class="flex">
                                 <%_ if(load_user.best_played != undefined && load_user["id"] == current_user.id) { %>
                                     <button class="text-center m10" id="btn-remove-best"><a href="/remove_best_played" class="fs15 text-center">Remove Best Played</a></button>

@@ -32,12 +32,21 @@ form {
     margin: 20px;
 }
 
+
 table {
-    text-align: left;
+    width: 100%;
 }
 
-tr {
+table tbody {
+   overflow: auto;
+}
+
+td {
+    padding: 10px 50px;
+    border-radius: 10px;
+    background-color: rgba(50,50,50,0.9);
     text-align: center;
+    white-space: nowrap;
 }
 
 section {
@@ -235,7 +244,7 @@ button:hover {
 }
 
 .container {
-    background-color: rgba(20, 20, 20, 0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     border-radius: 35px;
     transition: ease-in-out;
     transition-duration: 2s;

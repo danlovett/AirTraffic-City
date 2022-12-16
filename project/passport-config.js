@@ -11,7 +11,6 @@ function initPassport(passport, LocalStrategy, clientDB, bcrypt, fs) {
                 }
             } catch (err) { return done(err) }
         });
-    
     }))
     
     passport.serializeUser((user, done) => {

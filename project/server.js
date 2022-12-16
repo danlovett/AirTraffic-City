@@ -192,11 +192,7 @@ app.get('/add_temp_leaderboard', checkAuthenticated, (req, res) => {
 })
 
 app.get('/usr_leaderboard_submit', checkAuthenticated, (req, res) => { 
-    SQLUpdateInsert(`INSERT INTO history (date, score, level, personID) VALUES('${formatTime()}', ${req.query.score}, '${req.query.level}', ${req.user.id});`)
-    SQLUpdateInsert(`UPDATE users SET last_played = "${req.query.level}" WHERE id = ${req.user.id};`)
-    clientDB.get(`SELECT * FROM history WHERE personID = ${req.user.id} ORDER BY score DESC;`, [], (err, row) => {
-        clientDB.all(`UPDATE users SET best_played = '${row.level}' WHERE id = ${req.user.id}`, [], (err) => { if(err) throw err }) // undefined FIX THIS
-    })
+    updateEntries(req)
     if(req.query.score >= 0) {
         clientDB.all(`INSERT INTO leaderboard(name, date, score, level, personID) VALUES('${req.user.name}', '${formatTime()}', ${req.query.score}, '${req.query.level}', ${req.user.id});`, [], err => { 
             if(err) {
@@ -220,11 +216,7 @@ app.get('/delete_leaderboard', checkAuthenticated, (req, res) => {
 })
 
 app.get('/usr_history_submit', checkAuthenticated, (req, res) => {
-    SQLUpdateInsert(`INSERT INTO history (date, score, level, personID) VALUES('${formatTime()}', ${req.query.score}, '${req.query.level}', ${req.user.id});`)
-    SQLUpdateInsert(`UPDATE users SET last_played = "${req.query.level}" WHERE id = ${req.user.id};`)
-    clientDB.all(`SELECT * FROM history WHERE personID = '${req.user.id}' ORDER BY score DESC;`, [], (err, row) => {
-        clientDB.all(`UPDATE users SET best_played = '${row.level}' WHERE id = ${req.user.id}`, [], (err) => { if(err) throw err })
-    })
+    updateEntries(req)
 
     res.redirect(308, '/profile?id=current')
 })
@@ -309,6 +301,18 @@ function checkNotAuthenticated(req, res, next) {
 // basic sql execution. Nothing returned so just INSERT
 function SQLUpdateInsert(sql_statement) {
     clientDB.all(sql_statement, [], err => { if(err) throw err })
+}
+
+function updateEntries(req) {
+    SQLUpdateInsert(`INSERT INTO history (date, score, level, personID) VALUES('${formatTime()}', ${req.query.score}, '${req.query.level}', ${req.user.id});`)
+    clientDB.get(`SELECT level, score FROM history WHERE personID = ${req.user.id} ORDER BY score DESC;`, [], (err, row) => {
+        console.log(`BEST: ${JSON.stringify(row)}`)
+        clientDB.all(`UPDATE users SET best_played = "${row.level}" WHERE id = ${req.user.id}`, [], (err) => { if(err) throw err }) // undefined FIX THIS
+    })
+    clientDB.get(`SELECT level, date FROM history WHERE personID = ${req.user.id} ORDER BY date DESC;`, [], (err, row) => {
+        console.log(`LAST: ${JSON.stringify(row)}`)
+        clientDB.all(`UPDATE users SET last_played = "${row.level}" WHERE id = ${req.user.id}`, [], (err) => { if(err) throw err }) // undefined FIX THIS
+    })
 }
 
 function isImage(url) {

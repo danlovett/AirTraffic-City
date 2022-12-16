@@ -23,29 +23,41 @@
             <%_ if(user.best_played != null || user.last_played != null) { %>
                 <h1 class="fs30 text-center m20">Quick Play</h1>
                 <div id="quick-play-desc">
-                    <%_ if(user.best_played != "undefined") { %>
-                        <p class="text-center fs20">Best Played</p>
-                    <%_ } %>
-
-                    <%_ if(user.last_played != "undefined") { %>
-                        <p class="text-center fs20">Last Played</p>
+                    <%_ if(user.best_played == user.last_played) { %>
+                        <p class="text-center fs20">Best & Last Played</p>
+                    <%_ } else { %>
+                        <%_ if(user.best_played != null) { %>
+                            <p class="text-center fs20">Best Played</p>
+                        <%_ } %>
+    
+                        <%_ if(user.last_played != null) { %>
+                            <p class="text-center fs20">Last Played</p>
+                        <%_ } %>
                     <%_ } %>
                 </div>
                 <div id="quick-play" class="levels m10">
                     <%_ for(let level = 0; level < levels.length; level++) { %>
-                        <%_ if(user.best_played != null && levels[level]["airport_name"] == user.best_played) { %>
+                        <%_ if(user.best_played == user.last_played && levels[level]["airport_name"] == user.best_played) { %>
                             <div id="quick-play-best" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>'); background-position: cover;">
                                 <a href="/level?name=<%= levels[level]["airport_name"] %>&type=detailed" id="best-played-link" class="quick-play-child">
                                     <h2><%= user.best_played %></h2>
                                 </a>
                             </div>
-                        <%_ } %>
-                        <%_ if(user.last_played != null && levels[level]["airport_name"] == user.last_played) { %>
-                            <div id="quick-play-last" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>'); background-position: cover;">
-                                <a href="/level?name=<%= levels[level]["airport_name"] %>&type=detailed" id="last-played-link" class="quick-play-child">
-                                    <h2><%= user.last_played %></h2>
-                                </a>
-                            </div>
+                        <%_ } else { %>
+                            <%_ if(user.best_played != null && levels[level]["airport_name"] == user.best_played) { %>
+                                <div id="quick-play-best" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>'); background-position: cover;">
+                                    <a href="/level?name=<%= levels[level]["airport_name"] %>&type=detailed" id="best-played-link" class="quick-play-child">
+                                        <h2><%= user.best_played %></h2>
+                                    </a>
+                                </div>
+                            <%_ } %>
+                            <%_ if(user.last_played != null && levels[level]["airport_name"] == user.last_played) { %>
+                                <div id="quick-play-last" class="w85" style="background-image: url('<%= levels[level]["image_reference"] %>'); background-position: cover;">
+                                    <a href="/level?name=<%= levels[level]["airport_name"] %>&type=detailed" id="last-played-link" class="quick-play-child">
+                                        <h2><%= user.last_played %></h2>
+                                    </a>
+                                </div>
+                            <%_ } %>
                         <%_ } %>
                     <%_ } %>
                 </div>
