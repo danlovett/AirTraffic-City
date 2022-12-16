@@ -37,7 +37,7 @@
                     <th id="score" class="point fs20"><%= score %> point<%_ score == 1 ? '' : 's' %></th>
                 </tr>
             </table>
-            <button id="eog" class="fs15"><a href="/usr_history_submit?score=<%= score %>&level=<%= level["airport_name"] %>" class="fs15">Back to home</a></button>
+            <button id="eog" class="fs15"><a href="/profile?id=current" class="fs15">Back to home</a></button>
             <button class="fs15" id="eog-small"> <a href="/usr_leaderboard_submit?score=<%= score %>&level=<%= level["airport_name"] %>" class="fs15">or add to leaderboard</a></button>
 
         </div>

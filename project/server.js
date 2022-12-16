@@ -47,18 +47,25 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 }));
 
 app.get('/register', checkNotAuthenticated, (req, res) => {
-    res.render('register');
+    console.log(req.query.message, typeof(req.query.message))
+    res.render('register', { reason: req.query.message });
 });
 
 app.post('/register', checkNotAuthenticated, async (req,res) => {
-    try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10)
-        const sql = `INSERT INTO users(name, username, password) VALUES ("${req.body.name}", "${req.body.email}", "${hashedPassword}")`
-        clientDB.all(sql, [], err => { if(err) throw err } )
-        res.redirect('/login')
-    } catch {
-        res.redirect('/register')
+    if(req.body.password.length < 8) {
+        res.redirect('/register?message=password_length')
+        return
+    } 
+    if(!req.body.name.includes(' ')) {
+        res.redirect('/register?message=full_name')
+        return
     }
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    const sql = `INSERT INTO users(name, username, password) VALUES ("${req.body.name}", "${req.body.email}", "${hashedPassword}")`
+    clientDB.all(sql, [], err => { 
+        if(err.errno == 19) res.redirect('/login?message=aid') 
+        if(req.body.password.length >= 8 && req.body.name.includes(' ') && !err) res.redirect('/login')
+    })
 })
 
 app.get('/', (req, res) => {
@@ -115,11 +122,11 @@ app.get('/search', checkAuthenticated, (req, res) => {
     }
 })
 
-app.get('/create_layout', checkAuthenticated, (req, res) => {
+app.get('/create_layout', isAdmin, (req, res) => {
     res.render('createLayout')
 })
 
-app.get('/create_airframe', checkAuthenticated, (req, res) => {
+app.get('/create_airframe', isAdmin, (req, res) => {
     res.render('/admin/creatorAirframe')
 })
 
@@ -194,15 +201,22 @@ app.get('/add_temp_leaderboard', checkAuthenticated, (req, res) => {
 app.get('/usr_leaderboard_submit', checkAuthenticated, (req, res) => { 
     updateEntries(req)
     if(req.query.score >= 0) {
-        clientDB.all(`INSERT INTO leaderboard(name, date, score, level, personID) VALUES('${req.user.name}', '${formatTime()}', ${req.query.score}, '${req.query.level}', ${req.user.id});`, [], err => { 
-            if(err) {
+        clientDB.all('SELECT id FROM leaderboard;', [], (err, rows) => {
+            if(rows.length < 11) {
+                clientDB.all(`INSERT INTO leaderboard(name, date, score, level, personID) VALUES('${req.user.name}', '${formatTime()}', ${req.query.score}, '${req.query.level}', ${req.user.id});`, [], err => { 
+                    if(err) {
+                        clientDB.all(`UPDATE users SET leaderboard_attempt = "${req.user.name},${formatTime()},${req.query.score},${req.query.level}" WHERE id = ${req.user.id} `)
+                        res.redirect(308, `/leaderboard?message=name_constrain`)
+                    }
+                    if(!err) res.redirect(308, '/leaderboard?message=success')
+                })
+            } else {
                 clientDB.all(`UPDATE users SET leaderboard_attempt = "${req.user.name},${formatTime()},${req.query.score},${req.query.level}" WHERE id = ${req.user.id} `)
-                res.redirect(308, `/leaderboard?message=name_constrain`)
+                res.redirect(308, '/leaderboard?message=oor')
             }
-            if(!err) res.redirect(308, '/leaderboard?message=success')
         })
     } else {
-        res.redirect(308, '/leaderboard?message=oor')
+        res.redirect(308, '/leaderboard?message=score_constrain')
     }
 }) 
 
@@ -217,7 +231,6 @@ app.get('/delete_leaderboard', checkAuthenticated, (req, res) => {
 
 app.get('/usr_history_submit', checkAuthenticated, (req, res) => {
     updateEntries(req)
-
     res.redirect(308, '/profile?id=current')
 })
 
@@ -242,6 +255,9 @@ app.get('/level', checkAuthenticated, (req, res) => {
 })
 
 app.get('/gameEnded', checkAuthenticated, (req, res) => {
+    clientDB.get('SELECT points FROM users WHERE id = ?', req.user.id, (err, row) => {
+        clientDB.all('UPDATE users SET points = ? WHERE id = ?', parseInt(row.points) + parseInt(req.query.score), req.user.id, err => { if(err) throw err }) 
+    })
     gameDB.get(`SELECT * FROM levels WHERE airport_name = '${req.query.level}'`, [], (err, row) => {
         res.render('endgame', { username: req.user.name, level: row, score: req.query.score, time: CryptoJS.AES.decrypt(req.query.time, "time").toString(CryptoJS.enc.Utf8), reason: req.query.reason });
     })
@@ -256,12 +272,10 @@ app.get('/game', checkAuthenticated, (req, res) => {
     })
 })
 
-app.get('/clear_leaderboard', checkAuthenticated, (req, res) => {
-    if(req.user.username == 'admin@atc.com') {
-        clientDB.all(`DELETE FROM leaderboard;`, [], () => {
-            res.redirect(308, '/library')
-        })
-    }
+app.get('/clear_leaderboard', isAdmin, (req, res) => {
+    clientDB.all(`DELETE FROM leaderboard;`, [], () => {
+        res.redirect(308, '/library?message=success')
+    })
 })
 
 app.get('/logout', (req, res, next) => {
@@ -296,6 +310,11 @@ function checkAuthenticated(req, res, next) {
 function checkNotAuthenticated(req, res, next) {
     if(req.isAuthenticated()) { return res.redirect('/library') }
     next()
+}
+
+function isAdmin(req, res, next) {
+    if(req.user.is_admin) { return next() }
+    res.redirect('library?message=access_denied')
 }
 
 // basic sql execution. Nothing returned so just INSERT

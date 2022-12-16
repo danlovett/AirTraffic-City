@@ -14,7 +14,11 @@
         <h1 class="text-center m10">Login</h1>
         <div class="sep">
             <%_ if(message == 'repeat') { %>
-                <p class="color-red text-center m10 fs15">Please login again.</p>
+                <p class="color-red text-center fs20">Please login again.</p>
+            <%_ } %>
+            <%_ if(message == 'aid') { %>
+                <p class="color-red text-center fs20">You're already signed up</p>
+                <p class="color-black text-center fs15">Please Login</p>
             <%_ } %>
         </div>
         <div class="inner-container">

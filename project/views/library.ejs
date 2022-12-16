@@ -12,6 +12,14 @@
 <body>
     <%- include('navbar.ejs') -%>
     <span style="display: none;" id="pfp-ejs"><%= user["pfp"] %></span>
+    <%_ if(message) { %>
+        <%_ if(message == 'access_denied') { %>
+            <p class="text-center color-red fs20">You do not have permision to access the requested page</p>
+        <%_ } %>
+        <%_ if(message == 'success') { %>
+            <p class="text-center color-green fs20">You successfully completed the requested action.</p>
+        <%_ } %>
+    <%_ } %>
     <section id="library" class="vw80">
         <div class="quick-actions">
             <a class="level-nav" href="#" id="link-library">Library</a>
@@ -83,24 +91,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script>
-        let message
-        try {
-            message = window.location.href.split('?')[1]
-        } catch(err) {
-            throw err
-        }
-
-        // DEV ONLY reset DB results from server.js route
-        if(message != undefined) $('<p>', {
-            text: 'Operation successful by admin.',
-            class: 'text-center color-green m10 fs15',
-            id: 'message'
-        }).prependTo('#library')
-
-        setTimeout(() => {
-            $("#message").remove()
-        }, 1500);
-
         $('#link-library').bind('click', () => {
             $('#link-quick-play').css('background-color', 'black')
 

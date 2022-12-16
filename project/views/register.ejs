@@ -12,7 +12,14 @@
 <body>
     <section id="signup" class="container p20 vw75 pos-center">
         <h1 class="text-center m10">Signup</h1>
-        <div class="sep"></div>
+        <div class="sep">
+            <%_ if(reason == 'full_name') { %>
+                <p class="color-red fs20 text-center">Please enter a full name.</p>
+            <%_ } %>
+            <%_ if(reason == 'password_length') { %>
+                <p class="color-red fs20 text-center">Your password is not long enough.</p>
+            <%_ } %>
+        </div>
         <div class="inner-container">
             <form id="signup-form" action="/register" method="POST">
                 <tr>

@@ -18,9 +18,13 @@
                 <h2 class="fs15 color-red text-center">You're already on the leaderboard</h2>
                 <p class="fs15 color-black text-center">Your entry is stored temporarily, so you can still add it later once this entry has been removed.</p>
             <%_ } %>
-            <%_ if(message == 'oor') { %>
+            <%_ if(message == 'score_constrain') { %>
                 <h2 class="fs15 color-red text-center" id="error">Not added to leaderboard</h2>
                 <p class="fs15 color-black text-center" id="reason">Reason: you didn't score high enough for minimum criteria</p>
+            <%_ } %>
+            <%_ if(message == 'oor') { %>
+                <h2 class="fs15 color-red text-center" id="error">Not added to leaderboard (you may already be in the leaderboard)</h2>
+                <p class="fs15 color-black text-center" id="reason">Reason: there are already max entries in the database. Stored to profile.</p>
             <%_ } %>
             <%_ if(message == 'success') { %>
                 <h2 class="fs15 color-green text-center" id="error">Added to leaderboard!</h2>

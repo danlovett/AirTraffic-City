@@ -101,12 +101,7 @@
                             </div>
                         </div>
                         <div class="profile-container profile-details">
-                            <%_ if(best.level == last.level && (last != null || best != null)) { %>
-                                <div class="played-details m10" id="profile-last-played" style="background-image: url('<%= best.image_reference %>');">
-                                    <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-last-played-title">Best & Last Played: <%= best.level %></h1>
-                                </div>
-                            <%_ } else { %>
-                                <%_ if(last != null) {%>
+                                <%_ if(last) {%>
                                     <div class="played-details m10" id="profile-last-played" style="background-image: url('<%= last.image_reference %>');">
                                         <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-last-played-title">Last Played: <%= last.level %></h1>
                                     </div>
@@ -115,7 +110,7 @@
                                         <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-last-played-title">Played last will go here.</h1>
                                     </div>
                                 <%_ } %>
-                                <%_ if(best != null) {%>
+                                <%_ if(best) {%>
                                     <div class="played-details m10" id="profile-last-played" style="background-image: url('<%= best.image_reference %>');">
                                         <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-last-played-title">Best Played: <%= best.level %></h1>
                                     </div>
@@ -124,12 +119,11 @@
                                         <h1 class="text-center fs15 p30 blur-background-80-black" id="profile-best-played-title">Played best will go here.</h1>
                                     </div>
                                 <%_ } %>
-                            <%_ } %>
                             <div class="flex">
-                                <%_ if(load_user.best_played != undefined && load_user["id"] == current_user.id) { %>
+                                <%_ if(load_user.best_played != null && load_user["id"] == current_user.id) { %>
                                     <button class="text-center m10" id="btn-remove-best"><a href="/remove_best_played" class="fs15 text-center">Remove Best Played</a></button>
                                 <%_ } %>
-                                <%_ if(load_user.last_played != undefined && load_user["id"] == current_user.id) { %>
+                                <%_ if(load_user.last_played != null && load_user["id"] == current_user.id) { %>
                                     <button class="text-center m10" id="btn-remove-last"><a href="/remove_last_played" class="fs15 text-center">Remove Last Played</a></button>
                                 <%_ } %>
                             </div>
@@ -190,16 +184,6 @@
     </section>
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script>
-        if( $('#last-play').text() != '' ){
-            $('#profile-last-played-title').text(`Played last: ${$('#last-play').text()}`)
-            $(`#profile-last-played`).css('background-image', `url(${ $('#last-play-img').text() })`)
-        }
-
-        if( $('#best-play').text() != '' ){
-            $('#profile-best-played-title').text(`Played best: ${$('#best-play').text()}`)
-            $(`#profile-best-played`).css('background-image', `url(${ $('#best-play-img').text() })`)
-        }
-
         $('.leaderboard-entry').css('background-image', `url(${ $('#leaderboard-img').text() })`)
 
         $('#link-profile').bind('click', () => {
