@@ -9,6 +9,17 @@ let grid
 function preload() {
     logo = loadImage('/private/images/logo.png');
     logo.resize(50, 50)
+    tile_3 = loadImage('/game/src/tiles/3.png')
+    tile_5 = loadImage('/game/src/tiles/5.png')
+    tile_6 = loadImage('/game/src/tiles/6.png')
+    tile_7 = loadImage('/game/src/tiles/7.png')
+    tile_8 = loadImage('/game/src/tiles/8.png')
+    tile_9 = loadImage('/game/src/tiles/9.png')
+    tile_10 = loadImage('/game/src/tiles/10.png')
+    tile_11 = loadImage('/game/src/tiles/11.png')
+    tile_12 = loadImage('/game/src/tiles/12.png')
+    tile_13 = loadImage('/game/src/tiles/13.png')
+    tile_14 = loadImage('/game/src/tiles/14.png')
 }
 
 function setup() {
@@ -47,17 +58,16 @@ function setup() {
 function draw() {
     // clear()
     background(grid.color_grass)
-
+    
     if(grid.gameplay_allowed) {
         // GRID
         // integer values of the mouseX/Y positions, divide by total grid size, and constrain to the length of grid from 0
         grid_x = constrain(floor((mouseX/grid.grid_size)), 0, grid.total_grid_size - 1)
         grid_y = constrain(floor((mouseY/grid.grid_size)), 0, grid.total_grid_size - 1)
         
-        // show the grid with basic stroke (groundwork)
-        grid.render()
         // add the layers for each differernt section.
         grid.show_areas()
+        grid.handle_taxiway_render()
         // update the in-time game
         grid.time_now()
         // show time, score, buttons to control speed and play/pause, 
@@ -75,7 +85,7 @@ function draw() {
         grid.render_selector_tool(grid_x, grid_y)
     } else { // if grid.gameplay_allowed is false
         // redirect user to this page with set values
-        window.location.href = `${window.location.origin}/gameEnded?level=${$('#level_name').text()}&time=${CryptoJS.AES.encrypt(`${grid.ellapsed_time_seconds}`, "time")}&score=${score.total_score}&reason=${grid.message}`
+        window.location.href = `${window.location.origin}/gameEnded?level=${$('#level_name').text()}&time=${grid.ellapsed_time_seconds}&score=${score.total_score}&reason=${grid.message}`
     }
 }
 
@@ -144,6 +154,7 @@ function mousePressed() {
                 if (grid_x == control_planes[i].current_x && grid_y == control_planes[i].current_y && control_planes[i].enable_moving == true) {
                     control_planes[i].show_points = true
                 }
+                grid.handle_taxiway_render(grid_x, grid_y)
             }
             
             if (mouseButton == RIGHT ) {

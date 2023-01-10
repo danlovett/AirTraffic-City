@@ -6,7 +6,26 @@ class Grid {
         
         //declare grid
         this.grid = [];
+        this.arraytotals = [
+            [0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0]
+        ]
         this.total_grid_size;
+        // declare grid sides
+        this.grid_side_left = 1
+        this.grid_side_right = 4
+        this.grid_side_top = 2
+        this.grid_side_bottom = 7
         // declare areas
         this.grass_areas = [];
         this.moveable_areas = [];
@@ -81,12 +100,64 @@ class Grid {
         this.finish_time = [this.time[0] + 2, this.time[1], 0]
     }
 
-    render() {
-        for(let x = 0; x <= this.cols; x++) {
-            for(let y = 0; y <= this.rows; y++) {
-                noFill()
-                noStroke()
-                rect(x * this.grid_size, y * this.grid_size, this.grid_size, this.grid_size)
+    // dev
+    handle_taxiway_render() {
+        for(let grid_x = 0; grid_x < this.total_grid_size; grid_x++) {
+            for(let grid_y = 0; grid_y < this.total_grid_size; grid_y++) {
+                let totals = 0
+                try {
+                    if((this.grid[grid_x - 1][grid_y] == "2" && this.grid[grid_x][grid_y] == "2") || (this.grid[grid_x - 1][grid_y] == "3" && this.grid[grid_x][grid_y] == "2")) totals = totals + this.grid_side_left
+                    if((this.grid[grid_x + 1][grid_y] == "2" && this.grid[grid_x][grid_y] == "2") || (this.grid[grid_x + 1][grid_y] == "3" && this.grid[grid_x][grid_y] == "2")) totals = totals + this.grid_side_right
+                    if((this.grid[grid_x][grid_y - 1] == "2" && this.grid[grid_x][grid_y] == "2") || (this.grid[grid_x][grid_y - 1] == "3" && this.grid[grid_x][grid_y] == "2")) totals = totals + this.grid_side_top
+                    if((this.grid[grid_x][grid_y + 1] == "2" && this.grid[grid_x][grid_y] == "2") || (this.grid[grid_x][grid_y + 1] == "3" && this.grid[grid_x][grid_y] == "2")) totals = totals + this.grid_side_bottom
+                }catch{}
+                this.arraytotals[grid_x][grid_y] = totals
+                
+                if(totals == 3) {
+                    // console.log(`TILE: ${tile_3}\nX: ${grid_x * this.total_grid_size}\nY: ${grid_y * this.total_grid_size}\n----------------------`)
+                    image(tile_3, grid_x * this.grid_size, grid_y * this.grid_size) 
+                    tile_3.resize(60,60)
+                } 
+                if(totals == 5) {
+                    image(tile_5, grid_x * this.grid_size, grid_y * this.grid_size)
+                    tile_5.resize(60,60)
+                }
+                if(totals == 6) {
+                    image(tile_6, grid_x * this.grid_size, grid_y * this.grid_size)
+                    tile_6.resize(60,60)
+                }
+                if(totals == 7) {
+                    image(tile_7, grid_x * this.grid_size, grid_y * this.grid_size)
+                    tile_7.resize(60,60)
+                }
+                if(totals == 8) {
+                    image(tile_8, grid_x * this.grid_size, grid_y * this.grid_size)
+                    tile_8.resize(60,60)
+                }
+                if(totals == 9) {
+                    image(tile_9, grid_x * this.grid_size, grid_y * this.grid_size)
+                    tile_9.resize(60,60)
+                }
+                if(totals == 10) {
+                    image(tile_10, grid_x * this.grid_size, grid_y * this.grid_size)
+                    tile_10.resize(60,60)
+                }
+                if(totals == 11) {
+                    image(tile_11, grid_x * this.grid_size, grid_y * this.grid_size)
+                    tile_11.resize(60,60)
+                }
+                if(totals == 12) {
+                    image(tile_12, grid_x * this.grid_size, grid_y * this.grid_size)
+                    tile_12.resize(60,60)
+                }
+                if(totals == 13) {
+                    image(tile_13, grid_x * this.grid_size, grid_y * this.grid_size)
+                    tile_13.resize(60,60)
+                }
+                if(totals == 14) {
+                    image(tile_14, grid_x * this.grid_size, grid_y * this.grid_size)
+                    tile_14.resize(60,60)
+                }
             }
         }
     }
@@ -253,8 +324,16 @@ class Grid {
         text(this.format_time(this.time), 2 * this.grid_size, (this.total_grid_size + 1) * this.grid_size)
         text(`${score.total_score} points`, 2.5 * this.grid_size, (this.total_grid_size + 2.2) * this.grid_size)
         textSize(17)
+
+        let airplane_status_x_position = 5
+        let airplane_status_y_position = 0
         for(let i = 0; i < control_planes.length; i++) {
-            text(`${control_planes[i].callsign}: ${control_planes[i].current_status}`, 5 * this.grid_size, (this.total_grid_size + 1 + (i/2)) * this.grid_size)
+            if(i % 4 === 0 && i != 0 ) {
+                airplane_status_x_position = airplane_status_x_position + 3
+                airplane_status_y_position = 0
+            } 
+            text(`${control_planes[i].callsign}: ${control_planes[i].current_status}`, airplane_status_x_position * this.grid_size, (this.total_grid_size + 1 + (airplane_status_y_position/2)) * this.grid_size)
+            airplane_status_y_position ++
         }
 
         this.play_pause_button.position(3.5 * this.grid_size, (this.total_grid_size + 0.7) * this.grid_size)

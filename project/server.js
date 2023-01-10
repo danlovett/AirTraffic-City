@@ -42,12 +42,11 @@ app.get('/login', checkNotAuthenticated, (req, res, next) => {
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
         successRedirect: '/library',
-        failureRedirect: '/login',
+        failureRedirect: `/login`,
         failureFlash: true
 }));
 
 app.get('/register', checkNotAuthenticated, (req, res) => {
-    console.log(req.query.message, typeof(req.query.message))
     res.render('register', { reason: req.query.message });
 });
 
@@ -63,7 +62,9 @@ app.post('/register', checkNotAuthenticated, async (req,res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     const sql = `INSERT INTO users(name, username, password) VALUES ("${req.body.name}", "${req.body.email}", "${hashedPassword}")`
     clientDB.all(sql, [], err => { 
-        if(err.errno == 19) res.redirect('/login?message=aid') 
+        if(err) {
+            if(err.errno == 19) res.redirect('/login?message=aid') 
+        }
         if(req.body.password.length >= 8 && req.body.name.includes(' ') && !err) res.redirect('/login')
     })
 })
@@ -155,8 +156,10 @@ app.get('/profile', checkAuthenticated, (req, res) => {
                                 
                             }
                         })
-                        res.render('profile', { load_user: user, current_user: req.user, history: joins, last: lastDB, best: bestDB, leaderboard_entry: leaderboard,
-                            id_types: ['Level', 'Date', 'Score'], error: req.query.error, message: req.query.message, levels: levels })
+                        clientDB.all('SELECT id FROM leaderboard', [], (err, entries) => {
+                            res.render('profile', { load_user: user, current_user: req.user, history: joins, last: lastDB, best: bestDB, leaderboard_entry: leaderboard, leaderboard_length: entries.length,
+                                id_types: ['Level', 'Date', 'Score'], error: req.query.error, message: req.query.message, levels: levels })
+                        })
                     })
                 })
             } else {
@@ -202,7 +205,7 @@ app.get('/usr_leaderboard_submit', checkAuthenticated, (req, res) => {
     updateEntries(req)
     if(req.query.score >= 0) {
         clientDB.all('SELECT id FROM leaderboard;', [], (err, rows) => {
-            if(rows.length < 11) {
+            if(rows.length < 3) {
                 clientDB.all(`INSERT INTO leaderboard(name, date, score, level, personID) VALUES('${req.user.name}', '${formatTime()}', ${req.query.score}, '${req.query.level}', ${req.user.id});`, [], err => { 
                     if(err) {
                         clientDB.all(`UPDATE users SET leaderboard_attempt = "${req.user.name},${formatTime()},${req.query.score},${req.query.level}" WHERE id = ${req.user.id} `)
@@ -259,7 +262,7 @@ app.get('/gameEnded', checkAuthenticated, (req, res) => {
         clientDB.all('UPDATE users SET points = ? WHERE id = ?', parseInt(row.points) + parseInt(req.query.score), req.user.id, err => { if(err) throw err }) 
     })
     gameDB.get(`SELECT * FROM levels WHERE airport_name = '${req.query.level}'`, [], (err, row) => {
-        res.render('endgame', { username: req.user.name, level: row, score: req.query.score, time: CryptoJS.AES.decrypt(req.query.time, "time").toString(CryptoJS.enc.Utf8), reason: req.query.reason });
+        res.render('endgame', { username: req.user.name, level: row, score: req.query.score, time: req.query.time, reason: req.query.reason });
     })
 })
 
@@ -325,11 +328,9 @@ function SQLUpdateInsert(sql_statement) {
 function updateEntries(req) {
     SQLUpdateInsert(`INSERT INTO history (date, score, level, personID) VALUES('${formatTime()}', ${req.query.score}, '${req.query.level}', ${req.user.id});`)
     clientDB.get(`SELECT level, score FROM history WHERE personID = ${req.user.id} ORDER BY score DESC;`, [], (err, row) => {
-        console.log(`BEST: ${JSON.stringify(row)}`)
         clientDB.all(`UPDATE users SET best_played = "${row.level}" WHERE id = ${req.user.id}`, [], (err) => { if(err) throw err }) // undefined FIX THIS
     })
     clientDB.get(`SELECT level, date FROM history WHERE personID = ${req.user.id} ORDER BY date DESC;`, [], (err, row) => {
-        console.log(`LAST: ${JSON.stringify(row)}`)
         clientDB.all(`UPDATE users SET last_played = "${row.level}" WHERE id = ${req.user.id}`, [], (err) => { if(err) throw err }) // undefined FIX THIS
     })
 }

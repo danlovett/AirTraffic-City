@@ -64,14 +64,23 @@
                     </div>
                     <span id="leaderboard-level" style="display: none;"><%= JSON.stringify(leaderboard_entry[0].level).replace(/['"]+/g, '').toLowerCase() %></span>
                 <%_ } else { %>
-                    <div class="leaderboard-entry-none text-center flex" style="background-image: url('/private/images/logo.png'); background-repeat: no-repeat; background-size: cover;">
+                    <div class="leaderboard-entry-none text-center grid" style="background-image: url('/private/images/logo.png'); background-repeat: no-repeat; background-size: cover;">
                         <h1 class="fs15 text-center p20" id="leaderboard-profile-text">
-                            <%_ if(current_user.id == load_user["id"]) { %>
-                                You aren't
-                            <%_ } else { %>
-                                <%= load_user.name.split(' ')[0] %> isn't
-                            <%_ } %>
-                            on the leaderboard
+                            <div class="p20 grid fs15">
+                                <%_ if(current_user.id == load_user["id"]) { %>
+                                    You aren't
+                                <%_ } else { %>
+                                    <%= load_user.name.split(' ')[0] %> isn't
+                                <%_ } %>
+                                on the leaderboard
+                                <%_ if(leaderboard_length >= 3 && current_user["leaderboard_attempt"] != undefined && load_user["id"] == current_user["id"]) { %>
+                                        <p class="text-center fs20 color-red">You cannot add your stored entry to the leaderboard.</p>
+                                        <p class="text-center fs15 color-grey">Reason: there is already max entries there.</p>
+                                        <%_ } %>
+                                <%_ if(load_user["id"] == current_user["id"] && current_user["leaderboard_attempt"] != undefined && JSON.stringify(leaderboard_entry) == "[]" && leaderboard_length < 3) { %>
+                                        <button><a href="/add_temp_leaderboard" class="fs15 text-center color-green w85" style="white-space: nowrap; width: 95%;">Add your last leaderboard entry here </a></button>
+                                <%_ } %>
+                            </div>
                         </h1>
                     </div>
                 <%_ } %>
@@ -146,9 +155,6 @@
                                 </button>
                             <%_ } %>
                         </div>
-                    <%_ } %>
-                    <%_ if(load_user["id"] == current_user["id"] && current_user["leaderboard_attempt"] != undefined && JSON.stringify(leaderboard_entry) == "[]") { %>
-                        <button><a href="/add_temp_leaderboard" class="fs15 text-center color-green" style="white-space: nowrap; width: 95%;">Add your last leaderboard entry here </a></button>
                     <%_ } %>
                 </div>
                 <div class="grid text-center" id="profile-history" style="display: none;">                
