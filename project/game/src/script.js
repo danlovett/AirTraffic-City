@@ -20,6 +20,7 @@ function preload() {
     tile_12 = loadImage('/game/src/tiles/12.png')
     tile_13 = loadImage('/game/src/tiles/13.png')
     tile_14 = loadImage('/game/src/tiles/14.png')
+    tile_cline_h = loadImage('/game/src/tiles/2.png')
 }
 
 function setup() {
@@ -66,8 +67,9 @@ function draw() {
         grid_y = constrain(floor((mouseY/grid.grid_size)), 0, grid.total_grid_size - 1)
         
         // add the layers for each differernt section.
-        grid.show_areas()
         grid.handle_taxiway_render()
+        grid.handle_runway_render()
+        grid.show_areas()
         // update the in-time game
         grid.time_now()
         // show time, score, buttons to control speed and play/pause, 

@@ -6,7 +6,7 @@ class Grid {
         
         //declare grid
         this.grid = [];
-        this.arraytotals = [
+        this.totals = [
             [0,0,0,0,0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0,0,0,0,0,0],
@@ -111,53 +111,26 @@ class Grid {
                     if((this.grid[grid_x][grid_y - 1] == "2" && this.grid[grid_x][grid_y] == "2") || (this.grid[grid_x][grid_y - 1] == "3" && this.grid[grid_x][grid_y] == "2")) totals = totals + this.grid_side_top
                     if((this.grid[grid_x][grid_y + 1] == "2" && this.grid[grid_x][grid_y] == "2") || (this.grid[grid_x][grid_y + 1] == "3" && this.grid[grid_x][grid_y] == "2")) totals = totals + this.grid_side_bottom
                 }catch{}
-                this.arraytotals[grid_x][grid_y] = totals
-                
-                if(totals == 3) {
-                    // console.log(`TILE: ${tile_3}\nX: ${grid_x * this.total_grid_size}\nY: ${grid_y * this.total_grid_size}\n----------------------`)
-                    image(tile_3, grid_x * this.grid_size, grid_y * this.grid_size) 
-                    tile_3.resize(60,60)
-                } 
-                if(totals == 5) {
-                    image(tile_5, grid_x * this.grid_size, grid_y * this.grid_size)
-                    tile_5.resize(60,60)
-                }
-                if(totals == 6) {
-                    image(tile_6, grid_x * this.grid_size, grid_y * this.grid_size)
-                    tile_6.resize(60,60)
-                }
-                if(totals == 7) {
-                    image(tile_7, grid_x * this.grid_size, grid_y * this.grid_size)
-                    tile_7.resize(60,60)
-                }
-                if(totals == 8) {
-                    image(tile_8, grid_x * this.grid_size, grid_y * this.grid_size)
-                    tile_8.resize(60,60)
-                }
-                if(totals == 9) {
-                    image(tile_9, grid_x * this.grid_size, grid_y * this.grid_size)
-                    tile_9.resize(60,60)
-                }
-                if(totals == 10) {
-                    image(tile_10, grid_x * this.grid_size, grid_y * this.grid_size)
-                    tile_10.resize(60,60)
-                }
-                if(totals == 11) {
-                    image(tile_11, grid_x * this.grid_size, grid_y * this.grid_size)
-                    tile_11.resize(60,60)
-                }
-                if(totals == 12) {
-                    image(tile_12, grid_x * this.grid_size, grid_y * this.grid_size)
-                    tile_12.resize(60,60)
-                }
-                if(totals == 13) {
-                    image(tile_13, grid_x * this.grid_size, grid_y * this.grid_size)
-                    tile_13.resize(60,60)
-                }
-                if(totals == 14) {
-                    image(tile_14, grid_x * this.grid_size, grid_y * this.grid_size)
-                    tile_14.resize(60,60)
-                }
+                this.totals[grid_x][grid_y] = totals
+            }
+        }
+    }
+
+    handle_runway_render() {
+        for(let grid_x = 0; grid_x <= this.total_grid_size; grid_x++) {
+            for(let grid_y = 0; grid_y <= this.total_grid_size; grid_y++) {
+                let totals = 0
+                try {
+                    //c-line v and h
+                    if((this.grid[grid_x - 1][grid_y] == '4' && this.grid[grid_x][grid_y] == '4') || (this.grid[grid_x + 1][grid_y] == '4' && this.grid[grid_x][grid_y] == '4')) this.totals[grid_x][grid_y] = 2
+                    if((this.grid[grid_x][grid_y - 1] == '4' && this.grid[grid_x][grid_y] == '4') || (this.grid[grid_x][grid_y + 1] == '4' && this.grid[grid_x][grid_y] == '4')) this.totals[grid_x][grid_y] = 1
+                    
+                    //endpoints
+                    if(this.grid[grid_x][grid_y] == '5') console.log('cline to right at ', grid_x, grid_y)
+                    if((this.grid[grid_x][grid_y] == '5' && this.grid[grid_x - 1][grid_y] == '4')) console.log('cline to left at ', grid_x, grid_y)
+                    if((this.grid[grid_x][grid_y] == '5' && this.grid[grid_x][grid_y + 1] == '4')) console.log('cline to top at ', grid_x, grid_y)
+                    if((this.grid[grid_x][grid_y] == '5' && this.grid[grid_x][grid_y - 1] == '4')) console.log('cline to bottom at ', grid_x, grid_y)
+                }catch{}
             }
         }
     }
@@ -183,6 +156,56 @@ class Grid {
                 if(this.grid[row][col] == "0") fill(this.color_grass) // grass
                 rect(row * this.grid_size, col * this.grid_size, this.grid_size, this.grid_size)
                 fill('white')
+                if(this.totals[row][col] == 3) {
+                    // console.log(`TILE: ${tile_3}\nX: ${grid_x * this.total_grid_size}\nY: ${grid_y * this.total_grid_size}\n----------------------`)
+                    image(tile_3, row * this.grid_size, col * this.grid_size) 
+                    tile_3.resize(60,60)
+                } 
+                if(this.totals[row][col] == 5) {
+                    image(tile_5, row * this.grid_size, col * this.grid_size)
+                    tile_5.resize(60,60)
+                }
+                if(this.totals[row][col] == 6) {
+                    image(tile_6, row * this.grid_size, col * this.grid_size)
+                    tile_6.resize(60,60)
+                }
+                if(this.totals[row][col] == 7) {
+                    image(tile_7, row * this.grid_size, col * this.grid_size)
+                    tile_7.resize(60,60)
+                }
+                if(this.totals[row][col] == 8) {
+                    image(tile_8, row * this.grid_size, col * this.grid_size)
+                    tile_8.resize(60,60)
+                }
+                if(this.totals[row][col] == 9) {
+                    image(tile_9, row * this.grid_size, col * this.grid_size)
+                    tile_9.resize(60,60)
+                }
+                if(this.totals[row][col] == 10) {
+                    image(tile_10, row * this.grid_size, col * this.grid_size)
+                    tile_10.resize(60,60)
+                }
+                if(this.totals[row][col] == 11) {
+                    image(tile_11, row * this.grid_size, col * this.grid_size)
+                    tile_11.resize(60,60)
+                }
+                if(this.totals[row][col] == 12) {
+                    image(tile_12, row * this.grid_size, col * this.grid_size)
+                    tile_12.resize(60,60)
+                }
+                if(this.totals[row][col] == 13) {
+                    image(tile_13, row * this.grid_size, col * this.grid_size)
+                    tile_13.resize(60,60)
+                }
+                if(this.totals[row][col] == 14) {
+                    image(tile_14, row * this.grid_size, col * this.grid_size)
+                    tile_14.resize(60,60)
+                }
+
+                if(this.totals[row][col] == 2) {
+                    image(tile_cline_h, row * this.grid_size, col * this.grid_size)
+                    tile_cline_h.resize(60,60)
+                }
             }
         }
         // stands
