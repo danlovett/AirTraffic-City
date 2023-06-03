@@ -92,6 +92,10 @@ function draw() {
 }
 
 function keyPressed() {
+    if(key == 'd') {
+        if(grid.developer_mode == true) grid.developer_mode = false
+        if(grid.developer_mode == false) grid.developer_mode = true
+    }
     if(grid.gameplay_play == true) {
         for(let i = 0; i < control_planes.length; i++) {
             control_planes[i].permit_path = false

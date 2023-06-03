@@ -273,9 +273,8 @@ button:hover {
 }
 
 .inner-container {
-    padding: 20px;
+    padding: 5px;
     background-color: rgba(25, 25, 25, 0.8);
     border-radius: 20px;
-    display: grid;
-    width: 70%;
+    width: 100%;
 }
