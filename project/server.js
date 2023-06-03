@@ -123,7 +123,13 @@ app.get('/search', checkAuthenticated, (req, res) => {
     }
 })
 
+app.get('/create_layout', isAdmin, (req, res) => {
+    res.render('createLayout')
+})
 
+app.get('/create_airframe', isAdmin, (req, res) => {
+    res.render('/admin/creatorAirframe')
+})
 
 app.get('/leaderboard', checkAuthenticated, (req, res) => {
     clientDB.all(`SELECT name, date, score, level, personID FROM leaderboard ORDER BY score DESC LIMIT 10;`, [], (err, rows) => {

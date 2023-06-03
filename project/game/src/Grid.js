@@ -64,8 +64,6 @@ class Grid {
         this.speed_buttons = [createButton(`x1`), createButton(`x2`), createButton(`x5`), createButton(`x10`)]
         this.gameplay_speeds = [30, 10, 2, 0.5]
 
-        this.developer_mode = false
-
     }
 
     init(airport, icao, runways, grid, planes, destinations) {
@@ -128,6 +126,7 @@ class Grid {
                     if((this.grid[grid_x][grid_y - 1] == '4' && this.grid[grid_x][grid_y] == '4') || (this.grid[grid_x][grid_y + 1] == '4' && this.grid[grid_x][grid_y] == '4')) this.totals[grid_x][grid_y] = 1
                     
                     //endpoints
+                    if(this.grid[grid_x][grid_y] == '5') console.log('cline to right at ', grid_x, grid_y)
                     if((this.grid[grid_x][grid_y] == '5' && this.grid[grid_x - 1][grid_y] == '4')) console.log('cline to left at ', grid_x, grid_y)
                     if((this.grid[grid_x][grid_y] == '5' && this.grid[grid_x][grid_y + 1] == '4')) console.log('cline to top at ', grid_x, grid_y)
                     if((this.grid[grid_x][grid_y] == '5' && this.grid[grid_x][grid_y - 1] == '4')) console.log('cline to bottom at ', grid_x, grid_y)
@@ -157,84 +156,77 @@ class Grid {
                 if(this.grid[row][col] == "0") fill(this.color_grass) // grass
                 rect(row * this.grid_size, col * this.grid_size, this.grid_size, this.grid_size)
                 fill('white')
-                textSize(15)
-                if(this.developer_mode == true) {
-                    text(this.totals[row][col], row * this.grid_size + (this.grid_size/2), col * this.grid_size + (this.grid_size/2))
-                } else {
-                    if(this.totals[row][col] == 3) {
-                        // console.log(`TILE: ${tile_3}\nX: ${grid_x * this.total_grid_size}\nY: ${grid_y * this.total_grid_size}\n----------------------`)
-                        image(tile_3, row * this.grid_size, col * this.grid_size) 
-                        tile_3.resize(60,60)
-                    } 
-                    if(this.totals[row][col] == 5) {
-                        image(tile_5, row * this.grid_size, col * this.grid_size)
-                        tile_5.resize(60,60)
-                    }
-                    if(this.totals[row][col] == 6) {
-                        image(tile_6, row * this.grid_size, col * this.grid_size)
-                        tile_6.resize(60,60)
-                    }
-                    if(this.totals[row][col] == 7) {
-                        image(tile_7, row * this.grid_size, col * this.grid_size)
-                        tile_7.resize(60,60)
-                    }
-                    if(this.totals[row][col] == 8) {
-                        image(tile_8, row * this.grid_size, col * this.grid_size)
-                        tile_8.resize(60,60)
-                    }
-                    if(this.totals[row][col] == 9) {
-                        image(tile_9, row * this.grid_size, col * this.grid_size)
-                        tile_9.resize(60,60)
-                    }
-                    if(this.totals[row][col] == 10) {
-                        image(tile_10, row * this.grid_size, col * this.grid_size)
-                        tile_10.resize(60,60)
-                    }
-                    if(this.totals[row][col] == 11) {
-                        image(tile_11, row * this.grid_size, col * this.grid_size)
-                        tile_11.resize(60,60)
-                    }
-                    if(this.totals[row][col] == 12) {
-                        image(tile_12, row * this.grid_size, col * this.grid_size)
-                        tile_12.resize(60,60)
-                    }
-                    if(this.totals[row][col] == 13) {
-                        image(tile_13, row * this.grid_size, col * this.grid_size)
-                        tile_13.resize(60,60)
-                    }
-                    if(this.totals[row][col] == 14) {
-                        image(tile_14, row * this.grid_size, col * this.grid_size)
-                        tile_14.resize(60,60)
-                    }
-    
-                    if(this.totals[row][col] == 2) {
-                        image(tile_cline_h, row * this.grid_size, col * this.grid_size)
-                        tile_cline_h.resize(60,60)
-                    }
+                if(this.totals[row][col] == 3) {
+                    // console.log(`TILE: ${tile_3}\nX: ${grid_x * this.total_grid_size}\nY: ${grid_y * this.total_grid_size}\n----------------------`)
+                    image(tile_3, row * this.grid_size, col * this.grid_size) 
+                    tile_3.resize(60,60)
+                } 
+                if(this.totals[row][col] == 5) {
+                    image(tile_5, row * this.grid_size, col * this.grid_size)
+                    tile_5.resize(60,60)
+                }
+                if(this.totals[row][col] == 6) {
+                    image(tile_6, row * this.grid_size, col * this.grid_size)
+                    tile_6.resize(60,60)
+                }
+                if(this.totals[row][col] == 7) {
+                    image(tile_7, row * this.grid_size, col * this.grid_size)
+                    tile_7.resize(60,60)
+                }
+                if(this.totals[row][col] == 8) {
+                    image(tile_8, row * this.grid_size, col * this.grid_size)
+                    tile_8.resize(60,60)
+                }
+                if(this.totals[row][col] == 9) {
+                    image(tile_9, row * this.grid_size, col * this.grid_size)
+                    tile_9.resize(60,60)
+                }
+                if(this.totals[row][col] == 10) {
+                    image(tile_10, row * this.grid_size, col * this.grid_size)
+                    tile_10.resize(60,60)
+                }
+                if(this.totals[row][col] == 11) {
+                    image(tile_11, row * this.grid_size, col * this.grid_size)
+                    tile_11.resize(60,60)
+                }
+                if(this.totals[row][col] == 12) {
+                    image(tile_12, row * this.grid_size, col * this.grid_size)
+                    tile_12.resize(60,60)
+                }
+                if(this.totals[row][col] == 13) {
+                    image(tile_13, row * this.grid_size, col * this.grid_size)
+                    tile_13.resize(60,60)
+                }
+                if(this.totals[row][col] == 14) {
+                    image(tile_14, row * this.grid_size, col * this.grid_size)
+                    tile_14.resize(60,60)
+                }
+
+                if(this.totals[row][col] == 2) {
+                    image(tile_cline_h, row * this.grid_size, col * this.grid_size)
+                    tile_cline_h.resize(60,60)
                 }
             }
         }
-        if(this.developer_mode == false) {
-            // stands
-            for(let i = 0; i < this.stands.length; i++) {
-                text(`Stand\n   ${i + 1}`, this.stands[i][0] * this.grid_size + (this.grid_size-43), this.stands[i][1] * this.grid_size + (this.grid_size-35))
-            }
-    
-            // text setup for numbers runway
-            textSize(20)
-            // runway numbers
-            for(let i = 0; i < this.runway_entry.length; i++) {
-                text(this.runway_numbers[i], this.runway_entry[i][0] * this.grid_size + (this.grid_size/7), this.runway_entry[i][1] * this.grid_size + (this.grid_size/2))
-            }
-            // hp numbers
-            textSize(15)
-            for(let i = 0; i < this.holding_points.length; i++) {
-                text(`${char(i + 65)}1`, this.holding_points[i][0] * this.grid_size + (this.grid_size/7), this.holding_points[i][1] * this.grid_size + (this.grid_size/2))
-            }
-    
-            // ATC tower
-            text('Tower', this.control_tower[0] * this.grid_size + 10, this.control_tower[1] * this.grid_size + 30)
+        // stands
+        for(let i = 0; i < this.stands.length; i++) {
+            text(`Stand\n   ${i + 1}`, this.stands[i][0] * this.grid_size + (this.grid_size-43), this.stands[i][1] * this.grid_size + (this.grid_size-35))
         }
+
+        // text setup for numbers runway
+        textSize(20)
+        // runway numbers
+        for(let i = 0; i < this.runway_entry.length; i++) {
+            text(this.runway_numbers[i], this.runway_entry[i][0] * this.grid_size + (this.grid_size/7), this.runway_entry[i][1] * this.grid_size + (this.grid_size/2))
+        }
+        // hp numbers
+        textSize(15)
+        for(let i = 0; i < this.holding_points.length; i++) {
+            text(`${char(i + 65)}1`, this.holding_points[i][0] * this.grid_size + (this.grid_size/7), this.holding_points[i][1] * this.grid_size + (this.grid_size/2))
+        }
+
+        // ATC tower
+        text('Tower', this.control_tower[0] * this.grid_size + 10, this.control_tower[1] * this.grid_size + 30)
     }
 
     time_now() {
@@ -354,11 +346,6 @@ class Grid {
         textStyle(BOLD)
         text(this.format_time(this.time), 2 * this.grid_size, (this.total_grid_size + 1) * this.grid_size)
         text(`${score.total_score} points`, 2.5 * this.grid_size, (this.total_grid_size + 2.2) * this.grid_size)
-        let dev_button = createButton('DEV')
-        dev_button.position(4 * this.grid_size, (this.total_grid_size + 1.8) * this.grid_size)
-        dev_button.mousePressed(() => {
-            this.developer_mode == false ? this.developer_mode = true : this.developer_mode = false
-        })
         textSize(17)
 
         let airplane_status_x_position = 5
