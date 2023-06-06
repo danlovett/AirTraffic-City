@@ -47,6 +47,7 @@ td {
     background-color: rgba(50,50,50,0.9);
     text-align: center;
     white-space: nowrap;
+    width: 50%;
 }
 
 section {
@@ -71,13 +72,13 @@ a:hover {
 button{
     background-color: rgb(0, 0, 0);
     border: none;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     padding: 10px 40px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    transition: cubic-bezier(.68,-0.55,.27,1.55);
+    transition: ease-in-out;
     transition-duration: 0.5s;
     width: 100%;
     border-radius: 20px;
@@ -86,9 +87,9 @@ button{
 }
 
 button:hover {
-    background-color: rgb(69, 30, 213); /* Green */
-    color: black;
-    transition: cubic-bezier(.76,.05,.86,.06);
+    background-color: rgb(255, 255, 255); /* Green */
+    color: rgb(0, 0, 0);
+    transition: ease-in-out;
     transition-duration: 0.5s;
     border-radius: 50px;
 }

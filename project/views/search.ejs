@@ -37,11 +37,11 @@
                 <p class="text-center fs15 color-grey m10">Type <span class="fs15">all</span> to see all users</p>
             <%_ } else { %>
                 <div class="form-search">
-                    <h1 class="text-center fs20 m20">User Result</h1>
+                    <h1 class="text-center fs20 m20">User<%= foundUsers.length > 1 ? 's' : '' %></h1>
                     <h1 class="text-center fs20 m20">Add Friend</h1>
                 </div>
                 <%_ for(let i in foundUsers) { %>
-                    <div class="form-search">
+                    <form class="form-search" action="/add_friend?id=<%= foundUsers[i].id %>" method="POST">
                         <a href="/profile?id=<%= foundUsers[i]["id"] %>" style="width: 100%;">
                             <div class="user-search-container" style="background-image: url('<%= foundUsers[i]["pfp"] %>'); background-size: cover;">
                                 <div class="background-fade">
@@ -50,8 +50,17 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="/add_friend?id=<%= foundUsers[i]["id"] %>">+</a>
-                    </div>
+                        <button type="submit" id='<%= i %>' class="fs20 color-white">
+                            <%_ if(foundUsers[i].status != null) { %>
+                                <p class="fs20"><%= foundUsers[i].status %></p>
+                                <%_ if(foundUsers[i].creation_date) { %>
+                                    <p class="color-grey fs15"><%= foundUsers[i].creation_date%></p>
+                                <%_ } %>
+                            <%_ } else { %>
+                                Add Friend
+                            <%_ } %>
+                        </button>
+                    </form>
                 <%_ } %>
             <%_ } %>
         <%_ } %>
