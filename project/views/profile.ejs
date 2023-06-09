@@ -51,9 +51,8 @@
         <%_ } else { %>
             <a class="level-nav" href="/profile?id=<%= load_user.id %>&message=fail" style="background-color: rgb(0, 0, 0); color: rgb(159, 4, 4); cursor: not-allowed;" title="<%= load_user.name.split(' ')[0] %> has no history">History</a>
         <%_ } %>
-        <%_ if(JSON.stringify(history) != "[]") { %>
-            <a class="level-nav" href="#" id="link-friends">Friends</a>
-        <%_ } %>
+        
+        <a class="level-nav" href="#" id="link-friends">Friends</a>
     </div>
     <section id="profile" class="container w85" style="margin: 20px auto auto auto; padding: 0px;">
         <div style="background-image: url('<%= load_user.pfp %>'); background-size: 100%; background-repeat: no-repeat; width: 100%; padding: 0px;">
@@ -192,59 +191,64 @@
                     <div class="profile-container" id="user-friends">
                         <h1 class="m10 fs20 text-center"><%= load_user.name.split(' ')[0] %>'s friends</h1>
                         <div class="sep"></div>
-                        <%_ if(requested_friends && load_user["id"] == current_user.id) { %>
-                            <table id="entries">
-                                <h1 class="m10 fs20 text-center">Sent Requests</h1>
-                                <tr class="fs20 m20" id="table-header">
-                                    <th class="fs20 m20">User</th>
-                                    <th class="fs20 m20">Date Sent</th>
-                                </tr>
-                                <%_ for(let x = 0; x < requested_friends.length; x++) { %>
-                                    <tr class="fs20 m20" id="<%= `entry-${ x + 1 }` %>">
-                                        <td class="fs20 m20 form-search" id="<%= `level` %>">
-                                            <div class="flex">
-                                                <img src="<%= requested_friends[x].pfp %>" />
-                                                <div class="grid">
-                                                    <p class="fs15"><%= requested_friends[x].name %></p>
-                                                    <p class="fs15"><%= requested_friends[x].username %></p>
-                                                </div>
-                                                <a href="/remove_friend?active=<%= requested_friends[x].lead_user %>&passive=<%= requested_friends[x].passive_user %>" class="fs20 m10 color-red">X</a>
-                                            </div>
-                                        </td>
-                                        <td class="fs20 m20">
-                                            <p class="fs20 color-white"><%= requested_friends[x].status %></p>
-                                            <p class="fs15 color-grey"><%= requested_friends[x].creation_date %></p>
-                                        </td>
+                        <%_ if(load_user["id"] == current_user.id) { %>
+                            <%_ if(requested_friends.length > 0) { %>
+                                <table id="entries">
+                                    <h1 class="m10 fs20 text-center">Sent Requests</h1>
+                                    <tr class="fs20 m20" id="table-header">
+                                        <th class="fs20 m20">User</th>
+                                        <th class="fs20 m20">Date Sent</th>
                                     </tr>
-                                <%_ } %>
-                        <%_ } %>
-                        <%_ if(friend_requests && load_user["id"] == current_user.id) { %>
-                            <table>
-                                <h1 class="m10 fs20 text-center">Recieved Requests</h1>
-                                <tr class="fs20 m20" id="table-header">
-                                    <th class="fs20 m20">User</th>
-                                    <th class="fs20 m20">Date Sent</th>
-                                </tr>
-                                <%_ for(let x = 0; x < friend_requests.length; x++) { %>
-                                    <tr class="fs20 m20" id="<%= `entry-${ x + 1 }` %>">
-                                        <td class="fs20 m20 form-search" id="<%= `level` %>">
-                                            <div class="flex">
-                                                <img src="<%= friend_requests[x].pfp %>" />
-                                                <div class="grid">
-                                                    <p class="fs15"><%= friend_requests[x].name %></p>
-                                                    <p class="fs15"><%= friend_requests[x].username %></p>
+                                    <%_ for(let x = 0; x < requested_friends.length; x++) { %>
+                                        <tr class="fs20 m20" id="<%= `entry-${ x + 1 }` %>">
+                                            <td class="fs20 m20 form-search" id="<%= `level` %>">
+                                                <div class="flex">
+                                                    <img src="<%= requested_friends[x].pfp %>" />
+                                                    <div class="grid">
+                                                        <p class="fs15"><%= requested_friends[x].name %></p>
+                                                        <p class="fs15"><%= requested_friends[x].username %></p>
+                                                    </div>
+                                                    <a href="/remove_friend?active=<%= requested_friends[x].lead_user %>&passive=<%= requested_friends[x].passive_user %>" class="fs20 m10 color-red">X</a>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="fs20 m20">
-                                            <a href="/accept_friend?active=<%= requested_friends[x].lead_user %>&passive=<%= requested_friends[x].passive_user %>" class="m10 fs20 text-center">Accept</a>
-                                            <p class="fs15 color-grey"><%= friend_requests[x].creation_date %></p>
-                                        </td>
-                                    </tr>
-                                <%_ } %>
-                            </table>
+                                            </td>
+                                            <td class="fs20 m20">
+                                                <p class="fs20 color-white"><%= requested_friends[x].status %></p>
+                                                <p class="fs15 color-grey"><%= requested_friends[x].creation_date %></p>
+                                            </td>
+                                        </tr>
+                                    <%_ } %>
+                                </table>
+                            <%_ } %>
                         <%_ } %>
-                        <%_ if(friends) { %>
+                        <%_ if(load_user["id"] == current_user.id) { %>
+                            <%_ if(friend_requests.length > 0) { %>
+                                <table>
+                                    <h1 class="m10 fs20 text-center">Recieved Requests</h1>
+                                    <tr class="fs20 m20" id="table-header">
+                                        <th class="fs20 m20">User</th>
+                                        <th class="fs20 m20">Date Sent</th>
+                                    </tr>
+                                    <%_ for(let x = 0; x < friend_requests.length; x++) { %>
+                                        <tr class="fs20 m20" id="<%= `entry-${ x + 1 }` %>">
+                                            <td class="fs20 m20 form-search" id="<%= `level` %>">
+                                                <div class="flex">
+                                                    <img src="<%= friend_requests[x].pfp %>" />
+                                                    <div class="grid">
+                                                        <p class="fs15"><%= friend_requests[x].name %></p>
+                                                        <p class="fs15"><%= friend_requests[x].username %></p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="fs20 m20">
+                                                <a href="/accept_friend?active=<%= friend_requests[x].lead_user %>&passive=<%= friend_requests[x].passive_user %>" class="m10 fs20 text-center">Accept</a>
+                                                <p class="fs15 color-grey"><%= friend_requests[x].creation_date %></p>
+                                            </td>
+                                        </tr>
+                                    <%_ } %>
+                                </table>
+                            <%_ }  %>
+                        <%_ } %>
+                        <%_ if(friends.length > 0) { %>
                             <table>
                                 <%_ if(load_user["id"] == current_user.id) { %>
                                     <h1 class="m10 fs20 text-center">Your Friends</h1>

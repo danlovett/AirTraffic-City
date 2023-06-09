@@ -140,6 +140,7 @@ app.get('/leaderboard', checkAuthenticated, (req, res) => {
 
 app.get('/profile', checkAuthenticated, (req, res) => {
     if(req.query.id == 'current') req.query.id = req.session.passport.user
+    console.log(req.session.passport.user)
     clientDB.get(`SELECT id, name, username, pfp FROM users WHERE id = ${req.query.id}`, [], (err, user) => { 
         clientDB.all(`SELECT history.id, history.level, history.date, history.score FROM history LEFT JOIN users ON history.personID = users.id WHERE users.id = ${req.query.id} ORDER BY history.date DESC`, [], (err, joins) => { 
             if(user != null) {
@@ -158,8 +159,13 @@ app.get('/profile', checkAuthenticated, (req, res) => {
                         })
                         clientDB.all('SELECT id FROM leaderboard', [], (err, entries) => {
                             clientDB.all('SELECT friends.lead_user, friends.passive_user, friends.status, friends.creation_date, users.username, users.name, users.pfp FROM users LEFT JOIN friends ON users.id = friends.passive_user WHERE friends.lead_user = ? AND friends.status = ?', [req.user.id, "Requested"], (err, requested_friends) => {
-                                clientDB.all('SELECT friends.lead_user, friends.passive_user, friends.status, friends.creation_date, users.username, users.name, users.pfp FROM users LEFT JOIN friends ON users.id = friends.lead_user WHERE friends.passive_user = ?', [req.user.id, "Requested"], (err, friend_requests) => {
-                                    clientDB.all('SELECT friends.lead_user, friends.passive_user, friends.status, friends.creation_date, users.username, users.name, users.pfp FROM users LEFT JOIN friends ON users.id = friends.passive_user WHERE friends.lead_user = ? AND friends.status = ?', [req.user.id, 'Active'], (err, friends) => {
+                                clientDB.all('SELECT friends.lead_user, friends.passive_user, friends.status, friends.creation_date, users.username, users.name, users.pfp FROM users LEFT JOIN friends ON users.id = friends.lead_user WHERE friends.passive_user = ? AND friends.status = ?', [req.user.id, "Requested"], (err, friend_requests) => {
+                                    clientDB.all('SELECT friends.lead_user, friends.passive_user, friends.status, friends.creation_date, users.username, users.name, users.pfp FROM users LEFT JOIN friends ON users.id = friends.lead_user WHERE friends.passive_user = ? AND friends.status = ?', [req.user.id, 'Active'], (err, friends) => {
+                                        console.log('DEVELOPER')
+                                        console.log(`Requested friends: `, requested_friends, requested_friends)
+                                        console.log(`Friend Requests:`, friend_requests, friend_requests)
+                                        console.log(`Friends:`, friends, friends)
+                                        console.log('END OF DEBUGGING ----------------------\n')
                                         res.render('profile', { load_user: user, current_user: req.user, history: joins, last: lastDB, best: bestDB, leaderboard_entry: leaderboard, leaderboard_length: entries.length,
                                             id_types: ['Level', 'Date', 'Score'], error: req.query.error, message: req.query.message, levels: levels, requested_friends: requested_friends, friend_requests: friend_requests, friends: friends })
                                     })
@@ -184,13 +190,13 @@ app.post('/add_friend', checkAuthenticated, (req,res) => {
 })
 
 app.get('/accept_friend', checkAuthenticated, (req,res) => {
-    clientDB.all('UPDATE TABLE friends SET status = ? WHERE passive_user = ? AND lead_user = ?', ['Active', req.query.passive_user, req.query.lead_user], (err) => {
+    clientDB.all('UPDATE friends SET status = ? WHERE passive_user = ? AND lead_user = ?', ['Active', req.query.passive, req.query.active], (err) => {
         res.redirect('/library?message=success')
     })
 })
 
 app.get('/remove_friend', checkAuthenticated, (req, res) => {
-    clientDB.all('DELETE FROM friends WHERE lead_user = ? AND passive_user = ?', [req.query.lead_user, req.query.passive_user], () => {
+    clientDB.all('DELETE FROM friends WHERE lead_user = ? AND passive_user = ?', [req.query.active, req.query.passive], () => {
         res.redirect('/library?message=success')
     })
 })
