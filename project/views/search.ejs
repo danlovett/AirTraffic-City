@@ -9,8 +9,8 @@
 <%- include('navbar.ejs') -%>
 
 <div class="quick-actions" style="margin-top: 20px;">
-    <a href="/search?group=people">Find People</a>
-    <a href="/search?group=levels">Find Levels</a>
+    <a href="/search/people">Find People</a>
+    <a href="/search/levels">Find Levels</a>
 </div>
 
 <%_ if(group == 'people') { %>
@@ -41,26 +41,32 @@
                     <h1 class="text-center fs20 m20">Add Friend</h1>
                 </div>
                 <%_ for(let i in foundUsers) { %>
-                    <form class="form-search" action="/add_friend?id=<%= foundUsers[i].id %>" method="POST">
-                        <a href="/profile?id=<%= foundUsers[i]["id"] %>" style="width: 100%;">
-                            <div class="user-search-container" style="background-image: url('<%= foundUsers[i]["pfp"] %>'); background-size: cover;">
-                                <div class="background-fade">
-                                    <h1 class="fs20 text-center"><%= foundUsers[i]["name"] %></h1>
-                                    <p class="fs15 text-center"><%= foundUsers[i]["username"] %></p>
+                    <%_ if(foundUsers[i].id != user_id) { %>
+                        <form class="form-search" action="/add_friend?id=<%= foundUsers[i].id %>" method="POST">
+                            <a href="/profile/<%= foundUsers[i]["id"] %>" style="width: 100%;">
+                                <div class="user-search-container" style="background-image: url('<%= foundUsers[i]["pfp"] %>'); background-size: cover;">
+                                    <div class="background-fade">
+                                        <h1 class="fs20 text-center"><%= foundUsers[i]["name"] %></h1>
+                                        <p class="fs15 text-center"><%= foundUsers[i]["username"] %></p>
+                                    </div>
                                 </div>
+                            </a>
+                            <div>
+                                <p class="fs20 color-white text-center">Feature</p>
+                                <p class="fs15 color-grey text-center">Coming soon</p>
                             </div>
-                        </a>
-                        <button type="submit" id='<%= i %>' class="fs20 color-white">
-                            <%_ if(foundUsers[i].status != null) { %>
-                                <p class="fs20"><%= foundUsers[i].status %></p>
-                                <%_ if(foundUsers[i].creation_date) { %>
-                                    <p class="color-grey fs15"><%= foundUsers[i].creation_date%></p>
+                            <!-- <button type="submit" id='<%= i %>' class="fs20 color-white">
+                                 <%_ if(foundUsers[i].status != null && (foundUsers[i].passive_user == user_id || foundUsers[i].lead_user == user_id)) { %>
+                                    <p class="fs20"><%= foundUsers[i].status %></p>
+                                    <%_ if(foundUsers[i].creation_date) { %>
+                                        <p class="color-grey fs15"><%= foundUsers[i].creation_date%></p>
+                                    <%_ } %>
+                                <%_ } else { %>
+                                    Add Friend
                                 <%_ } %>
-                            <%_ } else { %>
-                                Add Friend
-                            <%_ } %>
-                        </button>
-                    </form>
+                            </button> -->
+                        </form>
+                    <%_ } %>
                 <%_ } %>
             <%_ } %>
         <%_ } %>

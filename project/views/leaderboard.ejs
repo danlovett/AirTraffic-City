@@ -45,7 +45,7 @@
                                     <%_ if(x == 'level') { %>
                                         <a href="/level?name=<%= top_entries[entry][x] %>&type=detailed"><%= top_entries[entry][x] %></a>
                                     <%_ } else if (x == 'name') { %>
-                                        <a href="/profile?id=<%=top_entries[entry].personID %>"><%= top_entries[entry][x] %></a>
+                                        <a href="/profile/<%=top_entries[entry].personID %>"><%= top_entries[entry][x] %></a>
                                     <%_ } else { %>
                                         <%= top_entries[entry][x] %>
                                     <%_ } %>
