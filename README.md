@@ -2,23 +2,21 @@
 
 A few pictures of production thus far:
 
-## Quick Play
+## Authentication
 <img src="https://i.imgur.com/QXkKksi.png"/>
 
-## Library
-<img src="https://i.imgur.com/CqVubu0.png"/>
+## Authenticated Homepage
+<img src="https://imgur.com/a/my5g28j"/>
 
-## Level overview
-<img src="https://i.imgur.com/aTXEeKt.png"/>
+## Profiles
+### Your Profile
+<img src="https://imgur.com/a/3gK4ZS9"/>
 
-## Results of game Page
-<img src="https://i.imgur.com/qdZqKkZ.png"/>
+### Others' Profile
+<img src="https://imgur.com/a/P9nyWri"/>
 
-## Account Page
-<img src="https://i.imgur.com/1fsR1qc.png"/>
-
-## Others' Page
-<img src="https://i.imgur.com/lwxBzs8.png"/>
+## Search
+<img src="https://imgur.com/a/qwdOXQj"/>
 
 ## Leaderboard
-<img src="https://i.imgur.com/19mXpgC.png"/>
+<img src="https://imgur.com/a/6F4tJKZ"/>
