@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[current_user]'s Homepage</title>
+</head>
+<body class="bg-main">
+    <%- include('navbar.ejs') -%>
+    <div class="sections">
+        <h1 class="page-title">Homepage</h1>
+        <section class="landing">
+            <h1 class="title transform-105"><img src="../../images/icon.png" alt="" style="height: 30px; margin-right: 10px;">Landing</h1>
+            <p style="text-align: center; padding-top: 10px;">Levels will play as soon as you press on them</p>
+            <div class="content">
+                <div class="cards">
+                    <%_ for(i in levels) { if(i <= 1) { %>
+                        <a href="/play/<%= levels[i].airport_icao %>" class="transform-105">
+                            <div class="container">
+                                <img src="<%=levels[i].image_reference%>" alt="">
+                                <p><%= levels[i].airport_name %></p>
+                            </div>
+                        </a>
+                    <%_ } }%>
+                </div>
+                <button class="transform-120"><a href="/levels">See more</a></button>
+            </div>
+        </section>
+        <%_ if(JSON.stringify(leaderboard).length > 0) { %>
+            <section class="leaderboard">
+                <h1 class="title transform-105"><img src="../../images/icon.png" alt="" style="height: 30px; margin-right: 10px;">Leaderboard</h1>
+                <div class="content">
+                    <a href="/leaderboard">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Score</th>
+                                    <th>Level</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%_ for(i in leaderboard) { %>
+                                    <tr>
+                                        <td><a href="#"><%= leaderboard[i].name %></a></td>
+                                        <td><%= leaderboard[i].date %></td>
+                                        <td><%= leaderboard[i].score %></td>
+                                        <td><%= leaderboard[i].level %></td>
+                                    </tr>
+                                <%_ } %>
+                            </tbody>
+                        </table>
+                    </a>
+                    <button class="transform-120"><a href="/leaderboard">See more</a></button>
+                </div>
+            </section>
+        <%_ } %>
+        <%_ if(following.length > 0) { %>
+            <section class="friends" style="padding: 10px;">
+                <h1 class="title transform-105"><img src="../../images/icon.png" alt="" style="height: 30px; margin-right: 10px;">Friend Activity</h1>
+                <p style="text-align: center; padding-top: 10px;">See what your friends are doing</p>
+                <div class="content">
+                    <a href="/friends">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Friend</th>
+                                    <th>Last Activty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%_ for(i in following) { if(i == 2) break %>
+                                    <tr>
+                                        <td style="width: 100%; display: flex;">
+                                            <img src="<%= following[i].pfp %>" alt="pic" style="height: auto; width: 30%; border-radius: 10px;">
+                                            <div>
+                                                <p class="name"><%= following[i].name %></p>
+                                                <p class="username"><%= following[i].username %></p>       
+                                            </div>
+                                        </td>
+                                        <td style="width: 50%;">
+                                            <p class="played-last"><%= following[i].last_played %> <%_ if(!following[i].last_played) { %> No activity <%_ } %></p>
+                                        </td>
+                                    </tr>
+                                <%_ } %>
+                            </tbody>
+                        </table>
+                    </a>
+                </div>
+                <%_ if(following.length > 3) { %>
+                    <button class="transform-120"><a href="/friends">See more</a></button>
+                <%_ } %>
+            </section>
+        <%_ } %>
+    </div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Levels | ATC</title>
+</head>
+<body class="bg-levels">
+    <%- include('navbar.ejs') -%>
+    <div class="sections">
+        <h1 class="page-title">Levels</h1>
+        <section class="levels">
+            <div class="container-levels">
+                <%_ for(i in levels) { %>
+                    <section id="<%= i %>" class="inner transform-105">
+                        <div class="title">
+                            <h2><%= levels[i].airport_name %></h2>
+                            <p><%= levels[i].airport_icao %></p>
+                        </div>
+                        <div class="container-level">
+                            <img src="<%= levels[i].image_reference %>" alt="" class="transform-105">
+                            <div class="details">
+                                <p><%= levels[i].text_waffle %></p>
+                                <p><%= levels[i].text_instructions %></p>
+                            </div>
+                        </div>
+                        <button class="transform-120"><a href="/play/<%= levels[i].airport_icao %>" style="cursor: pointer; all: unset;">Play this level</a></button>
+                    </section>
+                <%_ } %>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

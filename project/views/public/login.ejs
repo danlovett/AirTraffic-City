@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in | ATC</title>
+</head>
+<body style="height: 100vh; background: linear-gradient(90deg, rgba(3,0,60,1) 0%, rgba(68,68,255,1) 38%, rgba(255,255,255,1) 100%);">
+    <%- include('navbar.ejs') -%>
+    <div class="main">
+        <section>
+            <form method="POST" action="login">
+                <h2>Log in</h2>
+                <div class="name">
+                    <label for="name/email">Name/E-mail</label>
+                    <input  type="name" name="email" autocomplete="on" placeholder="Start typing...">
+                </div>
+                <div class="password">
+                    <label for="Password">Password</label>
+                    <input type="password" name="password" id="password" autocomplete="on">
+                </div>
+
+                <button type="submit">Log in</button>
+
+                <p style="padding-top: 10px; text-align: center;">Don't have an account? <a href="/signup">Sign up here</a></p>
+            </form>
+        </section>
+    </div>
+</body>
+</html>

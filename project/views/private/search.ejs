@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search | ATC</title>
+</head>
+<body class="bg-vibrant">
+    <%- include('navbar.ejs') -%>
+    <div class="sections">
+        <h1 class="page-title"><img src="../../images/private/search.png" alt="" style="height: 25px;"> Search</h1>
+        <section class="search">
+            <form action="search" method="POST" class="transform-105">
+                <input type="text" name="query" placeholder="Start typing...">
+                <button type="submit"><img src="../../images/private/search.png" alt="" style="height: 25px;"></button>
+            </form>
+            <!-- RESULTS -->
+            <!-- PEOPLE -->
+            <%_ if(users || levels) { %>
+                <%_ if(JSON.stringify(users) != '[]') { %>
+                    <section class="people">
+                        <h1 class="title">Found people:</h1>
+                        <section class="results" style="width: 100%; margin-left: 0;">
+                            <%_ for(i in users) { %>
+                                <div class="result" id="<%= i %>">
+                                    <div class="info">
+                                        <img src="<%= users[i].pfp %>" alt="">
+                                        <div class="inner">
+                                            <p><%= users[i].name %></p>
+                                            <p><%= users[i].username %></p>
+                                        </div>
+                                    </div>
+                                    <div class="action">
+                                        <button class="transform-120"><a href="#">Coming soon</a></button>
+                                    </div>
+                                </div>
+                            <%_ } %>
+                        </section>
+                    </section>
+                <%_ } %>
+                <%_ if(JSON.stringify(levels) != '[]') { %>
+                    <!-- LEVELS -->
+                    <section class="levels">
+                        <h1 class="title">Found levels:</h1>
+                        <section class="results" style="width: 100%; margin-left: 0;">
+                            <%_ for(i in levels) { %>
+                                <div class="result" id="<%= i %>">
+                                    <div class="info">
+                                        <img src="<%= levels[i].image_reference %>" alt="" style="height: 150px;">
+                                    </div>
+                                    <div class="info">
+                                    <p><%= levels[i].airport_name %></p>
+                                    <p><%= levels[i].airport_icao %></p>                            
+                                    </div>
+                                </div>
+                            <%_ } %>
+                        </section>
+                    </section>
+                <%_ } %>
+            <%_ } else { %>
+                <h1 style="text-align: center; padding: 20px;">No Results</h1>
+                <p style="text-align: center; padding: 20px;">Use the search button</p>
+            <%_ } %>
+        </section>
+    </div>
+</body>
+</html>

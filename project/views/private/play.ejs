@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In-game></title>
+</head>
+<body>
+    <span id="level_name" style="display: none;"><%= data.airport_name %></span>
+    <span id="icao" style="display: none;"><%= data["airport_icao"] %></span>
+    <span id="level_grid" style="display: none;"><%= data["layout"] %></span>
+    <span id="level_runways" style="display: none;"><%= data["runways"] %></span>
+    <span id="destinations" style="display: none;"><%= data["destinations"] %></span>
+    <span id="planes" style="display: none;"><%= JSON.stringify(plane_data) %></span>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <!--  P5JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.min.js" integrity="sha512-NxocnqsXP3zm0Xb42zqVMvjQIktKEpTIbCXXyhBPxqGZHqhcOXHs4pXI/GoZ8lE+2NJONRifuBpi9DxC58L0Lw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/game/src/Grid.js"></script>
+    <script src="/game/src/Plane.js"></script>
+    <script src="/game/src/Score.js"></script>
+    <script src="/game/src/script.js"></script>
+</body>
+</html>

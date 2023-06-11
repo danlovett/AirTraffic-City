@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends | ATC</title>
+</head>
+<body class="bg-vibrant">
+    <%- include('navbar.ejs') -%>
+    <div class="sections">
+        <h1 class="page-title">Friends</h1>
+        <%_ if(JSON.stringify(following) != '[]') { %>
+            <p style="padding-top: 15px; text-align: center;">All your friends at a glance</p>
+        <%_ } %>
+            <section class="friends">
+            <%_ if(JSON.stringify(following) != '[]') { %>
+                <%_ for(i in following) { %>
+                    <a href="/profile/<%= following[i].id %>" style="all: unset; cursor: pointer;">
+                        <section class="friend transform-105">
+                            <img src="<%= following[i].pfp %>" alt="" style="height: 50px;">
+                            <div class="information">
+                                <div class="user-details">
+                                    <p><%= following[i].name %></p>
+                                    <p><%= following[i].username %></p>
+                                    <p>Friends since <%= following[i].creation_date %></p>                                
+                                </div>
+                                <div class="game-details">
+                                    <p><%= following[i].best_played %></p>
+                                    <p>Best played: <%= following[i].last_played %></p>
+                                </div>
+                            </div>
+                        </section>
+                    </a>
+                <%_ } %>
+            <%_ } else { %>
+                <p style="text-align: center; padding: 20px 0;">Nothing Here</p>
+                <button class="transform-105" style="margin-bottom: 20px;"><a href="/search" style="all: unset;">Search for a friend</a></button>
+            <%_ } %> 
+        </section>
+    </div>
+</body>
+</html>

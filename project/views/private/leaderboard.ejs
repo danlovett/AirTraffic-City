@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard | ATC</title>
+</head>
+<body class="bg-blue">
+    <%- include('navbar.ejs') -%>
+    <div class="sections">
+        <h1 class="page-title">Leaderboard</h1>
+        <section class="leaderboard">
+            <div class="content">
+                <%_ if(leaderboard.length > 0) { %>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Date</th>
+                                <th>Score</th>
+                                <th>Level</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%_ for(i in leaderboard) { %>
+                                <tr>
+                                    <td><a href="/profile/<%= leaderboard[i].personID %>"><%= leaderboard[i].name %></a></td>
+                                    <td><%= leaderboard[i].date %></td>
+                                    <td><%= leaderboard[i].score %></td>
+                                    <td><a href="/levels"> <%= leaderboard[i].level %></a></td>
+                                </tr>
+                            <%_ } %>
+                        </tbody>
+                    </table>
+                <%_ } else { %>
+                    <p style="text-align: center;">Nothing to see here</p>
+                <%_ } %>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

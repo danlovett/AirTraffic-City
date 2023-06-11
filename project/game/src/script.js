@@ -87,7 +87,7 @@ function draw() {
         grid.render_selector_tool(grid_x, grid_y)
     } else { // if grid.gameplay_allowed is false
         // redirect user to this page with set values
-        window.location.href = `${window.location.origin}/gameEnded?level=${$('#level_name').text()}&time=${grid.ellapsed_time_seconds}&score=${score.total_score}&reason=${grid.message}`
+        window.location.href = `${window.location.origin}/play-ended?level=${$('#level_name').text()}&time=${grid.ellapsed_time_seconds}&score=${score.total_score}&reason=${grid.message}`
     }
 }
 
